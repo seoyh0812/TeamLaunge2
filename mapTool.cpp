@@ -35,6 +35,8 @@ void mapTool::imageInit()
 	IMAGEMANAGER->addImage("load3", "image/maptool/load3.bmp", 64, 32, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("move", "image/maptool/move.bmp", 64, 32, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("unmove", "image/maptool/unmove.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("undo", "image/maptool/undo.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("fill", "image/maptool/fill.bmp", 64, 32, false, RGB(255, 0, 255));
 
 	//이미지를 덮어씌울 렉트 선언 영역
 	_saveBt = RectMake(900, 720, 64, 32);
@@ -47,6 +49,10 @@ void mapTool::imageInit()
 
 	_move = RectMake(900, 680, 64, 32);
 	_unMove = RectMake(970, 680, 64, 32);
+
+	_fill = RectMake(900, 640, 64, 32);
+
+	_undo = RectMake(1040, 680, 64, 32);
 }
 
 void mapTool::imageRender()
@@ -63,6 +69,8 @@ void mapTool::imageRender()
 	IMAGEMANAGER->findImage("load1")->render(getMemDC(), _loadBt.left, _loadBt.top);
 	IMAGEMANAGER->findImage("load2")->render(getMemDC(), _loadBt2.left, _loadBt2.top);
 	IMAGEMANAGER->findImage("load3")->render(getMemDC(), _loadBt3.left, _loadBt3.top);
+	IMAGEMANAGER->findImage("undo")->render(getMemDC(), _undo.left, _undo.top);
+	IMAGEMANAGER->findImage("fill")->render(getMemDC(), _fill.left, _fill.top);
 
 	//무브와 언무드
 	if (!_moveUnMove)
@@ -286,14 +294,54 @@ void mapTool::load()
 	}
 }
 
+void mapTool::tempSave()
+{// 마우스 딱 누를때만 타일이 그려지기전 발동함. temp에 저장
+	_tempSaved = true;
+	HANDLE file;
+	DWORD write;
+
+	file = CreateFile("temp.map", GENERIC_WRITE, NULL, NULL,
+		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX*TILEY, &write, NULL);
+
+	CloseHandle(file);
+}
+
+void mapTool::tempLoad()
+{// temp를 불러옴
+		if (!_tempSaved) return;
+		HANDLE file;
+		DWORD read;
+
+		file = CreateFile("temp.map", GENERIC_READ, NULL, NULL,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX*TILEY, &read, NULL);
+
+		CloseHandle(file);
+}
+
+void mapTool::fill(int x, int y)
+{
+	for (int i = 0; i < TILEX* TILEY; ++i)
+	{
+		_isoTile[i].fX = x;
+		_isoTile[i].fY = y;
+	}
+}
+
 void mapTool::update()
 {
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
+		if (PtInRect(&_undo, _ptMouse)) tempLoad();
+		tempSave();
 		createTile();
 		save();
 		load();
 		moveUnMove();
+		if (PtInRect(&_fill, _ptMouse)) fill(_tempTile.fX, _tempTile.fY);
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))

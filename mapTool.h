@@ -80,7 +80,11 @@ private:
 	RECT			_move;
 	RECT			_unMove;
 
+	RECT			_undo;
+	RECT			_fill;
+
 	bool			_moveUnMove;
+	bool			_tempSaved;
 
 public:
 	mapTool();
@@ -101,6 +105,10 @@ public:
 
 	void save();
 	void load();
+	void tempSave();												//뒤로가기가 되어줄 상황(?)을 저장해서 담아주는 기능
+	void tempLoad();												//뒤로가기의 상황(?)을 불러와줌
+
+	void fill(int x, int y);										//전체 타일을 칠해주는 함수
 
 	inline POINT picking(long x, long y); // 피킹하는 함수
 };
