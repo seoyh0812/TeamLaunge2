@@ -99,8 +99,6 @@ public:
 	// 이 함수를 써주면 됨
 	void commonInit();		// 자질구레한건 여기서 이닛
 	void commonUpdate();	// 공통유닛 행동양식
-	void commonMeleeAI();	// 근접유닛 행동양식
-	void commonRangeAI();	// 원거리유닛 행동양식
 	// 중요함) 함수는 여기서 마련됐지만
 	// 사용은 상속클래스에서의 이닛 및 업데이트에 각각 넣는것임.
 	// 함수 선언만 여기서 편의를 위해 해놓은것
@@ -110,9 +108,12 @@ public:
 
 	// 공통렌더도 하고 싶었지만 이미지마다 위치보정해줘야해서
 
+
 	virtual void setState(STATE state) = 0;
 	// 이건 유닛들마다 이미지가 다르므로 각각 만들어 씁시다.
 
+	void RMC();
+	// 렉트메이크센터 편하게 하려고
 
 	// 게터들도 무지막지하게 많음
 	int getID() { return _ID; }
@@ -122,9 +123,8 @@ public:
 	// setState함수가 있으므로 이걸로 변경하면 안됨(참조자X)
 	float& getX() { return _x; }
 	float& getY() { return _y; }
-	float& getDestX() { return _destX; }
-	float& getDestY() { return _destY; }
-	float& getAngle() { return _angle; }
+	void setDest(float destX, float destY); // 목표설정은 이걸로할거임
+	float& getAngle1() { return _angle; }
 	int& getDelay() { return _delay; }
 	int getDamage() { return _damage; }
 	int& getHP() { return _HP; }
@@ -134,6 +134,8 @@ public:
 	int getWidth() { return _width; }
 	int getHeight() { return _height; }
 	RECT getRect() { return _rc; }
+	RECT getRangeRect() { return _rangeRc; }
+	RECT getFocusRect() { return _focusRc; }
 	int& getTileNum() { return _tileNum; }
 };
 

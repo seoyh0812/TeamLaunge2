@@ -25,6 +25,7 @@ void unitManager::update()
 	for (int i = 0; i < _vUnit.size(); ++i)
 	{
 		_vUnit[i]->update();
+
 		if (_vUnit[i]->getState() == DEAD)
 		{ // 죽은거 타겟잡은게 있다면 풀어줘야함
 			for (int j = 0; j < _vUnit.size(); ++j)

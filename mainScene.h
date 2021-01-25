@@ -10,14 +10,6 @@
 class mainScene :public gameNode
 {
 private:
-	tile _tiles[TILEX*TILEY];
-
-
-	// 8방향 어케하는지 보여주기용 저글링 (나중에 지울거임)
-	RECT _zerling;
-	float _destX, _destY, _x, _y, _angle;
-	RECT _destRc;
-	int _indexX, _indexY, _count;
 
 	stageManager*			_sm;
 	unitManager*			_um;

@@ -25,3 +25,19 @@ void unit::update()
 void unit::render()
 {
 }
+
+void unit::RMC()
+{
+	_rc = RectMakeCenter(_x, _y, _width, _height);
+}
+
+void unit::setDest(float destX, float destY)
+{ // 목적지 설정해주면서 앵글도 바꿔주고
+	// 앵글에 따른 프레임도 바꿔주는 함수
+	_destX = destX;
+	_destY = destY;
+	_angle = getAngle(_x, _y, _destX, _destY);
+	if (_angle < 0) _angle += PI2;
+	_frameDirection = 2 - (int)((_angle + PI8) / PI4);
+	if (_frameDirection < 0) _frameDirection += 8;
+}

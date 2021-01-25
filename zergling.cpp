@@ -15,14 +15,14 @@ HRESULT zergling::init(BELONG belong, float x, float y)
 	_ID = 1;
 	_x = x; _y = y;
 	_speed = 2.0f;
-	_maxDelay = 90; // 대충 1.5초에 한대 치게끔
+	_maxDelay = 60; // 대충 1초에 한대 치게끔
 	_damage = 5;
 	_maxHP = 35;
 	_attackIndex = 2; // 2번 인덱스가 될때 공격판정
 	_width = 40;
 	_height = 39; // 일단은 대충 설정해놓은거임(이미지크기)
 	_rangeRc = RectMakeCenter(_x, _y, _width+6, _height+6);
-	_focusRc = RectMakeCenter(_x, _y, 200, 200);
+	_focusRc = RectMakeCenter(_x, _y, 300, 300);
 
 	commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
 	
@@ -37,6 +37,8 @@ void zergling::release()
 void zergling::update()
 {
 	commonUpdate();
+	_rangeRc = RectMakeCenter(_x, _y, _width + 6, _height + 6);
+	_focusRc = RectMakeCenter(_x, _y, 200, 200);
 }
 
 void zergling::render()

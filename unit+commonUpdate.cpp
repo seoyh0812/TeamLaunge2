@@ -8,6 +8,7 @@ void unit::commonUpdate()
 	{
 		setState(DEAD);
 	}
+	if (_delay > 0) --_delay;
 
 	if (_frameCount < 6) ++_frameCount; // 0.1ÃÊ¸¶´Ù
 	else
@@ -18,6 +19,11 @@ void unit::commonUpdate()
 		{
 			_frame = 0;
 		}
+		if (_state == ATTACK && _frame == _attackIndex && _target != -1)
+		{
+			_delay = _maxDelay;
+			_attackReady = true;
+		}
 	}
 
 	switch (_state)
@@ -25,14 +31,22 @@ void unit::commonUpdate()
 	case IDLE:
 		break;
 	case WALK:
-
+		_x += _speed * cosf(_angle);
+		_y -= _speed * sinf(_angle);
+		RMC();
 		break;
 	case ATTACKWAIT:
+		if (_target == -1) setState(WALK);
+		if (_target != -1 && _delay <= 0)
+		{
+			setState(ATTACK);
+		}
 		break;
 	case ATTACK:
 		if (_frame >= _maxFrame)
 		{
-			setState(ATTACKWAIT);
+			if (_target == -1)	setState(WALK);
+			else		setState(ATTACKWAIT);
 		}
 		break;
 	case DEAD:
