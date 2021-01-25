@@ -75,7 +75,6 @@ void unitManager::deadErase()
 						_vUnit[j]->getTarget() -= 1;
 					}
 				}
-				_vUnit[i]->release();
 				_vUnit.erase(_vUnit.begin() + i);
 				erased = true;
 				break;
