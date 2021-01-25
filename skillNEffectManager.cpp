@@ -29,7 +29,6 @@ void skillNEffectManager::update()
 	{
 		if (_vSne[i]->getErase())
 		{
-			_vSne[i]->release();
 			_vSne.erase(_vSne.begin() + i);
 		}
 	}

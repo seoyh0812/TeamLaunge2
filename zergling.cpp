@@ -6,7 +6,7 @@ zergling::zergling()
 }
 
 zergling::~zergling()
-{
+{	
 }
 
 HRESULT zergling::init(BELONG belong, float x, float y)
@@ -21,6 +21,8 @@ HRESULT zergling::init(BELONG belong, float x, float y)
 	_attackIndex = 2; // 2번 인덱스가 될때 공격판정
 	_width = 40;
 	_height = 39; // 일단은 대충 설정해놓은거임(이미지크기)
+	_rangeRc = RectMakeCenter(_x, _y, _width+6, _height+6);
+	_focusRc = RectMakeCenter(_x, _y, 200, 200);
 
 	commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
 	
@@ -29,7 +31,7 @@ HRESULT zergling::init(BELONG belong, float x, float y)
 
 void zergling::release()
 {
-	commonRelease();
+	SAFE_DELETE(_image);
 }
 
 void zergling::update()

@@ -25,7 +25,7 @@ HRESULT psionic::init(S_BELONG belong, float x, float y)
 
 void psionic::release()
 {
-	commonRelease();
+	SAFE_DELETE(_image);
 }
 
 void psionic::update()

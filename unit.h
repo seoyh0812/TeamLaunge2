@@ -40,7 +40,12 @@ protected:
 	int _width; int _height;
 	RECT _rc; // _rc = RectMakeCenter(_x, _y, _width, _height);
 	// 렉트크기는 바꾸지 말고 하나만 렉메센으로 씁시다..
-	
+	RECT _rangeRc; // 사거리렉트. 근접은 width에서 좀 더 크게
+	// 이거 벗어나면 이동으로 셋스테이트 하려고 있는거
+	RECT _focusRc; // 감지렉트. 타겟잡고 글로 가게끔하려고
+	// 근거리 유닛이라도 충분히 커야됨.
+
+
 	image* _image;
 
 	float _destX; float _destY; // 목적지
@@ -96,7 +101,6 @@ public:
 	void commonUpdate();	// 공통유닛 행동양식
 	void commonMeleeAI();	// 근접유닛 행동양식
 	void commonRangeAI();	// 원거리유닛 행동양식
-	void commonRelease();	// 공통 릴리즈
 	// 중요함) 함수는 여기서 마련됐지만
 	// 사용은 상속클래스에서의 이닛 및 업데이트에 각각 넣는것임.
 	// 함수 선언만 여기서 편의를 위해 해놓은것
@@ -130,6 +134,6 @@ public:
 	int getWidth() { return _width; }
 	int getHeight() { return _height; }
 	RECT getRect() { return _rc; }
-	int getTileNum() { return _tileNum; }
+	int& getTileNum() { return _tileNum; }
 };
 
