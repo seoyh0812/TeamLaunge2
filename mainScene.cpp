@@ -32,7 +32,7 @@ HRESULT mainScene::init()
 	_um->createZergling(PLAYER, 270, 400);
 	_se->createPsionic(S_PLAYER, 200, 200);
 
-	_um->setLinkSm(_sm);								//���� �Ŵ����� �������� �Ŵ����� ��ũ�� ��������
+	_um->setLinkSm(_sm);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
 	return S_OK;
 }
 
