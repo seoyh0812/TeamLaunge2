@@ -36,7 +36,7 @@ using namespace TFIVE_UTIL;
 #define WINNAME (LPTSTR)(TEXT("25기 API"))
 #define WINSTARTX 50		//윈도우 시작좌표 X지점
 #define WINSTARTY 0		//윈도우 시작좌표 Y지점
-#define WINSIZEX 1156 		//윈도우 가로크기
+#define WINSIZEX 1656 		//윈도우 가로크기
 #define WINSIZEY 800		//윈도우 세로크기
 #define WINSTYLE WS_CAPTION | WS_SYSMENU
 

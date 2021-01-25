@@ -15,7 +15,7 @@ HRESULT mapTool::init()
 	imageInit();
 	createSampleTiles();
 
-	createIsoMap(100, 100, TILEX, TILEY);
+	createIsoMap(650, 0, TILEX, TILEY);
 	_tempTile.fX = 0;
 	_tempTile.fY = 0;
 	_moveUnMove = false;
@@ -26,7 +26,6 @@ void mapTool::imageInit()
 {
 	//이미지 영역
 	IMAGEMANAGER->addFrameImage("mapTiles", "image/maptool/iso256X160.bmp", 0, 0, 256, 160, 4, 5, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("menu", "image/maptool/menu.bmp", 100, 800, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("save1", "image/maptool/save1.bmp", 64, 32, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("save2", "image/maptool/save2.bmp", 64, 32, false, RGB(255, 0, 255));
 	IMAGEMANAGER->addImage("save3", "image/maptool/save3.bmp", 64, 32, false, RGB(255, 0, 255));
@@ -39,28 +38,26 @@ void mapTool::imageInit()
 	IMAGEMANAGER->addImage("fill", "image/maptool/fill.bmp", 64, 32, false, RGB(255, 0, 255));
 
 	//이미지를 덮어씌울 렉트 선언 영역
-	_saveBt = RectMake(900, 720, 64, 32);
-	_saveBt2 = RectMake(970, 720, 64, 32);
-	_saveBt3 = RectMake(1040, 720, 64, 32);
+	_saveBt = RectMake(WINSIZEX-210, 720, 64, 32);
+	_saveBt2 = RectMake(WINSIZEX-140, 720, 64, 32);
+	_saveBt3 = RectMake(WINSIZEX-70, 720, 64, 32);
 
-	_loadBt = RectMake(900, 760, 64, 32);
-	_loadBt2 = RectMake(970, 760, 64, 32);
-	_loadBt3 = RectMake(1040, 760, 64, 32);
+	_loadBt = RectMake(WINSIZEX-210, 760, 64, 32);
+	_loadBt2 = RectMake(WINSIZEX-140, 760, 64, 32);
+	_loadBt3 = RectMake(WINSIZEX-70, 760, 64, 32);
 
-	_move = RectMake(900, 680, 64, 32);
-	_unMove = RectMake(970, 680, 64, 32);
+	_move = RectMake(WINSIZEX-210, 680, 64, 32);
+	_unMove = RectMake(WINSIZEX-140, 680, 64, 32);
 
-	_fill = RectMake(900, 640, 64, 32);
+	_fill = RectMake(WINSIZEX-210, 640, 64, 32);
 
-	_undo = RectMake(1040, 680, 64, 32);
+	_undo = RectMake(WINSIZEX-70, 680, 64, 32);
 }
 
 void mapTool::imageRender()
 {
-	//메뉴
-	IMAGEMANAGER->findImage("menu")->render(getMemDC(), 800, 0);
 	//오른쪽 샘플타일
-	IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), 900, 0);
+	IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), WINSIZEX-256, 0);
 
 	//세이브와 로드
 	IMAGEMANAGER->findImage("save1")->render(getMemDC(), _saveBt.left, _saveBt.top);
@@ -182,32 +179,36 @@ void mapTool::createTile()
 		}
 	}
 
-	for (int i = 0; i < TILEX * TILEY; ++i)
-	{
-		//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
-		//무브 상태로 그려지면 타일안의 MUM의 값이 무브
-		if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
-			&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && !_moveUnMove)
-		{
-			_isoTile[i].fX = _tempTile.fX;
-			_isoTile[i].fY = _tempTile.fY;
-			_isoTile[i].MUM = MOVE;
-			//화면 갱신해주는 함수
-			InvalidateRect(_hWnd, NULL, false);
-			break;
-		}
-		//언무브 상태로 그려지면 타일안의 MUM의 값이 언무브
-		else if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
-			&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && _moveUnMove)
-		{
-			_isoTile[i].fX = _tempTile.fX;
-			_isoTile[i].fY = _tempTile.fY;
-			_isoTile[i].MUM = UNMOVE;
-			//화면 갱신해주는 함수
-			InvalidateRect(_hWnd, NULL, false);
-			break;
-		}
-	}
+	_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
+	_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
+	InvalidateRect(_hWnd, NULL, false);
+
+	//for (int i = 0; i < TILEX * TILEY; ++i)
+	//{
+	//	//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
+	//	//무브 상태로 그려지면 타일안의 MUM의 값이 무브
+	//	if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
+	//		&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && !_moveUnMove)
+	//	{
+	//		_isoTile[i].fX = _tempTile.fX;
+	//		_isoTile[i].fY = _tempTile.fY;
+	//		_isoTile[i].MUM = MOVE;
+	//		//화면 갱신해주는 함수
+	//		InvalidateRect(_hWnd, NULL, false);
+	//		break;
+	//	}
+	//	//언무브 상태로 그려지면 타일안의 MUM의 값이 언무브
+	//	else if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
+	//		&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && _moveUnMove)
+	//	{
+	//		_isoTile[i].fX = _tempTile.fX;
+	//		_isoTile[i].fY = _tempTile.fY;
+	//		_isoTile[i].MUM = UNMOVE;
+	//		//화면 갱신해주는 함수
+	//		InvalidateRect(_hWnd, NULL, false);
+	//		break;
+	//	}
+	//}
 }
 
 void mapTool::save()
@@ -333,6 +334,8 @@ void mapTool::fill(int x, int y)
 
 void mapTool::update()
 {
+	_pickingPt = picking(_ptMouse.x, _ptMouse.y);
+
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		if (PtInRect(&_undo, _ptMouse)) tempLoad();
@@ -381,27 +384,30 @@ void mapTool::render()
 
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{
-		sprintf_s(str, "%d, %d", _isoTile[i].fX, _isoTile[i].fY);
+		sprintf_s(str, "%d, %d", _isoTile[i].nX, _isoTile[i].nY);
 		if (KEYMANAGER->isToggleKey(VK_F1)) TextOut(getMemDC(), _isoTile[i].drawX + (TILEX + 5), _isoTile[i].drawY + (TILEY / 2), str, strlen(str));
 	}
+
+	sprintf_s(str, "ptMouse X : %d , Y : %d", _pickingPt.x, _pickingPt.y);
+	TextOut(getMemDC(), 150, 70, str, strlen(str));
 }
 
 inline POINT mapTool::picking(long x, long y)
 { // 이게 피킹
 	int xx; int yy;
-	if (2 * y < (x - 320))	return { -1,0 }; // y=1/2x보다 위에있는지 (맵밖 벗어남)
-	if (2 * y < -(x - 320))	return { -1,0 }; // y=-1/2x보다 위에있는지 (맵밖 벗어남)
+	//if (2 * y < (x - 320))	return { -1,0 }; // y=1/2x보다 위에있는지 (맵밖 벗어남)
+	//if (2 * y < -(x - 320))	return { -1,0 }; // y=-1/2x보다 위에있는지 (맵밖 벗어남)
 	//-1이면 예외처리됨(키매니저 L버튼 참고)
 
 	// 왜 y=1/2x가 아니라 2y=x로 썼냐면 나눗셈연산이 느리기때문에 이렇게 쓴거임.
 	// 320은 TILEWIDTH * TILENUMX / 2 (=맵전체 가로크기의 절반값)와 같은데 부하를 줄이기 위해 계산하고 넣은것임
 
 	 // 64는 타일 높이(TILEHEIGHT)에 양변 2곱한값이며 이만큼씩 이격된(밑으로간) 직선이라 보면 됨
-	xx = (2 * y + (x - 320)) / 64; // y절편을 이용한 방식으로 바꾸었음
-	if (xx > 9) return { -1,0 }; // 맵밖 벗어난거면 예외처리
+	xx = (2 * y + (x - 682)) / 64; // y절편을 이용한 방식으로 바꾸었음
+	if (xx > 19) return { -1,0 }; // 맵밖 벗어난거면 예외처리
 
-	yy = (2 * y - (x - 320)) / 64; // 기울기만 음수고 나머진 상동
-	if (yy > 9) return { -1,0 };
+	yy = (2 * y - (x - 682)) / 64; // 기울기만 음수고 나머진 상동
+	if (yy > 19) return { -1,0 };
 
 	return { xx , yy };
 }

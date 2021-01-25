@@ -83,6 +83,8 @@ private:
 	RECT			_undo;
 	RECT			_fill;
 
+	POINT			_pickingPt;
+
 	bool			_moveUnMove;
 	bool			_tempSaved;
 
