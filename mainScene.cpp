@@ -25,12 +25,14 @@ HRESULT mainScene::init()
 	_ia->seLink(_se);
 
 	_um->createZergling(ENEMY, 300, 300);
+	_um->createZergling(ENEMY, 400, 300);
+	_um->createZergling(ENEMY, 200, 300);
+	_um->createZergling(PLAYER, 210, 270);
 	_um->createZergling(PLAYER, 310, 430);
 	_um->createZergling(PLAYER, 270, 400);
 	_se->createPsionic(S_PLAYER, 200, 200);
-	SOUNDMANAGER->play("»ç¿îµåÃß°¡¿¹½Ã");
 
-	_um->setLinkSm(_sm);								//À¯´Ö ¸Å´ÏÀú¿Í ½ºÅ×ÀÌÁö ¸Å´ÏÀú¸¦ ¸µÅ©·Î ¿¬°áÇØÁÜ
+	_um->setLinkSm(_sm);								//ï¿½ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	return S_OK;
 }
 

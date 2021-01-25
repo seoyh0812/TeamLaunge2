@@ -10,7 +10,8 @@ void unit::commonInit()
 	_angle = 0.f;
 	// bool
 	_attackReady = _erase = false;
-	setState(WALK);
+	_state = ATTACKWAIT; // 이거 안하면 처음에 WALK로 안하니 이미지를 못넣어서 터짐	
+	setState(WALK);		// 셋스테이트때매 워크로 바뀌니 놀라지말것..
 
 	_rc = RectMakeCenter(_x, _y, _width, _height);
 	_destX = _x; _destY = _y;

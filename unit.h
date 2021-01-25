@@ -9,7 +9,6 @@ enum BELONG
 
 enum STATE
 {
-	IDLE,		// 거의 안쓸거지만 적한테 붙어서 공격 기다릴때 쓸거임
 	WALK,		// 상대 기지로 가는 상태임
 	ATTACKWAIT,	// 적을 발견하여 다음공격 대기하는 상태
 	ATTACK,		// 공격할떄. 특정프레임에서 공격판정함

@@ -21,8 +21,7 @@ HRESULT zergling::init(BELONG belong, float x, float y)
 	_attackIndex = 2; // 2번 인덱스가 될때 공격판정
 	_width = 40;
 	_height = 39; // 일단은 대충 설정해놓은거임(이미지크기)
-	_rangeRc = RectMakeCenter(_x, _y, _width+6, _height+6);
-	_focusRc = RectMakeCenter(_x, _y, 300, 300);
+	_rangeRc = RectMakeCenter(_x, _y, _width+6, _height+6);	
 
 	commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
 	
@@ -38,16 +37,12 @@ void zergling::update()
 {
 	commonUpdate();
 	_rangeRc = RectMakeCenter(_x, _y, _width + 6, _height + 6);
-	_focusRc = RectMakeCenter(_x, _y, 200, 200);
-}
+	}
 
 void zergling::render()
 {
 	switch (_state)
 	{ // 위치 적당히 보정해서 쓸것
-	case IDLE: // 첫번쨰 프레임으로 고정
-		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, 0);
-		break;
 	case WALK:
 		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, _frame);
 		break;
@@ -73,11 +68,6 @@ void zergling::setState(STATE state)
 	{
 		switch (_state)
 		{
-		case IDLE:
-			_image = FINDIMG("저글링이동블루");
-			_maxFrame = _image->getMaxFrameY();
-			break;
-			// 저글링의경우 대기는 이동에서 y프레임 0으로만 쓸거임
 		case WALK:
 			_image = FINDIMG("저글링이동블루");
 			_maxFrame = _image->getMaxFrameY();
@@ -102,11 +92,6 @@ void zergling::setState(STATE state)
 	{
 		switch (_state)
 		{
-		case IDLE:
-			_image = FINDIMG("저글링이동퍼플");
-			_maxFrame = _image->getMaxFrameY();
-			break;
-			// 저글링의경우 대기는 이동에서 y프레임 0으로만 쓸거임
 		case WALK:
 			_image = FINDIMG("저글링이동퍼플");
 			_maxFrame = _image->getMaxFrameY();

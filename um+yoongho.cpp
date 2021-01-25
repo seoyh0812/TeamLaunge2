@@ -16,13 +16,13 @@ void unitManager::yoonghoUpdate()
 			{ // 감지렉트에 온 경우 타겟팅이랑 목표를 그쪽으로
 				_vUnit[i]->getTarget() = j;
 				_vUnit[i]->setDest(_vUnit[j]->getX(), _vUnit[j]->getY());
+				break;
 			}
 		}
 	}
 
 	for (int i = 0; i < _vUnit.size(); ++i)
-	{ // 적 사거리에 온다면 공격
-		if (_vUnit[i]->getState() == DEAD) continue;
+	{ // 타겠있는놈만
 		int tg = _vUnit[i]->getTarget();
 		if (tg == -1) continue;
 		RECT temp;
@@ -36,6 +36,15 @@ void unitManager::yoonghoUpdate()
 			&& _vUnit[i]->getState() != ATTACK)
 		{
 			_vUnit[i]->setState(ATTACKWAIT);
+		}
+		else if (!IntersectRect(&temp, &_vUnit[tg]->getRect(), &_vUnit[i]->getRangeRect())
+			&& _vUnit[i]->getState() == ATTACKWAIT)
+		{
+			_vUnit[i]->setState(WALK);
+			}
+		if (_vUnit[i]->getState() == WALK)
+		{
+			_vUnit[i]->setDest(_vUnit[tg]->getX(), _vUnit[tg]->getY());
 		}
 	}
 }

@@ -6,6 +6,7 @@ void unit::commonUpdate()
 {
 	if (_HP <= 0 && _state != DEAD)
 	{
+		_target = -1;
 		setState(DEAD);
 	}
 	if (_delay > 0) --_delay;
@@ -28,8 +29,6 @@ void unit::commonUpdate()
 
 	switch (_state)
 	{
-	case IDLE:
-		break;
 	case WALK:
 		_x += _speed * cosf(_angle);
 		_y -= _speed * sinf(_angle);
@@ -58,4 +57,6 @@ void unit::commonUpdate()
 		}
 		break;
 	}
+	_focusRc = RectMakeCenter(_x, _y, 300, 300);
+
 }

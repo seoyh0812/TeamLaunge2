@@ -38,6 +38,6 @@ void unit::setDest(float destX, float destY)
 	_destY = destY;
 	_angle = getAngle(_x, _y, _destX, _destY);
 	if (_angle < 0) _angle += PI2;
-	_frameDirection = 2 - (int)((_angle + PI8) / PI4);
-	if (_frameDirection < 0) _frameDirection += 8;
+	_frameDirection = 10 - (int)((_angle + PI8) / PI4);
+	_frameDirection %= 8;
 }
