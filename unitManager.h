@@ -3,6 +3,7 @@
 #include "zergling.h"
 #include "civilian.h"
 #include <vector>
+#include "stageManager.h"
 
 class unitManager : public gameNode
 {
@@ -22,6 +23,8 @@ public:
 	vector<unit*> getVUnit() { return _vUnit; }
 	vector<unit*>::iterator getViUnit() { return _viUnit; }
 
+	stageManager*	_sm;
+
 	void chanhoUpdate();
 	void deokhoUpdate();
 	void hyunjeongUpdate();
@@ -33,5 +36,7 @@ public:
 
 	void createZergling(BELONG belong, float x, float y);
 	void createCivilian(BELONG belong, float x, float y);
+
+	void setLinkSm(stageManager* sm) { _sm = sm; }			//스테이지 매니저랑 링크시켜줌 그래야 타일의 속성을 체크가능함
 };
 

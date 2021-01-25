@@ -162,9 +162,6 @@
     <ClInclude Include="mapTool.h">
       <Filter>playGround\mapTool</Filter>
     </ClInclude>
-    <ClInclude Include="tile.h">
-      <Filter>playGround\mapTool</Filter>
-    </ClInclude>
     <ClInclude Include="mainScene.h">
       <Filter>playGround\mainScene</Filter>
     </ClInclude>
@@ -270,9 +267,6 @@
       <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
     <ClCompile Include="mapTool.cpp">
-      <Filter>playGround\mapTool</Filter>
-    </ClCompile>
-    <ClCompile Include="tile.cpp">
       <Filter>playGround\mapTool</Filter>
     </ClCompile>
     <ClCompile Include="mainScene.cpp">

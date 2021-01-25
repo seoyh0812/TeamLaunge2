@@ -179,9 +179,20 @@ void mapTool::createTile()
 		}
 	}
 
-	_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
-	_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
-	InvalidateRect(_hWnd, NULL, false);
+	if (!_moveUnMove)
+	{
+		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
+		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
+		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = MOVE;
+		InvalidateRect(_hWnd, NULL, false);
+	}
+	else if (_moveUnMove)
+	{
+		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
+		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
+		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
+		InvalidateRect(_hWnd, NULL, false);
+	}
 
 	//for (int i = 0; i < TILEX * TILEY; ++i)
 	//{
@@ -218,7 +229,7 @@ void mapTool::save()
 		HANDLE file;
 		DWORD write;
 
-		file = CreateFile("saveMap1.map", GENERIC_WRITE, NULL, NULL,
+		file = CreateFile("stage1.map", GENERIC_WRITE, NULL, NULL,
 			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
@@ -231,7 +242,7 @@ void mapTool::save()
 		HANDLE file;
 		DWORD write;
 
-		file = CreateFile("saveMap2.map", GENERIC_WRITE, NULL, NULL,
+		file = CreateFile("stage2.map", GENERIC_WRITE, NULL, NULL,
 			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
@@ -244,7 +255,7 @@ void mapTool::save()
 		HANDLE file;
 		DWORD write;
 
-		file = CreateFile("saveMap3.map", GENERIC_WRITE, NULL, NULL,
+		file = CreateFile("stage3.map", GENERIC_WRITE, NULL, NULL,
 			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
@@ -260,7 +271,7 @@ void mapTool::load()
 		HANDLE file;
 		DWORD read;
 
-		file = CreateFile("saveMap1.map", GENERIC_READ, NULL, NULL,
+		file = CreateFile("stage1.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
@@ -273,7 +284,7 @@ void mapTool::load()
 		HANDLE file;
 		DWORD read;
 
-		file = CreateFile("saveMap2.map", GENERIC_READ, NULL, NULL,
+		file = CreateFile("stage2.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
@@ -286,7 +297,7 @@ void mapTool::load()
 		HANDLE file;
 		DWORD read;
 
-		file = CreateFile("saveMap3.map", GENERIC_READ, NULL, NULL,
+		file = CreateFile("stage3.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
@@ -352,6 +363,8 @@ void mapTool::update()
 		createTile();
 	}
 	ptInSample();
+
+	if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("메인씬");
 }
 
 void mapTool::render()
@@ -395,8 +408,8 @@ void mapTool::render()
 inline POINT mapTool::picking(long x, long y)
 { // 이게 피킹
 	int xx; int yy;
-	//if (2 * y < (x - 320))	return { -1,0 }; // y=1/2x보다 위에있는지 (맵밖 벗어남)
-	//if (2 * y < -(x - 320))	return { -1,0 }; // y=-1/2x보다 위에있는지 (맵밖 벗어남)
+	if (2 * y < (x - 682))	return { -1,0 }; // y=1/2x보다 위에있는지 (맵밖 벗어남)
+	if (2 * y < -(x - 682))	return { -1,0 }; // y=-1/2x보다 위에있는지 (맵밖 벗어남)
 	//-1이면 예외처리됨(키매니저 L버튼 참고)
 
 	// 왜 y=1/2x가 아니라 2y=x로 썼냐면 나눗셈연산이 느리기때문에 이렇게 쓴거임.

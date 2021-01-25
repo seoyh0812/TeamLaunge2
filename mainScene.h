@@ -1,7 +1,5 @@
 #pragma once
 #include "gameNode.h"
-#include "tile.h"
-#include "mapTool.h" // 디파인문 쓰려고
 #include "stageManager.h"
 #include "unitManager.h"
 #include "skillNEffectManager.h"
