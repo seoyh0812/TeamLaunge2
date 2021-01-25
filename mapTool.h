@@ -1,53 +1,106 @@
 #pragma once
 #include "gameNode.h"
-#include <vector>
-#include <string>
-#include "tile.h"
 
-#define TILEWIDTH 64
-#define TILEHEIGHT 32
+//타일 사이즈
+#define TILESIZEX 64
+#define TILESIZEY 32
 
-#define TILENUMX 10
-#define TILENUMY 10
+//타일 갯수
+#define TILEX 20
+#define TILEY 20
 
-#define SAMPLETILEX 7
-#define SAMPLETILEY 1
+//맵 사이즈
+#define MAPSIZEX TILESIZEX * TILEX
+#define MAPSIZEY TILESIZEY * TILEY
 
-struct tagSampleTile
+//타일셋(샘플타일) 범위
+#define SAMPLEX 4
+#define SAMPLEY 5
+
+//멀까 이건
+#define ISO_UNMOVE UNMOVE
+
+enum moveUnMove
 {
-	RECT rcTile;
-	int terrainFrameX;
-	int terrainFrameY;
+	MOVE, UNMOVE
 };
 
-class mapTool :	public gameNode
+//그려지는 iso타일
+struct tagIsoTile
 {
+	float drawX;
+	float drawY;
+	float centerX;
+	float centerY;
+	int nX;
+	int nY;
+	int fX;
+	int fY;
+	bool inRect;
+	moveUnMove MUM;
+};
 
-	tile _tiles[TILENUMX*TILENUMY];
-	bool _tempSaved; // 키자마자 실행취소눌렀는데 템프가 불러오는걸 방지하려고
-	int _selectTileX; int _selectTileY;
-	int _currentStage;
-	tagSampleTile _sampleTile;
+struct tagTilePoint
+{
+	float x;
+	float y;
+};
 
+//내가 클릭한 현재 타일을 저장할 구조체
+struct tagTempTile
+{
+	int fX;
+	int fY;
+};
 
+struct tagSample
+{
+	RECT rc;
+	bool inRect;
+	int fX;
+	int fY;
+};
 
+class mapTool : public gameNode
+{
 private:
+	tagIsoTile		_isoTile[TILEX * TILEY];
+	tagTilePoint	_tilePoint;
+	tagSample		_sample[SAMPLEX * SAMPLEY];
+	tagTempTile		_tempTile;
+
+	RECT			_saveBt;
+	RECT			_saveBt2;
+	RECT			_saveBt3;
+
+	RECT			_loadBt;
+	RECT			_loadBt2;
+	RECT			_loadBt3;
+
+	RECT			_move;
+	RECT			_unMove;
+
+	bool			_moveUnMove;
 
 public:
 	mapTool();
 	~mapTool();
 
-	virtual HRESULT init();	//초기화 전용 함수
-	virtual void release();	//메모리 해제 함수
-	virtual void update();	//연산 전용
-	virtual void render();	//그리기 전용
+	HRESULT init();
+	void release();
+	void update();
+	void render();
 
-	void save(); // map파일에 저장
-	void load(); // map파일로부터 불러오기
-	void tempSave();
-	void tempLoad();	
-	void fill(int x, int y);
+	void createIsoMap(float x, float y, int tileX, int tileY);		//왼쪽에 베이스타일 깔아주는 함수
+	void createSampleTiles();										//샘플타일 깔아주는 함수
+	void ptInSample();												//샘플타일 안에 마우스가 들어갔을때
+	void createTile();												//타일을 새롭게 업데이트 해주는 함수
+	void imageInit();												//이미지 인잇
+	void imageRender();												//이미지 렌더
+	void moveUnMove();												//두개 버튼을 눌렀을때 일어나는 기능정의
 
+	void save();
+	void load();
 
 	inline POINT picking(long x, long y); // 피킹하는 함수
 };

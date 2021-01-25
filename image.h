@@ -100,8 +100,13 @@ public:
 	void aniRender(HDC hdc, int destX, int destY, animation* ani);
 
 	void loopRender(HDC hdc, const LPRECT drawArea, int offSetX, int offSetY);
+	void alphaFrameRender(HDC hdc, int destX, int destY, BYTE alpha);
+	void alphaFrameRender(HDC hdc, int destX, int destY,
+		int currentFrameX, int currentFrameY, BYTE alpha);
+
 
 	inline HDC getMemDC() { return _imageInfo->hMemDC; }
+
 
 	//===========================================
 	// ## 이미지 관련 접근자, 설정자 ##

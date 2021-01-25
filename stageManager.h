@@ -13,7 +13,7 @@ enum STAGE
 class stageManager : public gameNode
 {
 private:
-	tile _tiles[TILENUMX*TILENUMY];
+	tile _tiles[TILEX*TILEY];
 	STAGE _stage;
 
 public:

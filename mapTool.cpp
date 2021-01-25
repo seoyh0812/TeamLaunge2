@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "mapTool.h"
 
+
 mapTool::mapTool()
 {
 }
@@ -11,199 +12,329 @@ mapTool::~mapTool()
 
 HRESULT mapTool::init()
 {
-	_selectTileX = _selectTileY = _currentStage = _tempSaved = 0;
+	imageInit();
+	createSampleTiles();
 
+	createIsoMap(100, 100, TILEX, TILEY);
+	_tempTile.fX = 0;
+	_tempTile.fY = 0;
+	_moveUnMove = false;
+	return S_OK;
+}
 
-	// 타일에 idX, idY를 순서대로 넣고 초기화
-	for (int i = 0; i < TILENUMX * TILENUMY; ++i)
-	{ // 타일숫자만큼 인덱스 번호를 부여해준다
-		_tiles[i]._idX = i % TILENUMX;
-		_tiles[i]._idY = i / TILENUMY;
-		// 도출된 인덱스번호에 따라 중점을 지정해줌
-		_tiles[i]._center = PointMake(TILENUMX*TILEWIDTH / 2 + (_tiles[i]._idX - i / TILENUMY)*TILEWIDTH / 2,
-			(_tiles[i]._idX + _tiles[i]._idY) * 16 + (TILEHEIGHT / 2));
-		// 중점에서부터 타일너비 타일높이로 렉트메이크(이건 타일을 덮는 렉트라 타일보다 2배 크다)
-		_tiles[i]._rc = RectMakeCenter(_tiles[i]._center.x, _tiles[i]._center.y, TILEWIDTH, TILEHEIGHT);
+void mapTool::imageInit()
+{
+	//이미지 영역
+	IMAGEMANAGER->addFrameImage("mapTiles", "image/maptool/iso256X160.bmp", 0, 0, 256, 160, 4, 5, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("menu", "image/maptool/menu.bmp", 100, 800, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("save1", "image/maptool/save1.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("save2", "image/maptool/save2.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("save3", "image/maptool/save3.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("load1", "image/maptool/load1.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("load2", "image/maptool/load2.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("load3", "image/maptool/load3.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("move", "image/maptool/move.bmp", 64, 32, false, RGB(255, 0, 255));
+	IMAGEMANAGER->addImage("unmove", "image/maptool/unmove.bmp", 64, 32, false, RGB(255, 0, 255));
+
+	//이미지를 덮어씌울 렉트 선언 영역
+	_saveBt = RectMake(900, 720, 64, 32);
+	_saveBt2 = RectMake(970, 720, 64, 32);
+	_saveBt3 = RectMake(1040, 720, 64, 32);
+
+	_loadBt = RectMake(900, 760, 64, 32);
+	_loadBt2 = RectMake(970, 760, 64, 32);
+	_loadBt3 = RectMake(1040, 760, 64, 32);
+
+	_move = RectMake(900, 680, 64, 32);
+	_unMove = RectMake(970, 680, 64, 32);
+}
+
+void mapTool::imageRender()
+{
+	//메뉴
+	IMAGEMANAGER->findImage("menu")->render(getMemDC(), 800, 0);
+	//오른쪽 샘플타일
+	IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), 900, 0);
+
+	//세이브와 로드
+	IMAGEMANAGER->findImage("save1")->render(getMemDC(), _saveBt.left, _saveBt.top);
+	IMAGEMANAGER->findImage("save2")->render(getMemDC(), _saveBt2.left, _saveBt2.top);
+	IMAGEMANAGER->findImage("save3")->render(getMemDC(), _saveBt3.left, _saveBt3.top);
+	IMAGEMANAGER->findImage("load1")->render(getMemDC(), _loadBt.left, _loadBt.top);
+	IMAGEMANAGER->findImage("load2")->render(getMemDC(), _loadBt2.left, _loadBt2.top);
+	IMAGEMANAGER->findImage("load3")->render(getMemDC(), _loadBt3.left, _loadBt3.top);
+
+	//무브와 언무드
+	if (!_moveUnMove)
+	{
+		IMAGEMANAGER->findImage("move")->render(getMemDC(), _move.left, _move.top);
+		IMAGEMANAGER->findImage("unmove")->alphaRender(getMemDC(), _unMove.left, _unMove.top, 80);
+	}
+	else
+	{
+		IMAGEMANAGER->findImage("move")->alphaRender(getMemDC(), _move.left, _move.top, 80);
+		IMAGEMANAGER->findImage("unmove")->render(getMemDC(), _unMove.left, _unMove.top);
+	}
+}
+
+void mapTool::moveUnMove()
+{
+	if (PtInRect(&_move, _ptMouse))
+	{
+		_moveUnMove = false;
 	}
 
-	load();
-
-	return S_OK;
+	if (PtInRect(&_unMove, _ptMouse))
+	{
+		_moveUnMove = true;
+	}
 }
 
 void mapTool::release()
 {
 }
 
+//그려질 시작 x, 그려질 시작 y, TILEX 넣기, TILEY 넣기
+void mapTool::createIsoMap(float x, float y, int tileX, int tileY)
+{
+	_tilePoint.x = x;
+	_tilePoint.y = y;
+
+	for (int i = 0; i < tileY; ++i)
+	{
+		for (int j = 0; j < tileX; ++j)
+		{
+			_isoTile[i * tileX + j].fX = 0;
+			_isoTile[i * tileX + j].fY = 0;
+			_isoTile[i * tileX + j].nX = j;
+			_isoTile[i * tileX + j].nY = i;
+
+			_isoTile[i * tileX + j].inRect = false;
+			_isoTile[i * tileX + j].MUM = MOVE;
+
+			_isoTile[i * tileX + j].drawX = _tilePoint.x + ((j * TILESIZEX) / 2) - (i*(TILESIZEX / 2));
+			_isoTile[i * tileX + j].drawY = _tilePoint.y + ((j * TILESIZEY) / 2) + (i*(TILESIZEY / 2));
+			_isoTile[i * tileX + j].centerX = _isoTile[i * tileX + j].drawX + (TILEX / 2) + (TILEY / 2);
+			_isoTile[i * tileX + j].centerY = _isoTile[i * tileX + j].drawY + (TILEX / 2) + (TILEY / 2);
+		}
+	}
+}
+
+void mapTool::createSampleTiles()
+{
+	for (int i = 0; i < SAMPLEY; ++i)
+	{
+		for (int j = 0; j < SAMPLEX; ++j)
+		{
+			//이게 샘플의 위치를 저장해두는거 그래야 몇번째 타일인지 알고 가져다 쓸수있음
+			_sample[i * SAMPLEX + j].fX = j;
+			_sample[i * SAMPLEX + j].fY = i;
+
+			_sample[i * SAMPLEX + j].rc = RectMake((WINSIZEX - 256) + (j*TILESIZEX), 0 + (i*TILESIZEY), TILESIZEX, TILESIZEY);
+			_sample[i * SAMPLEX + j].inRect = false;
+		}
+	}
+}
+
+void mapTool::ptInSample()
+{
+	//샘플타일안에 마우스가 들어갔으면 표시해라
+	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+	{
+		if (PtInRect(&_sample[i].rc, _ptMouse))
+		{
+			_sample[i].inRect = true;
+		}
+		else _sample[i].inRect = false;
+	}
+
+	//이건 아이소 타일 안에 마우스가 들어갔으면 표시 
+	for (int i = 0; i < TILEX * TILEY; ++i)
+	{
+		//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
+		if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
+			&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3))
+		{
+			_isoTile[i].inRect = true;
+		}
+		else _isoTile[i].inRect = false;
+	}
+}
+
+void mapTool::createTile()
+{
+	//새로운 타일을 만들어보즈아!!
+	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+	{
+		if (PtInRect(&_sample[i].rc, _ptMouse))
+		{
+			_tempTile.fX = _sample[i].fX;
+			_tempTile.fY = _sample[i].fY;
+			break;
+		}
+	}
+
+	for (int i = 0; i < TILEX * TILEY; ++i)
+	{
+		//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
+		//무브 상태로 그려지면 타일안의 MUM의 값이 무브
+		if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
+			&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && !_moveUnMove)
+		{
+			_isoTile[i].fX = _tempTile.fX;
+			_isoTile[i].fY = _tempTile.fY;
+			_isoTile[i].MUM = MOVE;
+			//화면 갱신해주는 함수
+			InvalidateRect(_hWnd, NULL, false);
+			break;
+		}
+		//언무브 상태로 그려지면 타일안의 MUM의 값이 언무브
+		else if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
+			&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && _moveUnMove)
+		{
+			_isoTile[i].fX = _tempTile.fX;
+			_isoTile[i].fY = _tempTile.fY;
+			_isoTile[i].MUM = UNMOVE;
+			//화면 갱신해주는 함수
+			InvalidateRect(_hWnd, NULL, false);
+			break;
+		}
+	}
+}
+
+void mapTool::save()
+{
+	if (PtInRect(&_saveBt, _ptMouse))
+	{
+		HANDLE file;
+		DWORD write;
+
+		file = CreateFile("saveMap1.map", GENERIC_WRITE, NULL, NULL,
+			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
+
+		CloseHandle(file);
+	}
+
+	if (PtInRect(&_saveBt2, _ptMouse))
+	{
+		HANDLE file;
+		DWORD write;
+
+		file = CreateFile("saveMap2.map", GENERIC_WRITE, NULL, NULL,
+			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
+
+		CloseHandle(file);
+	}
+
+	if (PtInRect(&_saveBt3, _ptMouse))
+	{
+		HANDLE file;
+		DWORD write;
+
+		file = CreateFile("saveMap3.map", GENERIC_WRITE, NULL, NULL,
+			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
+
+		CloseHandle(file);
+	}
+}
+
+void mapTool::load()
+{
+	if (PtInRect(&_loadBt, _ptMouse))
+	{
+		HANDLE file;
+		DWORD read;
+
+		file = CreateFile("saveMap1.map", GENERIC_READ, NULL, NULL,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
+
+		CloseHandle(file);
+	}
+
+	if (PtInRect(&_loadBt2, _ptMouse))
+	{
+		HANDLE file;
+		DWORD read;
+
+		file = CreateFile("saveMap2.map", GENERIC_READ, NULL, NULL,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
+
+		CloseHandle(file);
+	}
+
+	if (PtInRect(&_loadBt3, _ptMouse))
+	{
+		HANDLE file;
+		DWORD read;
+
+		file = CreateFile("saveMap3.map", GENERIC_READ, NULL, NULL,
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
+
+		CloseHandle(file);
+	}
+}
+
 void mapTool::update()
 {
-	if (KEYMANAGER->isOnceKeyDown('1'))
-	{
-		_currentStage = 0;
-		if (_waccess_s(L"./stage1.map", 0) == 0) load(); // stage1.map이 존재하면 로드함
-		else fill(0, 0);
-		// 맵파일이 있으면 로드하고 아니면 일반타일로 채움
-		// waccess 파일이 있으면 0을 반환하는 함수
-	}
-	if (KEYMANAGER->isOnceKeyDown('2'))
-	{ // 위와 같음
-		_currentStage = 1;
-		if (_waccess_s(L"./stage2.map", 0) == 0) load();
-		else fill(0, 0);
-	}
-	if (KEYMANAGER->isOnceKeyDown('3')) SCENEMANAGER->changeScene("타이틀씬");
-	if (KEYMANAGER->isOnceKeyDown('S')) save(); // 저장
-	if (KEYMANAGER->isOnceKeyDown('D'))	load(); // 로드
-	if (KEYMANAGER->isOnceKeyDown('F'))
-	{
-		tempSave(); // 맵수정하기전 반짝 템프에 저장을 한다
-		fill(_selectTileX, _selectTileY); // 선택된걸로 채움
-	}
-	if (KEYMANAGER->isOnceKeyDown('Z'))	tempLoad();
-
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{ // 맵수정하기전 반짝 템프에 저장을 한다
-		if (_ptMouse.x < 640 && _ptMouse.y < 320) tempSave();
+	{
+		createTile();
+		save();
+		load();
+		moveUnMove();
 	}
+
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-	{ // 버튼 누른경우
-		if (_ptMouse.x > 640 && _ptMouse.y < 32)
-		{ // 팔레트를 누른경우임 -> 뭔타일 선택중인지 지정됨
-			_selectTileX = (_ptMouse.x - 640) / 64;
-			_selectTileY = _ptMouse.y / 32;
-		}
-		else if (_ptMouse.x < 640 && _ptMouse.y < 320)
-		{ // 맵지역을 누른 경우임 -> 피킹하여 거따 그려준다
-			POINT point = picking(_ptMouse.x, _ptMouse.y); // 피킹하여 포인트 저장
-			if (point.x == -1) goto ONE; // ONE있는데까지 씹고 싶을떄. 피킹한게 {-1,0}일때 예외처리하는 부분임
-			_tiles[point.y*TILENUMX + point.x]._frameX=_selectTileX;
-			_tiles[point.y*TILENUMX + point.x]._frameY=_selectTileY;
-			ONE:;
-		}
+	{
+		createTile();
 	}
+	ptInSample();
 }
 
 void mapTool::render()
 {
-	IMAGEMANAGER->render("tile", getMemDC(), WINSIZEX - IMAGEMANAGER->findImage("tile")->getWidth(), 0);
-
-	for (int i = 0; i < TILENUMX * TILENUMY; ++i)
-	{ // 각 타일마다 프레임대로 렌더
-		IMAGEMANAGER->findImage("tile")->frameRender(getMemDC(),
-			_tiles[i]._rc.left, _tiles[i]._rc.top, _tiles[i]._frameX, _tiles[i]._frameY);
-
-		// 마름모 선 그리기
-		LineMake(getMemDC(), _tiles[i]._center.x - 32, _tiles[i]._center.y, _tiles[i]._center.x, _tiles[i]._center.y - 16);
-		LineMake(getMemDC(), _tiles[i]._center.x - 32, _tiles[i]._center.y, _tiles[i]._center.x, _tiles[i]._center.y + 16);
-		LineMake(getMemDC(), _tiles[i]._center.x + 32, _tiles[i]._center.y, _tiles[i]._center.x, _tiles[i]._center.y - 16);
-		LineMake(getMemDC(), _tiles[i]._center.x + 32, _tiles[i]._center.y, _tiles[i]._center.x, _tiles[i]._center.y + 16);
-		
-		char str[128];
-		sprintf_s(str, "%d,%d", _tiles[i]._idX, _tiles[i]._idY);
-		if (KEYMANAGER->isToggleKey(VK_TAB))
-		{ // 탭누르면 몇콤마 몇인지 보여주려고
-			TextOut(getMemDC(), _tiles[i]._rc.left + 20, _tiles[i]._rc.top + 8, str, strlen(str));
-		}
-	}
-
-	// 설명
-	TextOut(getMemDC(), WINSIZEX - 448, 90, "S저장, D로드, F선택타일로 채우기, Z실행취소", strlen("S저장, D로드, F선택타일로 채우기, Z실행취소"));
-	TextOut(getMemDC(), WINSIZEX - 448, 110, "1:1번스테이지, 2:2번스테이지, 3: 타이틀로", strlen("1:1번스테이지, 2:2번스테이지, 3: 타이틀로"));
-	if (_currentStage == 0) TextOut(getMemDC(), WINSIZEX - 448, 60, "현재:1번스테이지", strlen("현재:1번스테이지"));
-	else if (_currentStage == 1) TextOut(getMemDC(), WINSIZEX - 448, 60, "현재:2번스테이지", strlen("현재:2번스테이지"));
-}
-
-void mapTool::save()
-{ // 저장함수
-	if (_currentStage == 0)
-	{ // 0일땐 stage1에 저장
-		HANDLE file;
-		DWORD write;
-
-		file = CreateFile("stage1.map", GENERIC_WRITE, NULL, NULL,
-			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-		WriteFile(file, _tiles, sizeof(tile) * TILENUMX*TILENUMY, &write, NULL);
-
-		CloseHandle(file);
-	}
-	if (_currentStage == 1)
-	{ // 1일땐 stage2에 저장
-		HANDLE file;
-		DWORD write;
-
-		file = CreateFile("stage2.map", GENERIC_WRITE, NULL, NULL,
-			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-		WriteFile(file, _tiles, sizeof(tile) * TILENUMX*TILENUMY, &write, NULL);
-
-		CloseHandle(file);
-	}
-
-}
-
-void mapTool::load()
-{	// 불러오는함수
-	if (_currentStage == 0)
-	{  // 0일땐 stage1을 로드
-		HANDLE file;
-		DWORD read;
-
-		file = CreateFile("stage1.map", GENERIC_READ, NULL, NULL,
-			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-		ReadFile(file, _tiles, sizeof(tile) * TILENUMX*TILENUMY, &read, NULL);
-
-		CloseHandle(file);
-	}
-	if (_currentStage == 1)
-	{ // 1일땐 stage2를 로드
-		HANDLE file;
-		DWORD read;
-
-		file = CreateFile("stage2.map", GENERIC_READ, NULL, NULL,
-			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-		ReadFile(file, _tiles, sizeof(tile) * TILENUMX*TILENUMY, &read, NULL);
-
-		CloseHandle(file);
-	}
-}
-
-void mapTool::tempSave()
-{ // 마우스 딱 누를때만 타일이 그려지기전 발동함. temp에 저장
-	_tempSaved = true;
-	HANDLE file;
-	DWORD write;
-
-	file = CreateFile("temp.map", GENERIC_WRITE, NULL, NULL,
-		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	WriteFile(file, _tiles, sizeof(tile) * TILENUMX*TILENUMY, &write, NULL);
-
-	CloseHandle(file);
-}
-
-void mapTool::tempLoad()
-{ // temp를 불러옴
-	if (!_tempSaved) return;
-	HANDLE file;
-	DWORD read;
-
-	file = CreateFile("temp.map", GENERIC_READ, NULL, NULL,
-		OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-	ReadFile(file, _tiles, sizeof(tile) * TILENUMX*TILENUMY, &read, NULL);
-
-	CloseHandle(file);
-}
-
-void mapTool::fill(int x, int y)
-{ // 특정 프레임값으로 전체 칠해주는 함수
-	for (int i = 0; i < TILENUMX*TILENUMY; ++i)
+	//아이소타일
+	for (int i = 0; i < TILEX * TILEY; ++i)
 	{
-		_tiles[i]._frameX = x;
-		_tiles[i]._frameY = y;
+		if (_isoTile[i].inRect) IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
+		else IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+	}
+
+	//샘플타일
+	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+	{
+		HBRUSH _brush;
+		_brush = CreateSolidBrush(RGB(100, 100, 100));
+
+		if (_sample[i].inRect) FillRect(getMemDC(), &_sample[i].rc, _brush);
+
+		if (KEYMANAGER->isToggleKey(VK_F2)) Rectangle(getMemDC(), _sample[i].rc);
+	}
+	imageRender();
+	//이건 마우스 위에 현재 고른 타일 출력인데 접어둠
+	//IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _ptMouse.x - TILESIZEX / 2, _ptMouse.y - TILESIZEY / 2, _tempTile.fX, _tempTile.fY, 200);
+
+	//아래는 편의상 만든 숫자보이게하는거
+	char str[256];
+	sprintf_s(str, "TempTile X : %d , Y : %d", _tempTile.fX, _tempTile.fY);
+	TextOut(getMemDC(), 0, 70, str, strlen(str));
+
+	for (int i = 0; i < TILEX * TILEY; ++i)
+	{
+		sprintf_s(str, "%d, %d", _isoTile[i].fX, _isoTile[i].fY);
+		if (KEYMANAGER->isToggleKey(VK_F1)) TextOut(getMemDC(), _isoTile[i].drawX + (TILEX + 5), _isoTile[i].drawY + (TILEY / 2), str, strlen(str));
 	}
 }
 

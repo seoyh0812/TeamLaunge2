@@ -10,7 +10,7 @@
 class mainScene :public gameNode
 {
 private:
-	tile _tiles[TILENUMX*TILENUMY];
+	tile _tiles[TILEX*TILEY];
 
 
 	// 8방향 어케하는지 보여주기용 저글링 (나중에 지울거임)
