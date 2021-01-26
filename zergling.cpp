@@ -89,7 +89,6 @@ void zergling::setState(STATE state)
 			_maxFrame = _image->getMaxFrameY();
 			break;
 		case DEAD:
-			_damage = 0; // 어차피 안쓸테니 죽었을때 카운트로 재활용한다(..)
 			_image = FINDIMG("저글링죽음");
 			_maxFrame = _image->getMaxFrameX();
 			break; // 얘는 x임 가로로 재생하기떄문

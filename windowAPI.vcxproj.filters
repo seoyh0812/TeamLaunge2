@@ -213,6 +213,9 @@
     <ClInclude Include="marine.h">
       <Filter>playGround\mainScene\unit\subclass</Filter>
     </ClInclude>
+    <ClInclude Include="templar.h">
+      <Filter>playGround\mainScene\unit\subclass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -378,6 +381,9 @@
       <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
     <ClCompile Include="marine.cpp">
+      <Filter>playGround\mainScene\unit\subclass</Filter>
+    </ClCompile>
+    <ClCompile Include="templar.cpp">
       <Filter>playGround\mainScene\unit\subclass</Filter>
     </ClCompile>
   </ItemGroup>

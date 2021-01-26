@@ -41,3 +41,11 @@ void unit::setDest(float destX, float destY)
 	_frameDirection = 10 - (int)((_angle + PI8) / PI4);
 	_frameDirection %= 8;
 }
+
+void unit::setAngle(float angle)
+{
+	_angle = angle;
+	if (_angle < 0) _angle += PI2;
+	_frameDirection = 10 - (int)((_angle + PI8) / PI4);
+	_frameDirection %= 8;
+}

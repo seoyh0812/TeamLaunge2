@@ -15,7 +15,7 @@ HRESULT civilian::init(BELONG belong, float x, float y)
 	_ID = 3;
 	_x = x; _y = y;
 	_speed = 2.0f;
-	_maxDelay = 180; // 대충 2초에 한번 스킬시전
+	_maxDelay = 300; // 대충 5초에 한번 스킬시전
 	_damage = 0;
 	_maxHP = 40;
 	_attackIndex = 1; // 1번 인덱스가 될때 스킬판정
@@ -45,10 +45,10 @@ void civilian::render()
 		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, _frame);
 		break;
 	case ATTACKWAIT: // 첫번쨰 프레임으로 고정
-		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, 0);
 		break;
 	case ATTACK:
-		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, 0);
 		break;
 	case DEAD: // 프레임인덱스 다르게 도니까 주의
 		_image->frameRender(getMemDC(), _rc.left - 24, _rc.top - 4, _frame, 0);

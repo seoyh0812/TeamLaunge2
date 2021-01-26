@@ -4,7 +4,8 @@
 void unit::commonInit()
 {
 	// int
-	_frameCount = _frame = _delay = _frameDirection = _deathDuration = 0;
+	_frameCount = _frame = _delay = _frameDirection = 0;
+	_deathDuration = 180; // 죽은다음 시체지속시간. 기본값은 3초인데 유닛에따라 줄일수있음(템플러참고)
 	_target = _tileNum = -1; // 없는 상태면 -1
 	// float
 	_angle = 0.f;

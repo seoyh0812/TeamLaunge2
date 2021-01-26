@@ -36,7 +36,8 @@ HRESULT mainScene::init()
 	_um->createMarine(PLAYER, 210, 270);
 	_um->createCivilian(ENEMY, 100, 300);
 	_um->createCivilian(PLAYER, 110, 270);
-	_se->createPsionic(S_PLAYER, 200, 200);
+	_um->createTemplar(ENEMY, 300, 380);
+	_um->createTemplar(PLAYER, 200, 380);
 
 	_um->setLinkSm(_sm);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
 

@@ -11,9 +11,10 @@ psionic::~psionic()
 
 HRESULT psionic::init(S_BELONG belong, float x, float y)
 {
+	_ID = 1;
 	_belong = belong;
 	_x = x; _y = y;
-	_rc = RectMakeCenter(_x, _y, 185, 150);
+	_rc = RectMakeCenter(_x, _y, 167, 130);
 	_image = FINDIMG("사이오닉스톰");
 	_maxFrame = _image->getMaxFrameX();
 	_duration = 300;
@@ -35,5 +36,5 @@ void psionic::update()
 
 void psionic::render()
 {
-	_image->frameRender(getMemDC(), _rc.left, _rc.top, _frame, 0);
+	_image->frameRender(getMemDC(), _rc.left-9, _rc.top-10, _frame, 0);
 }

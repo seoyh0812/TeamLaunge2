@@ -29,4 +29,20 @@ void loadingScene::yoonghoInit()
 	imgLoaded();
 	IMAGEMANAGER->addFrameImage("시민죽음", "image/unit/civilian/civiliandead.bmp", 420, 37, 7, 1, true, RGB(255, 0, 255));
 	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러대기퍼플", "image/unit/templar/idle.bmp", 240, 336, 8, 8, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러대기블루", "image/unit/templar/idleblue.bmp", 240, 336, 8, 8, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러공격퍼플", "image/unit/templar/attack.bmp", 528, 280, 8, 5, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러공격블루", "image/unit/templar/attackblue.bmp", 528, 280, 8, 5, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러이동퍼플", "image/unit/templar/walk.bmp", 240, 168, 8, 4, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러이동블루", "image/unit/templar/walkblue.bmp", 240, 168, 8, 4, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러죽음", "image/unit/templar/dead.bmp", 217, 53, 7, 1, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("템플러잔상", "image/unit/templar/afterimage.bmp", 240, 168, 8, 4, true, RGB(255, 255, 0));
+	imgLoaded();
 }

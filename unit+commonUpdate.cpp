@@ -52,7 +52,7 @@ void unit::commonUpdate()
 		if (_frame >= _maxFrame)
 		{
 			_frame = _maxFrame;
-			if (_deathDuration < 180) ++_deathDuration;
+			if (_deathDuration > 0) --_deathDuration;
 			else _erase = true;
 		}
 		break;

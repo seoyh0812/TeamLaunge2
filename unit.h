@@ -21,9 +21,10 @@ protected:
 	int _ID;
 	// ############ ID표 ##################
 	// 유닛 만들때 무슨번호 쓸건지 톡으로 말해줘야 안겹칠듯. 유닛만들때 추가
-	// 1 : 저글링
+	// 1 : 저글링(피50%이하면 연사력2배)
 	// 2 : 마린
 	// 3 : 시민(어그로)
+	// 4 : 템플러(스톰)
 	// ####################################
 
 	int _frameCount;	// 프레임용 카운트
@@ -124,7 +125,8 @@ public:
 	float& getX() { return _x; }
 	float& getY() { return _y; }
 	void setDest(float destX, float destY); // 목표설정은 이걸로할거임
-	float& getAngle1() { return _angle; }
+	float getAngle1() { return _angle; }	// 왜 앵글에 1이 붙냐면 getAngle함수는 이미있기때문임..
+	void setAngle(float angle);				// 각도설정은 이걸로 할거임
 	int& getDelay() { return _delay; }
 	float getDamage() { return _damage; }
 	float& getHP() { return _HP; }

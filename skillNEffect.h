@@ -10,6 +10,7 @@ enum S_BELONG
 class skillNEffect :	public gameNode
 { // 유닛마냥 복잡하진 않으므로 일단 뼈대는 대충 마련함
 protected:
+	int _ID;
 	S_BELONG _belong;
 	float _x; float _y;
 	RECT _rc;
@@ -17,7 +18,7 @@ protected:
 	int _maxFrame;
 	int _frameCount;
 	int _duration; // 지속시간
-	bool _erase;	
+	bool _erase;
 
 	image* _image;
 
@@ -34,6 +35,7 @@ public:
 	void commonInit();
 	void commonUpdate();
 
+	int getID() { return _ID; }
 	S_BELONG getBelong() { return _belong; }
 	float& getX() { return _x; }
 	float& getY() { return _y; }

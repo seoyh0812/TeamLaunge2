@@ -104,3 +104,10 @@ void unitManager::createMarine(BELONG belong, float x, float y)
 	_marine->init(belong, x, y);
 	_vUnit.push_back(_marine);
 }
+
+void unitManager::createTemplar(BELONG belong, float x, float y)
+{
+	templar* templ = new templar;
+	templ->init(belong, x, y);
+	_vUnit.push_back(templ);
+}
