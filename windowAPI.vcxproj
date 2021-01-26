@@ -166,6 +166,7 @@
     <ClInclude Include="loadingScene.h" />
     <ClInclude Include="mainScene.h" />
     <ClInclude Include="mapTool.h" />
+    <ClInclude Include="marine.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="progressBar.h" />
     <ClInclude Include="psionic.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="mainScene+uiRender.cpp" />
     <ClCompile Include="mainScene.cpp" />
     <ClCompile Include="mapTool.cpp" />
+    <ClCompile Include="marine.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="progressBar.cpp" />
     <ClCompile Include="psionic.cpp" />

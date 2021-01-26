@@ -97,3 +97,10 @@ void unitManager::createCivilian(BELONG belong, float x, float y)
 	civil->init(belong, x, y);
 	_vUnit.push_back(civil);
 }
+
+void unitManager::createMarine(BELONG belong, float x, float y)
+{
+	marine* _marine = new marine;
+	_marine->init(belong, x, y);
+	_vUnit.push_back(_marine);
+}
