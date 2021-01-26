@@ -2,6 +2,7 @@
 #include "gameNode.h"
 #include "zergling.h"
 #include "civilian.h"
+#include "marine.h"
 #include <vector>
 #include "stageManager.h"
 
@@ -36,6 +37,7 @@ public:
 
 	void createZergling(BELONG belong, float x, float y);
 	void createCivilian(BELONG belong, float x, float y);
+	void createMarine(BELONG belong, float x, float y);
 
 	void setLinkSm(stageManager* sm) { _sm = sm; }			//스테이지 매니저랑 링크시켜줌 그래야 타일의 속성을 체크가능함
 };

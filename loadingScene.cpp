@@ -23,7 +23,7 @@ HRESULT loadingScene::init()
 	_loadingBar = new progressBar;
 	_loadingBar->init(0, WINSIZEY / 2 - 50, WINSIZEX, 50);
 	_loadingBar->setGauge(0, 0);
-	_background = IMAGEMANAGER->addImage("로딩배경", "리그오브레전드로딩.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
+	_background = IMAGEMANAGER->addImage("로딩배경", "image/titleTemp.bmp", WINSIZEX, WINSIZEY, true, RGB(255, 0, 255));
 
 
 	//쓰레드를 사용해보자
