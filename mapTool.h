@@ -62,6 +62,7 @@ private:
 	RECT			_objDel;
 
 	RECT			_tree1;
+	RECT			_icZergling;
 	/////////////////////////////////////
 	POINT			_pickingPt;
 

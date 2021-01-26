@@ -16,7 +16,7 @@ enum STAGEMOVE
 
 enum tileObj
 {
-	S_NONE, S_TREE1
+	S_NONE, S_TREE1, S_ZERGLING
 };
 
 class stageManager : public gameNode

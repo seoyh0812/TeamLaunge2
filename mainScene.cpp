@@ -40,6 +40,14 @@ HRESULT mainScene::init()
 
 	_um->setLinkSm(_sm);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
 
+	for (int i = 0; i < TILEX*TILEY; ++i)
+	{
+		if (_sm->getTileObj()[i] == ZERGLING)
+		{
+			_um->createZergling(ENEMY, _sm->getIsoTile()[i].drawX + 10, _sm->getIsoTile()[i].drawY - 5);
+		}
+	}
+
 	// 카메라 초기화입니당
 	_camStartX = 0;
 	_camStartY = WINSIZEY - WINSIZEY * 0.2;

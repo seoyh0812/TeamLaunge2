@@ -56,6 +56,10 @@ void stageManager::render()
 			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
 			IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
 		}
+		else if (_isoTile[i].name == ZERGLING)
+		{
+			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+		}
 	}
 }
 
@@ -76,6 +80,7 @@ void stageManager::setStage(STAGE stage)
 		{
 			if (_isoTile[i].MUM == UNMOVE) _sMove[i] = S_UNMOVE;
 			if (_isoTile[i].name == TREE1) _tileObj[i] = S_TREE1;
+			if (_isoTile[i].name == ZERGLING) _tileObj[i] = S_ZERGLING;
 		}
 		CloseHandle(file);
 		break;
@@ -89,6 +94,7 @@ void stageManager::setStage(STAGE stage)
 		{
 			if (_isoTile[i].MUM == UNMOVE) _sMove[i] = S_UNMOVE;
 			if (_isoTile[i].name == TREE1) _tileObj[i] = S_TREE1;
+			if (_isoTile[i].name == ZERGLING) _tileObj[i] = S_ZERGLING;
 		}
 		CloseHandle(file);
 		break;
@@ -102,6 +108,7 @@ void stageManager::setStage(STAGE stage)
 		{
 			if (_isoTile[i].MUM == UNMOVE) _sMove[i] = S_UNMOVE;
 			if (_isoTile[i].name == TREE1) _tileObj[i] = S_TREE1;
+			if (_isoTile[i].name == ZERGLING) _tileObj[i] = S_ZERGLING;
 		}
 		CloseHandle(file);
 		break;

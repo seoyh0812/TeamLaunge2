@@ -61,6 +61,7 @@ void mapTool::imageInit() // 캠좌표 참고로했고 그에따라 update로 옮겼음
 
 	//예는 menuRc안에 있어서 예외처리 필요없음
 	_tree1 = RectMake(CAMX + WINSIZEX - 512, CAMY, 107, 113);
+	_icZergling = RectMake(CAMX + WINSIZEX - 512, CAMY, 80, 90);
 }
 
 void mapTool::imageRender()
@@ -89,6 +90,10 @@ void mapTool::imageRender()
 			_brush = CreateSolidBrush(RGB(255, 255, 255));
 			if (PtInRect(&_tree1, _cameraPtMouse)) FillRect(getMemDC(), &_tree1, _brush);
 			IMAGEMANAGER->findImage("tree")->render(getMemDC(), _tree1.left, _tree1.top);
+		}
+		else if (_menuNum == THREE)
+		{
+			IMAGEMANAGER->findImage("icon_zergling")->render(getMemDC(), _icZergling.left, _icZergling.top);
 		}
 	}
 	//세이브와 로드
@@ -195,10 +200,8 @@ void mapTool::leftRightBt()
 
 void mapTool::ptInObj()
 {
-		if (PtInRect(&_tree1, _cameraPtMouse))
-		{
-			_objName = TREE1;
-		}
+	if (PtInRect(&_tree1, _cameraPtMouse) && _menuNum == TWO)	_objName = TREE1;
+	else if (PtInRect(&_icZergling, _cameraPtMouse) && _menuNum == THREE)	_objName = ZERGLING;
 }
 
 void mapTool::createObj()
@@ -214,6 +217,11 @@ void mapTool::createObj()
 		else if (_objName == TREE1 && !_objDelOn)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE1;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+		else if (_objName == ZERGLING && !_objDelOn)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = ZERGLING;
 			InvalidateRect(_hWnd, NULL, false);
 		}
 	}
@@ -341,7 +349,7 @@ void mapTool::createTile()
 		return;
 	}
 
-	if (!_menuInPt)
+	if (!_menuInPt && !_objDelOn)
 	{
 		if (!_moveUnMove && _tempTile.fX >= 0 && _tempTile.fY >= 0)
 		{
@@ -564,16 +572,21 @@ void mapTool::render()
 
 		if (_isoTile[i].centerX < CAMX - 32 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
 			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 16) continue;
-
+		
 		if (_isoTile[i].inRect)
-		{
+		{//여기는 영역표시와 함께 이미지가 노출되는곳
 			if (_isoTile[i].name == TREE1)
 			{
 				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
 				IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
 			}
+			else if (_isoTile[i].name == ZERGLING)
+			{
+				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
+				IMAGEMANAGER->findImage("저글링이동퍼플")->frameRender(getMemDC(), _isoTile[i].drawX + 10, _isoTile[i].drawY - 5, 5, 0);
+			}
 			else IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
-		}
+		}//여기는 마우스와 타일이 닿지 않았을때
 		else if (_isoTile[i].name == NONE)
 		{
 			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
@@ -582,6 +595,11 @@ void mapTool::render()
 		{
 			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
 			IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
+		}
+		else if (_isoTile[i].name == ZERGLING)
+		{
+			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+			IMAGEMANAGER->findImage("저글링이동퍼플")->frameRender(getMemDC(), _isoTile[i].drawX + 10, _isoTile[i].drawY - 5, 5, 0);
 		}
 	}
 	imageRender();
