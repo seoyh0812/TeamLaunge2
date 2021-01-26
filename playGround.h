@@ -11,6 +11,7 @@ class playGround : public gameNode
 {
 private:
 	int _x; int _y;
+	image* _backGround;
 	
 public:
 	playGround();

@@ -73,7 +73,7 @@ void loadingScene::render()
 	{
 		strcpy_s(cstr, SOUNDMANAGER->getLatestAdded().c_str());
 	}
-	TextOut(getMemDC(), 0, WINSIZEY / 2, cstr, strlen(cstr));
+	TextOut(getMemDC(), 0, WINSIZEY -50, cstr, strlen(cstr));
 }
 
 

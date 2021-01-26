@@ -4,6 +4,8 @@
 #include <string>
 
 #define LOADINGMAX 30
+#define ADDF IMAGEMANAGER->addFrameImage
+#define MGT RGB(255,0,255)
 
 class progressBar;
 
