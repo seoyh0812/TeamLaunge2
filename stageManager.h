@@ -14,12 +14,18 @@ enum STAGEMOVE
 	S_MOVE, S_UNMOVE
 };
 
+enum tileObj
+{
+	S_NONE, S_TREE1
+};
+
 class stageManager : public gameNode
 {
 private:
 	isoTile _isoTile[TILEX*TILEY];
 	STAGE _stage;
 	STAGEMOVE			_sMove[TILEX * TILEY];					//맵툴에서 가져온 속성이 무브인지 언무브인지 담아둘 곳
+	tileObj				_tileObj[TILEX * TILEY];				//맵툴에서 가져온 오브젝트 속성이 무엇인지 담아둘 곳
 
 public:
 	stageManager();
@@ -32,6 +38,7 @@ public:
 
 	void setStage(STAGE stage);
 	isoTile* getIsoTile() { return _isoTile; }
-	STAGEMOVE* getStageMove() { return _sMove; }
+	STAGEMOVE* getStageMove() { return _sMove; }				//무브 ,언무브 게터
+	tileObj* getTileObj() { return _tileObj; }					//타일이 가진 오브젝트 속성 게터
 };
 

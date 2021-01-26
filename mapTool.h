@@ -21,7 +21,6 @@ struct tagTempTile
 struct tagSample
 {
 	RECT rc;
-	bool inRect;
 	int fX;
 	int fY;
 };
@@ -55,6 +54,14 @@ private:
 	RECT			_small;
 	RECT			_medium;
 	RECT			_max;
+
+	RECT			_leftBt;
+	RECT			_rightBt;
+
+	RECT			_menuRc;
+	RECT			_objDel;
+
+	RECT			_tree1;
 	/////////////////////////////////////
 	POINT			_pickingPt;
 
@@ -63,8 +70,12 @@ private:
 	bool			_moveUnMove;
 	bool			_tempSaved;
 	bool			_brushOn;
+	bool			_objDelOn;
+	bool			_menuInPt;
 
 	renderSize		_rs;
+	menuNum			_menuNum;
+	objName			_objName;
 public:
 	mapTool();
 	~mapTool();
@@ -76,13 +87,18 @@ public:
 
 	void createIsoMap(int tileX, int tileY);		//왼쪽에 베이스타일 깔아주는 함수
 	void createSampleTiles();										//샘플타일 깔아주는 함수
-	void ptInSample();												//샘플타일 안에 마우스가 들어갔을때
+	void ptInIso();												//샘플타일 안에 마우스가 들어갔을때
 	void createTile();												//타일을 새롭게 업데이트 해주는 함수
 	void imageInit();												//이미지 인잇
 	void imageRender();												//이미지 렌더
 	void moveUnMove();												//두개 버튼을 눌렀을때 일어나는 기능정의
 	void openClose();												//브러쉬도구 접기 펼치기
 	void renderSize();												//렌더 사이즈 조절
+	void leftRightBt();												//브러쉬도구 메뉴 넘기기
+	void ptInObj();													//오브젝트마다 고유이름을 주었기때문에 오브젝트 클릭시 효과를 다르게줄려고만듬
+	void createObj();												//타일에 오브젝트 속성을 넣어주는 것
+	void objDel();													//오브젝트 지우개
+	void menuInPt();												//메뉴 안에 마우스가 들어갔을때 타일 안찍히게 막음
 
 	void save();
 	void load();

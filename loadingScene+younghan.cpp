@@ -38,5 +38,13 @@ void loadingScene::younghanInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("max", "image/maptool/max.bmp", 64, 32, false, RGB(255, 0, 255));
 	imgLoaded();
+	IMAGEMANAGER->addImage("leftBt", "image/maptool/left.bmp", 32, 32, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("rightBt", "image/maptool/right.bmp", 32, 32, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("tree", "image/maptool/tree.bmp", 107, 113, true, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("objDel", "image/maptool/objdel.bmp", 64, 32, false, RGB(255, 0, 255));
+	imgLoaded();
 }
 

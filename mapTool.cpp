@@ -23,6 +23,10 @@ HRESULT mapTool::init()
 	_moveUnMove = false;
 	_brushOn = false;
 	_rs = MAX;
+	_menuNum = ONE;
+	_objName = NONE;
+	_objDelOn = false;
+	_menuInPt = false;
 	return S_OK;
 }
 
@@ -48,6 +52,15 @@ void mapTool::imageInit() // 캠좌표 참고로했고 그에따라 update로 옮겼음
 	_small = RectMake(WINSIZEX - 70 + CAMX, 540 + CAMY, 64, 32);
 	_medium = RectMake(WINSIZEX - 70 + CAMX, 540 + CAMY, 64, 32);
 	_max = RectMake(WINSIZEX - 70 + CAMX, 540 + CAMY, 64, 32);
+
+	_leftBt = RectMake(WINSIZEX - 75 + CAMX, 385 + CAMY, 64, 32);
+	_rightBt = RectMake(WINSIZEX - 35 + CAMX, 385 + CAMY, 64, 32);
+
+	_objDel = RectMake(WINSIZEX - 70 + CAMX, 500 + CAMY, 64, 32);
+	_menuRc = RectMake(CAMX + WINSIZEX - 522, CAMY, 522, 394);
+
+	//예는 menuRc안에 있어서 예외처리 필요없음
+	_tree1 = RectMake(CAMX + WINSIZEX - 512, CAMY, 107, 113);
 }
 
 void mapTool::imageRender()
@@ -56,18 +69,27 @@ void mapTool::imageRender()
 	{
 		//샘플타일 메뉴
 		IMAGEMANAGER->findImage("tileMenu")->render(getMemDC(), CAMX + WINSIZEX - 522, CAMY);
+		IMAGEMANAGER->findImage("leftBt")->render(getMemDC(), _leftBt.left, _leftBt.top);
+		IMAGEMANAGER->findImage("rightBt")->render(getMemDC(), _rightBt.left, _rightBt.top);
 		//샘플타일
-		for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+		//첫번째 메뉴(타일)
+		if (_menuNum == ONE)
 		{
 			HBRUSH _brush;
-			_brush = CreateSolidBrush(RGB(0, 0, 0));
-
-			if (_sample[i].inRect) FillRect(getMemDC(), &_sample[i].rc, _brush);
-
-			if (KEYMANAGER->isToggleKey(VK_F2)) Rectangle(getMemDC(), _sample[i].rc);
+			_brush = CreateSolidBrush(RGB(255, 255, 255));
+			for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+			{
+				if (PtInRect(&_sample[i].rc, _cameraPtMouse)) FillRect(getMemDC(), &_sample[i].rc, _brush);
+			}
+			IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), CAMX + WINSIZEX - 512, CAMY);
 		}
-		//샘플타일
-		IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), CAMX + WINSIZEX - 512, CAMY);
+		else if (_menuNum == TWO)
+		{
+			HBRUSH _brush;
+			_brush = CreateSolidBrush(RGB(255, 255, 255));
+			if (PtInRect(&_tree1, _cameraPtMouse)) FillRect(getMemDC(), &_tree1, _brush);
+			IMAGEMANAGER->findImage("tree")->render(getMemDC(), _tree1.left, _tree1.top);
+		}
 	}
 	//세이브와 로드
 	IMAGEMANAGER->findImage("save1")->render(getMemDC(), _saveBt.left, _saveBt.top);
@@ -78,6 +100,9 @@ void mapTool::imageRender()
 	IMAGEMANAGER->findImage("load3")->render(getMemDC(), _loadBt3.left, _loadBt3.top);
 	IMAGEMANAGER->findImage("undo")->render(getMemDC(), _undo.left, _undo.top);
 	IMAGEMANAGER->findImage("fill")->render(getMemDC(), _fill.left, _fill.top);
+	
+	if(!_objDelOn) IMAGEMANAGER->findImage("objDel")->alphaRender(getMemDC(), _objDel.left, _objDel.top, 80);
+	else IMAGEMANAGER->findImage("objDel")->render(getMemDC(), _objDel.left, _objDel.top);
 
 	if(_rs == SMALL) IMAGEMANAGER->findImage("small")->render(getMemDC(), _small.left, _small.top);
 	else if (_rs == MEDIUM) IMAGEMANAGER->findImage("medium")->render(getMemDC(), _medium.left, _medium.top);
@@ -139,6 +164,91 @@ void mapTool::renderSize()
 	}
 }
 
+void mapTool::leftRightBt()
+{
+	if (PtInRect(&_rightBt, _cameraPtMouse) && _menuNum == ONE)
+	{
+		_menuNum = TWO;
+		_objName = NONE;
+	}
+	else if (PtInRect(&_rightBt, _cameraPtMouse) && _menuNum == TWO)
+	{
+		_menuNum = THREE;
+		_objName = NONE;
+	}
+	else if (PtInRect(&_rightBt, _cameraPtMouse) && _menuNum == THREE)
+	{
+		_menuNum = THREE;
+		_objName = NONE;
+	}
+	else if (PtInRect(&_leftBt, _cameraPtMouse) && _menuNum == TWO)
+	{
+		_menuNum = ONE;
+		_objName = NONE;
+	}
+	else if (PtInRect(&_leftBt, _cameraPtMouse) && _menuNum == THREE)
+	{
+		_menuNum = TWO;
+		_objName = NONE;
+	}
+}
+
+void mapTool::ptInObj()
+{
+		if (PtInRect(&_tree1, _cameraPtMouse))
+		{
+			_objName = TREE1;
+		}
+}
+
+void mapTool::createObj()
+{
+	//여기서 이제 담아둔 오브젝트 이름을 부여해서 타일위에 나무뜨게할꺼임
+	if (!_menuInPt)
+	{
+		if (_objDelOn)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = NONE;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+		else if (_objName == TREE1 && !_objDelOn)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE1;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+	}
+}
+
+void mapTool::objDel()
+{
+	if (!_objDelOn) _objDelOn = true;
+	else if (_objDelOn) _objDelOn = false;
+}
+
+void mapTool::menuInPt()
+{
+	if (PtInRect(&_menuRc, _cameraPtMouse) && _brushOn) _menuInPt = true;
+	else if (PtInRect(&_saveBt, _cameraPtMouse))  _menuInPt = true;
+	else if (PtInRect(&_saveBt2, _cameraPtMouse)) _menuInPt = true;
+	else if (PtInRect(&_saveBt3, _cameraPtMouse)) _menuInPt = true;
+	else if (PtInRect(&_loadBt, _cameraPtMouse))  _menuInPt = true;
+	else if (PtInRect(&_loadBt2, _cameraPtMouse)) _menuInPt = true;
+	else if (PtInRect(&_loadBt3, _cameraPtMouse)) _menuInPt = true;
+	else if (PtInRect(&_move, _cameraPtMouse))    _menuInPt = true;
+	else if (PtInRect(&_unMove, _cameraPtMouse))  _menuInPt = true;
+	else if (PtInRect(&_undo, _cameraPtMouse))    _menuInPt = true;
+	else if (PtInRect(&_fill, _cameraPtMouse))    _menuInPt = true;
+	else if (PtInRect(&_open, _cameraPtMouse))    _menuInPt = true;
+	else if (PtInRect(&_close, _cameraPtMouse))   _menuInPt = true;
+	else if (PtInRect(&_small, _cameraPtMouse))   _menuInPt = true;
+	else if (PtInRect(&_medium, _cameraPtMouse))  _menuInPt = true;
+	else if (PtInRect(&_max, _cameraPtMouse))     _menuInPt = true;
+	else if (PtInRect(&_leftBt, _cameraPtMouse))  _menuInPt = true;
+	else if (PtInRect(&_rightBt, _cameraPtMouse)) _menuInPt = true;
+	else if (PtInRect(&_objDel, _cameraPtMouse))  _menuInPt = true;
+	else _menuInPt = false;
+}
+
 void mapTool::release()
 {
 }
@@ -158,6 +268,7 @@ void mapTool::createIsoMap(int tileX, int tileY)
 
 			_isoTile[i * tileX + j].inRect = false;
 			_isoTile[i * tileX + j].MUM = MOVE;
+			_isoTile[i * tileX + j].name = NONE;
 
 			_isoTile[i * tileX + j].centerX = TILESIZEX * (TILEX + (j - i))/2;
 			_isoTile[i * tileX + j].centerY = TILESIZEY * (i + j + 1) / 2;
@@ -179,7 +290,6 @@ void mapTool::createSampleTiles()
 			_sample[i * SAMPLEX + j].fY = i;
 
 			_sample[i * SAMPLEX + j].rc = RectMake((WINSIZEX - 512) + (j*TILESIZEX), 0 + (i*TILESIZEY), TILESIZEX, TILESIZEY);
-			_sample[i * SAMPLEX + j].inRect = false;
 		}
 	}
 }
@@ -195,24 +305,9 @@ void mapTool::sampleTileMove()
 	}
 }
 
-void mapTool::ptInSample()
+void mapTool::ptInIso()
 {
-	if (_brushOn)
-	{
-		//샘플타일안에 마우스가 들어갔으면 표시해라
-		for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
-		{
-			if (PtInRect(&_sample[i].rc, _cameraPtMouse))
-			{
-				_sample[i].inRect = true;
-			}
-			else _sample[i].inRect = false;
-		}
-	}
-
-	//이건 아이소 타일 안에 마우스가 들어갔으면 표시 
 	//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
-	//이거 그냥 피킹쓰면 되니까 수정했어
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{
 		if (i == _pickingPt.y * TILEX + _pickingPt.x)
@@ -225,7 +320,8 @@ void mapTool::ptInSample()
 
 void mapTool::createTile()
 {
-	if (_brushOn)
+	//이부분으로 메뉴 넘긴뒤에 타일그려지는거 방지함
+	if (_brushOn && _menuNum == ONE)
 	{
 		//새로운 타일을 만들어보즈아!!
 		for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
@@ -238,20 +334,29 @@ void mapTool::createTile()
 			}
 		}
 	}
-
-	if (!_moveUnMove)
+	else
 	{
-		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
-		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
-		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = MOVE;
-		InvalidateRect(_hWnd, NULL, false);
+		_tempTile.fX = -1;
+		_tempTile.fY = -1;
+		return;
 	}
-	else if (_moveUnMove)
+
+	if (!_menuInPt)
 	{
-		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
-		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
-		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
-		InvalidateRect(_hWnd, NULL, false);
+		if (!_moveUnMove && _tempTile.fX >= 0 && _tempTile.fY >= 0)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = MOVE;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+		else if (_moveUnMove && _tempTile.fX >= 0 && _tempTile.fY >= 0)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fX = _tempTile.fX;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].fY = _tempTile.fY;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
+			InvalidateRect(_hWnd, NULL, false);
+		}
 	}
 }
 
@@ -410,8 +515,8 @@ void mapTool::update()
 {
 	_pickingPt = picking(_cameraPtMouse.x, _cameraPtMouse.y);
 	cameraControl();
-
 	imageInit();
+	menuInPt();
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
@@ -421,16 +526,22 @@ void mapTool::update()
 		save();
 		load();
 		moveUnMove();
-		if (PtInRect(&_fill, _cameraPtMouse)) fill(_tempTile.fX, _tempTile.fY);
+		if (PtInRect(&_fill, _cameraPtMouse) && _tempTile.fX >= 0 && _tempTile.fY >= 0) fill(_tempTile.fX, _tempTile.fY);
 		openClose();
 		renderSize();
+		if (_brushOn) leftRightBt();
+		ptInObj();
+		createObj();
+		if (PtInRect(&_objDel, _cameraPtMouse)) objDel();
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
 		createTile();
+		ptInObj();
+		createObj();
 	}
-	ptInSample();
+	ptInIso();
 	if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("메인씬");
 }
 
@@ -450,10 +561,28 @@ void mapTool::render()
 			if (_isoTile[i].nY > 19) continue;
 		}
 		else
+
 		if (_isoTile[i].centerX < CAMX - 32 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
 			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 16) continue;
-		if (_isoTile[i].inRect) IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
-		else IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+
+		if (_isoTile[i].inRect)
+		{
+			if (_isoTile[i].name == TREE1)
+			{
+				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
+				IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
+			}
+			else IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
+		}
+		else if (_isoTile[i].name == NONE)
+		{
+			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+		}
+		else if (_isoTile[i].name == TREE1)
+		{
+			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+			IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
+		}
 	}
 	imageRender();
 

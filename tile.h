@@ -26,6 +26,16 @@ enum renderSize
 	SMALL, MEDIUM, MAX
 };
 
+enum menuNum
+{
+	ONE = 1, TWO, THREE
+};
+
+enum objName
+{
+	NONE, TREE1
+};
+
 //그려지는 iso타일
 class isoTile
 {
@@ -40,4 +50,5 @@ public:
 	int fY;
 	bool inRect;
 	moveUnMove MUM;
+	objName    name;
 };
