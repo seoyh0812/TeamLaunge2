@@ -21,6 +21,8 @@ HRESULT mapTool::init()
 	_tempTile.fY = 0;
 	_pickingPt = { 0,0 };
 	_moveUnMove = false;
+	_brushOn = false;
+	_rs = MAX;
 	return S_OK;
 }
 
@@ -37,17 +39,36 @@ void mapTool::imageInit() // 캠좌표 참고로했고 그에따라 update로 옮겼음
 
 	_move = RectMake(WINSIZEX-210 + CAMX, 580 + CAMY, 64, 32);
 	_unMove = RectMake(WINSIZEX-140 + CAMX, 580 + CAMY, 64, 32);
+	_undo = RectMake(WINSIZEX - 70 + CAMX, 580 + CAMY, 64, 32);
 
 	_fill = RectMake(WINSIZEX-210 + CAMX, 540 + CAMY, 64, 32);
+	_open = RectMake(WINSIZEX - 140 + CAMX, 540 + CAMY, 64, 32);
+	_close = RectMake(WINSIZEX - 140 + CAMX, 540 + CAMY, 64, 32);
 
-	_undo = RectMake(WINSIZEX-70 + CAMX, 580 + CAMY, 64, 32);
+	_small = RectMake(WINSIZEX - 70 + CAMX, 540 + CAMY, 64, 32);
+	_medium = RectMake(WINSIZEX - 70 + CAMX, 540 + CAMY, 64, 32);
+	_max = RectMake(WINSIZEX - 70 + CAMX, 540 + CAMY, 64, 32);
 }
 
 void mapTool::imageRender()
 {
-	//오른쪽 샘플타일
-	IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), CAMX+WINSIZEX-256, CAMY);
+	if (_brushOn)
+	{
+		//샘플타일 메뉴
+		IMAGEMANAGER->findImage("tileMenu")->render(getMemDC(), CAMX + WINSIZEX - 522, CAMY);
+		//샘플타일
+		for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+		{
+			HBRUSH _brush;
+			_brush = CreateSolidBrush(RGB(0, 0, 0));
 
+			if (_sample[i].inRect) FillRect(getMemDC(), &_sample[i].rc, _brush);
+
+			if (KEYMANAGER->isToggleKey(VK_F2)) Rectangle(getMemDC(), _sample[i].rc);
+		}
+		//샘플타일
+		IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), CAMX + WINSIZEX - 512, CAMY);
+	}
 	//세이브와 로드
 	IMAGEMANAGER->findImage("save1")->render(getMemDC(), _saveBt.left, _saveBt.top);
 	IMAGEMANAGER->findImage("save2")->render(getMemDC(), _saveBt2.left, _saveBt2.top);
@@ -58,6 +79,12 @@ void mapTool::imageRender()
 	IMAGEMANAGER->findImage("undo")->render(getMemDC(), _undo.left, _undo.top);
 	IMAGEMANAGER->findImage("fill")->render(getMemDC(), _fill.left, _fill.top);
 
+	if(_rs == SMALL) IMAGEMANAGER->findImage("small")->render(getMemDC(), _small.left, _small.top);
+	else if (_rs == MEDIUM) IMAGEMANAGER->findImage("medium")->render(getMemDC(), _medium.left, _medium.top);
+	else IMAGEMANAGER->findImage("max")->render(getMemDC(), _max.left, _max.top);
+
+	if(!_brushOn) IMAGEMANAGER->findImage("open")->render(getMemDC(), _open.left, _open.top);
+	else IMAGEMANAGER->findImage("close")->render(getMemDC(), _close.left, _close.top);
 	//무브와 언무드
 	if (!_moveUnMove)
 	{
@@ -81,6 +108,34 @@ void mapTool::moveUnMove()
 	if (PtInRect(&_unMove, _cameraPtMouse))
 	{
 		_moveUnMove = true;
+	}
+}
+
+void mapTool::openClose()
+{
+	if (PtInRect(&_open, _cameraPtMouse) && !_brushOn)
+	{
+		_brushOn = true;
+	}
+	else if (PtInRect(&_close, _cameraPtMouse) && _brushOn)
+	{
+		_brushOn = false;
+	}
+}
+
+void mapTool::renderSize()
+{
+	if (PtInRect(&_small, _cameraPtMouse) && _rs == SMALL)
+	{
+		_rs = MEDIUM;
+	}
+	else if (PtInRect(&_medium, _cameraPtMouse) && _rs == MEDIUM)
+	{
+		_rs = MAX;
+	}
+	else if (PtInRect(&_max, _cameraPtMouse) && _rs == MAX)
+	{
+		_rs = SMALL;
 	}
 }
 
@@ -123,22 +178,36 @@ void mapTool::createSampleTiles()
 			_sample[i * SAMPLEX + j].fX = j;
 			_sample[i * SAMPLEX + j].fY = i;
 
-			_sample[i * SAMPLEX + j].rc = RectMake((WINSIZEX - 256) + (j*TILESIZEX), 0 + (i*TILESIZEY), TILESIZEX, TILESIZEY);
+			_sample[i * SAMPLEX + j].rc = RectMake((WINSIZEX - 512) + (j*TILESIZEX), 0 + (i*TILESIZEY), TILESIZEX, TILESIZEY);
 			_sample[i * SAMPLEX + j].inRect = false;
+		}
+	}
+}
+
+void mapTool::sampleTileMove()
+{
+	for (int i = 0; i < SAMPLEY; ++i)
+	{
+		for (int j = 0; j < SAMPLEX; ++j)
+		{
+			_sample[i * SAMPLEX + j].rc = RectMake((WINSIZEX + CAMX - 512) + (j*TILESIZEX), CAMY + (i*TILESIZEY), TILESIZEX, TILESIZEY);
 		}
 	}
 }
 
 void mapTool::ptInSample()
 {
-	//샘플타일안에 마우스가 들어갔으면 표시해라
-	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+	if (_brushOn)
 	{
-		if (PtInRect(&_sample[i].rc, _cameraPtMouse))
+		//샘플타일안에 마우스가 들어갔으면 표시해라
+		for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
 		{
-			_sample[i].inRect = true;
+			if (PtInRect(&_sample[i].rc, _cameraPtMouse))
+			{
+				_sample[i].inRect = true;
+			}
+			else _sample[i].inRect = false;
 		}
-		else _sample[i].inRect = false;
 	}
 
 	//이건 아이소 타일 안에 마우스가 들어갔으면 표시 
@@ -156,14 +225,17 @@ void mapTool::ptInSample()
 
 void mapTool::createTile()
 {
-	//새로운 타일을 만들어보즈아!!
-	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
+	if (_brushOn)
 	{
-		if (PtInRect(&_sample[i].rc, _cameraPtMouse))
+		//새로운 타일을 만들어보즈아!!
+		for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
 		{
-			_tempTile.fX = _sample[i].fX;
-			_tempTile.fY = _sample[i].fY;
-			return;
+			if (PtInRect(&_sample[i].rc, _cameraPtMouse))
+			{
+				_tempTile.fX = _sample[i].fX;
+				_tempTile.fY = _sample[i].fY;
+				return;
+			}
 		}
 	}
 
@@ -181,33 +253,6 @@ void mapTool::createTile()
 		_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
 		InvalidateRect(_hWnd, NULL, false);
 	}
-
-	//for (int i = 0; i < TILEX * TILEY; ++i)
-	//{
-	//	//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
-	//	//무브 상태로 그려지면 타일안의 MUM의 값이 무브
-	//	if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
-	//		&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && !_moveUnMove)
-	//	{
-	//		_isoTile[i].fX = _tempTile.fX;
-	//		_isoTile[i].fY = _tempTile.fY;
-	//		_isoTile[i].MUM = MOVE;
-	//		//화면 갱신해주는 함수
-	//		InvalidateRect(_hWnd, NULL, false);
-	//		break;
-	//	}
-	//	//언무브 상태로 그려지면 타일안의 MUM의 값이 언무브
-	//	else if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
-	//		&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3) && _moveUnMove)
-	//	{
-	//		_isoTile[i].fX = _tempTile.fX;
-	//		_isoTile[i].fY = _tempTile.fY;
-	//		_isoTile[i].MUM = UNMOVE;
-	//		//화면 갱신해주는 함수
-	//		InvalidateRect(_hWnd, NULL, false);
-	//		break;
-	//	}
-	//}
 }
 
 void mapTool::save()
@@ -361,17 +406,6 @@ void mapTool::cameraControl()
 	}
 }
 
-void mapTool::sampleTileMove()
-{
-	for (int i = 0; i < SAMPLEY; ++i)
-	{
-		for (int j = 0; j < SAMPLEX; ++j)
-		{
-			_sample[i * SAMPLEX + j].rc = RectMake((WINSIZEX+CAMX - 256) + (j*TILESIZEX), CAMY + (i*TILESIZEY), TILESIZEX, TILESIZEY);
-		}
-	}
-}
-
 void mapTool::update()
 {
 	_pickingPt = picking(_cameraPtMouse.x, _cameraPtMouse.y);
@@ -388,6 +422,8 @@ void mapTool::update()
 		load();
 		moveUnMove();
 		if (PtInRect(&_fill, _cameraPtMouse)) fill(_tempTile.fX, _tempTile.fY);
+		openClose();
+		renderSize();
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
@@ -395,7 +431,6 @@ void mapTool::update()
 		createTile();
 	}
 	ptInSample();
-
 	if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("메인씬");
 }
 
@@ -404,25 +439,23 @@ void mapTool::render()
 	//아이소타일
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{ // 화면 밖의 맵은 그리지 않도록 함. 렉 방지용. 메인씬에도 이거 쓰고 시연떄도 이거 줄여서 보여줘도 될듯
+		if (_rs == SMALL)
+		{
+			if (_isoTile[i].nX > 9) continue;
+			if (_isoTile[i].nY > 9) continue;
+		}
+		else if (_rs == MEDIUM)
+		{
+			if (_isoTile[i].nX > 19) continue;
+			if (_isoTile[i].nY > 19) continue;
+		}
+		else
 		if (_isoTile[i].centerX < CAMX - 32 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
 			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 16) continue;
 		if (_isoTile[i].inRect) IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
 		else IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
 	}
-
-	//샘플타일
-	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
-	{
-		HBRUSH _brush;
-		_brush = CreateSolidBrush(RGB(100, 100, 100));
-
-		if (_sample[i].inRect) FillRect(getMemDC(), &_sample[i].rc, _brush);
-
-		if (KEYMANAGER->isToggleKey(VK_F2)) Rectangle(getMemDC(), _sample[i].rc);
-	}
 	imageRender();
-	//이건 마우스 위에 현재 고른 타일 출력인데 접어둠
-	//IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _ptMouse.x - TILESIZEX / 2, _ptMouse.y - TILESIZEY / 2, _tempTile.fX, _tempTile.fY, 200);
 
 	//아래는 편의상 만든 숫자보이게하는거
 	char str[256];

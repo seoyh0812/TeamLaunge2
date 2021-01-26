@@ -34,6 +34,7 @@ private:
 	tagSample		_sample[SAMPLEX * SAMPLEY];
 	tagTempTile		_tempTile;
 
+	//버튼 렉트들
 	RECT			_saveBt;
 	RECT			_saveBt2;
 	RECT			_saveBt3;
@@ -48,13 +49,22 @@ private:
 	RECT			_undo;
 	RECT			_fill;
 
+	RECT			_open;
+	RECT			_close;
+
+	RECT			_small;
+	RECT			_medium;
+	RECT			_max;
+	/////////////////////////////////////
 	POINT			_pickingPt;
 
 	POINT			_cameraPtMouse; // 걍피티마우스말고 카메라위치 보정한 피티마우스
 
 	bool			_moveUnMove;
 	bool			_tempSaved;
+	bool			_brushOn;
 
+	renderSize		_rs;
 public:
 	mapTool();
 	~mapTool();
@@ -71,6 +81,8 @@ public:
 	void imageInit();												//이미지 인잇
 	void imageRender();												//이미지 렌더
 	void moveUnMove();												//두개 버튼을 눌렀을때 일어나는 기능정의
+	void openClose();												//브러쉬도구 접기 펼치기
+	void renderSize();												//렌더 사이즈 조절
 
 	void save();
 	void load();

@@ -13,12 +13,17 @@
 #define MAPSIZEY TILESIZEY * TILEY
 
 //타일셋(샘플타일) 범위
-#define SAMPLEX 4
-#define SAMPLEY 5
+#define SAMPLEX 8
+#define SAMPLEY 12
 
 enum moveUnMove
 {
 	MOVE, UNMOVE
+};
+
+enum renderSize
+{
+	SMALL, MEDIUM, MAX
 };
 
 //그려지는 iso타일

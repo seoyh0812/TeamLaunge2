@@ -4,7 +4,7 @@
 void loadingScene::younghanInit()
 {
 	//이미지 영역
-	IMAGEMANAGER->addFrameImage("mapTiles", "image/maptool/iso256X160.bmp", 0, 0, 256, 160, 4, 5, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("mapTiles", "image/maptool/tile512x384.bmp", 0, 0, 512, 384, 8, 12, true, RGB(255, 0, 255));
 	imgLoaded();
 	IMAGEMANAGER->addImage("save1", "image/maptool/save1.bmp", 64, 32, false, RGB(255, 0, 255));
 	imgLoaded();
@@ -25,6 +25,18 @@ void loadingScene::younghanInit()
 	IMAGEMANAGER->addImage("undo", "image/maptool/undo.bmp", 64, 32, false, RGB(255, 0, 255));
 	imgLoaded();
 	IMAGEMANAGER->addImage("fill", "image/maptool/fill.bmp", 64, 32, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("tileMenu", "image/maptool/tilemenu.bmp", 522, 394, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("open", "image/maptool/open.bmp", 64, 32, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("close", "image/maptool/close.bmp", 64, 32, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("small", "image/maptool/10x10.bmp", 64, 32, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("medium", "image/maptool/20x20.bmp", 64, 32, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("max", "image/maptool/max.bmp", 64, 32, false, RGB(255, 0, 255));
 	imgLoaded();
 }
 
