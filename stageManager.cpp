@@ -43,6 +43,8 @@ void stageManager::render()
 {
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{ // 각 타일마다 프레임대로 렌더
+		if (_isoTile[i].centerX < CAMX - 32 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
+			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 16) continue;
 		IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
 	}
 }

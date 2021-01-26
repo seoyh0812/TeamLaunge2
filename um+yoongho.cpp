@@ -41,7 +41,7 @@ void unitManager::yoonghoUpdate()
 			&& _vUnit[i]->getState() == ATTACKWAIT)
 		{
 			_vUnit[i]->setState(WALK);
-			}
+		}
 		if (_vUnit[i]->getState() == WALK)
 		{
 			_vUnit[i]->setDest(_vUnit[tg]->getX(), _vUnit[tg]->getY());

@@ -19,9 +19,8 @@ HRESULT zergling::init(BELONG belong, float x, float y)
 	_damage = 5;
 	_maxHP = 35;
 	_attackIndex = 2; // 2번 인덱스가 될때 공격판정
-	_width = 40;
-	_height = 39; // 일단은 대충 설정해놓은거임(이미지크기)
-	_rangeRc = RectMakeCenter(_x, _y, _width+6, _height+6);	
+	_width = 20;
+	_height = 20; // 일단은 대충 설정해놓은거임(이미지크기)
 
 	commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
 	
@@ -36,24 +35,32 @@ void zergling::release()
 void zergling::update()
 {
 	commonUpdate();
-	_rangeRc = RectMakeCenter(_x, _y, _width + 6, _height + 6);
+	_rangeRc = RectMakeCenter(_x, _y, _width + 4, _height + 4);
+	// 사거리 맞춰서 여기서 설정
+
+
+	// 이하는 저글링특성이니까 참고안해도 괜찮음
+	if (_HP / _maxHP <= 0.5f && _maxDelay == 60)
+	{ // 피가 50%이하면 공속2배
+		_maxDelay /= 2.f;
 	}
+}
 
 void zergling::render()
 {
 	switch (_state)
 	{ // 위치 적당히 보정해서 쓸것
 	case WALK:
-		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left-9, _rc.top-9, _frameDirection, _frame);
 		break;
 	case ATTACKWAIT: // 첫번쨰 프레임으로 고정
-		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, 0);
+		_image->frameRender(getMemDC(), _rc.left - 9, _rc.top - 9, _frameDirection, 0);
 		break;
 	case ATTACK:
-		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left - 9, _rc.top - 9, _frameDirection, _frame);
 		break;
 	case DEAD: // 프레임인덱스 다르게 도니까 주의
-		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frame, 0);
+		_image->frameRender(getMemDC(), _rc.left - 22, _rc.top - 24, _frame, 0);
 		break;
 	}
 }
@@ -73,7 +80,7 @@ void zergling::setState(STATE state)
 			_maxFrame = _image->getMaxFrameY();
 			break;
 		case ATTACKWAIT:
-			_image = FINDIMG("저글링이동블루");
+			_image = FINDIMG("저글링공격블루");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 			// 저글링의경우 대기는 이동에서 y프레임 0으로만 쓸거임
@@ -97,7 +104,7 @@ void zergling::setState(STATE state)
 			_maxFrame = _image->getMaxFrameY();
 			break;
 		case ATTACKWAIT:
-			_image = FINDIMG("저글링이동퍼플");
+			_image = FINDIMG("저글링공격퍼플");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 			// 저글링의경우 대기는 이동에서 y프레임 0으로만 쓸거임

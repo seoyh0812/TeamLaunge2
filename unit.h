@@ -56,10 +56,10 @@ protected:
 	int _delay;		// 딜레이가 0일때 공격하도록 했음.
 	int _maxDelay;	// 연사속도(얼마 주기로 한방씩 치는지). 60이면 1초에 한방씩 때릴듯
 
-	int _damage;	// 데미지(이건 인터섹트에서 인자로 쓸거)
+	float _damage;	// 데미지(이건 인터섹트에서 인자로 쓸거)
 
-	int _HP;	//현재체력
-	int _maxHP;		//최대체력
+	float _HP;	//현재체력
+	float _maxHP;		//최대체력
 
 	int _target;
 	// 벡터에 몇번째 상대를 타겟으로 잡았는지?
@@ -125,8 +125,8 @@ public:
 	void setDest(float destX, float destY); // 목표설정은 이걸로할거임
 	float& getAngle1() { return _angle; }
 	int& getDelay() { return _delay; }
-	int getDamage() { return _damage; }
-	int& getHP() { return _HP; }
+	float getDamage() { return _damage; }
+	float& getHP() { return _HP; }
 	int& getTarget() { return _target; }
 	bool& getAttackReady() { return _attackReady; }
 	bool getErase() { return _erase; }
