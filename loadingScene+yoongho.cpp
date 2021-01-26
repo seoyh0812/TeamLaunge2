@@ -23,4 +23,10 @@ void loadingScene::yoonghoInit()
 	imgLoaded();
 	IMAGEMANAGER->addFrameImage("»çÀÌ¿À´Ğ½ºÅè", "image/sne/psionic.bmp", 2590, 150, 14, 1, true, RGB(255, 0, 255));
 	imgLoaded();
+	IMAGEMANAGER->addFrameImage("½Ã¹ÎÆÄ¶û", "image/unit/civilian/civilianwalkblue.bmp", 168, 256, 8, 8, true, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("½Ã¹ÎÆÛÇÃ", "image/unit/civilian/civilianwalk.bmp", 168, 256, 8, 8, true, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("½Ã¹ÎÁ×À½", "image/unit/civilian/civiliandead.bmp", 420, 37, 7, 1, true, RGB(255, 0, 255));
+	imgLoaded();
 }

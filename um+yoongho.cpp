@@ -26,9 +26,24 @@ void unitManager::yoonghoUpdate()
 		int tg = _vUnit[i]->getTarget();
 		if (tg == -1) continue;
 		RECT temp;
-		if (_vUnit[tg]->getState() == DEAD) continue;
+		if (_vUnit[tg]->getState() == DEAD)
+		{
+			_vUnit[i]->getTarget() = -1;
+			continue;
+		}
 		if (_vUnit[i]->getAttackReady())
 		{
+			if (_vUnit[i]->getID() == 3)
+			{ // 시민이면 어그로끔
+				for (int j = 0; j < _vUnit.size(); ++j)
+				{
+					if (IntersectRect(&temp, &_vUnit[i]->getFocusRect(), &_vUnit[j]->getRect())
+						&& _vUnit[j]->getState() != DEAD && _vUnit[i]->getBelong() != _vUnit[j]->getBelong())
+					{
+						_vUnit[j]->getTarget() = i;
+					}
+				}
+			}
 			_vUnit[i]->getAttackReady() = false;
 			_vUnit[tg]->getHP() -= _vUnit[i]->getDamage();
 		}

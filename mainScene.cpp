@@ -32,6 +32,10 @@ HRESULT mainScene::init()
 	_um->createZergling(PLAYER, 210, 270);
 	_um->createZergling(PLAYER, 310, 430);
 	_um->createZergling(PLAYER, 270, 400);
+	_um->createMarine(ENEMY, 200, 300);
+	_um->createMarine(PLAYER, 210, 270);
+	_um->createCivilian(ENEMY, 100, 300);
+	_um->createCivilian(PLAYER, 110, 270);
 	_se->createPsionic(S_PLAYER, 200, 200);
 
 	_um->setLinkSm(_sm);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
