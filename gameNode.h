@@ -2,7 +2,7 @@
 #include "image.h"
 
 //백버퍼라는 빈 비트맵 이미지를 하나 생성해둔다
-static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", WINSIZEX, WINSIZEY);
+static image* _backBuffer = IMAGEMANAGER->addImage("backBuffer", MAPSIZEX, MAPSIZEY);
 
 
 class gameNode

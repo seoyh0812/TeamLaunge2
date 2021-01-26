@@ -12,52 +12,41 @@ mapTool::~mapTool()
 
 HRESULT mapTool::init()
 {
-	imageInit();
+	CAMERAMANAGER->setCameraX(0);
+	CAMERAMANAGER->setCameraY(0);
 	createSampleTiles();
 
-	createIsoMap(650, 0, TILEX, TILEY);
+	createIsoMap(TILEX, TILEY);
 	_tempTile.fX = 0;
 	_tempTile.fY = 0;
+	_pickingPt = { 0,0 };
 	_moveUnMove = false;
 	return S_OK;
 }
 
-void mapTool::imageInit()
+void mapTool::imageInit() // 캠좌표 참고로했고 그에따라 update로 옮겼음
 {
-	//이미지 영역
-	IMAGEMANAGER->addFrameImage("mapTiles", "image/maptool/iso256X160.bmp", 0, 0, 256, 160, 4, 5, true, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("save1", "image/maptool/save1.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("save2", "image/maptool/save2.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("save3", "image/maptool/save3.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("load1", "image/maptool/load1.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("load2", "image/maptool/load2.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("load3", "image/maptool/load3.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("move", "image/maptool/move.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("unmove", "image/maptool/unmove.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("undo", "image/maptool/undo.bmp", 64, 32, false, RGB(255, 0, 255));
-	IMAGEMANAGER->addImage("fill", "image/maptool/fill.bmp", 64, 32, false, RGB(255, 0, 255));
-
 	//이미지를 덮어씌울 렉트 선언 영역
-	_saveBt = RectMake(WINSIZEX-210, 720, 64, 32);
-	_saveBt2 = RectMake(WINSIZEX-140, 720, 64, 32);
-	_saveBt3 = RectMake(WINSIZEX-70, 720, 64, 32);
+	_saveBt = RectMake(WINSIZEX-210 + CAMX, 620 + CAMY, 64, 32);
+	_saveBt2 = RectMake(WINSIZEX-140 + CAMX, 620 + CAMY, 64, 32);
+	_saveBt3 = RectMake(WINSIZEX-70 + CAMX, 620 + CAMY, 64, 32);
 
-	_loadBt = RectMake(WINSIZEX-210, 760, 64, 32);
-	_loadBt2 = RectMake(WINSIZEX-140, 760, 64, 32);
-	_loadBt3 = RectMake(WINSIZEX-70, 760, 64, 32);
+	_loadBt = RectMake(WINSIZEX-210 + CAMX, 660 + CAMY, 64, 32);
+	_loadBt2 = RectMake(WINSIZEX-140 + CAMX, 660 + CAMY, 64, 32);
+	_loadBt3 = RectMake(WINSIZEX-70 + CAMX, 660 + CAMY, 64, 32);
 
-	_move = RectMake(WINSIZEX-210, 680, 64, 32);
-	_unMove = RectMake(WINSIZEX-140, 680, 64, 32);
+	_move = RectMake(WINSIZEX-210 + CAMX, 580 + CAMY, 64, 32);
+	_unMove = RectMake(WINSIZEX-140 + CAMX, 580 + CAMY, 64, 32);
 
-	_fill = RectMake(WINSIZEX-210, 640, 64, 32);
+	_fill = RectMake(WINSIZEX-210 + CAMX, 540 + CAMY, 64, 32);
 
-	_undo = RectMake(WINSIZEX-70, 680, 64, 32);
+	_undo = RectMake(WINSIZEX-70 + CAMX, 580 + CAMY, 64, 32);
 }
 
 void mapTool::imageRender()
 {
 	//오른쪽 샘플타일
-	IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), WINSIZEX-256, 0);
+	IMAGEMANAGER->findImage("mapTiles")->render(getMemDC(), CAMX+WINSIZEX-256, CAMY);
 
 	//세이브와 로드
 	IMAGEMANAGER->findImage("save1")->render(getMemDC(), _saveBt.left, _saveBt.top);
@@ -84,12 +73,12 @@ void mapTool::imageRender()
 
 void mapTool::moveUnMove()
 {
-	if (PtInRect(&_move, _ptMouse))
+	if (PtInRect(&_move, _cameraPtMouse))
 	{
 		_moveUnMove = false;
 	}
 
-	if (PtInRect(&_unMove, _ptMouse))
+	if (PtInRect(&_unMove, _cameraPtMouse))
 	{
 		_moveUnMove = true;
 	}
@@ -100,10 +89,8 @@ void mapTool::release()
 }
 
 //그려질 시작 x, 그려질 시작 y, TILEX 넣기, TILEY 넣기
-void mapTool::createIsoMap(float x, float y, int tileX, int tileY)
+void mapTool::createIsoMap(int tileX, int tileY)
 {
-	_tilePoint.x = x;
-	_tilePoint.y = y;
 
 	for (int i = 0; i < tileY; ++i)
 	{
@@ -117,10 +104,11 @@ void mapTool::createIsoMap(float x, float y, int tileX, int tileY)
 			_isoTile[i * tileX + j].inRect = false;
 			_isoTile[i * tileX + j].MUM = MOVE;
 
-			_isoTile[i * tileX + j].drawX = _tilePoint.x + ((j * TILESIZEX) / 2) - (i*(TILESIZEX / 2));
-			_isoTile[i * tileX + j].drawY = _tilePoint.y + ((j * TILESIZEY) / 2) + (i*(TILESIZEY / 2));
-			_isoTile[i * tileX + j].centerX = _isoTile[i * tileX + j].drawX + (TILEX / 2) + (TILEY / 2);
-			_isoTile[i * tileX + j].centerY = _isoTile[i * tileX + j].drawY + (TILEX / 2) + (TILEY / 2);
+			_isoTile[i * tileX + j].centerX = TILESIZEX * (TILEX + (j - i))/2;
+			_isoTile[i * tileX + j].centerY = TILESIZEY * (i + j + 1) / 2;
+
+			_isoTile[i * tileX + j].drawX = _isoTile[i * tileX + j].centerX - TILESIZEX / 2;
+			_isoTile[i * tileX + j].drawY = _isoTile[i * tileX + j].centerY - TILESIZEY / 2;
 		}
 	}
 }
@@ -146,7 +134,7 @@ void mapTool::ptInSample()
 	//샘플타일안에 마우스가 들어갔으면 표시해라
 	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
 	{
-		if (PtInRect(&_sample[i].rc, _ptMouse))
+		if (PtInRect(&_sample[i].rc, _cameraPtMouse))
 		{
 			_sample[i].inRect = true;
 		}
@@ -154,13 +142,13 @@ void mapTool::ptInSample()
 	}
 
 	//이건 아이소 타일 안에 마우스가 들어갔으면 표시 
+	//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
+	//이거 그냥 피킹쓰면 되니까 수정했어
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{
-		//마우스포인트가 아이소타일안에 들어왔는지 확인해줌
-		if (_ptMouse.x <= _isoTile[i].centerX + (TILESIZEX / 3) && _ptMouse.x >= _isoTile[i].centerX - (TILESIZEX / 3)
-			&& _ptMouse.y <= _isoTile[i].centerY + (TILESIZEY / 3) && _ptMouse.y >= _isoTile[i].centerY - (TILESIZEY / 3))
+		if (i == _pickingPt.y * TILEX + _pickingPt.x)
 		{
-			_isoTile[i].inRect = true;
+			_isoTile[i].inRect = true;			
 		}
 		else _isoTile[i].inRect = false;
 	}
@@ -171,11 +159,11 @@ void mapTool::createTile()
 	//새로운 타일을 만들어보즈아!!
 	for (int i = 0; i < SAMPLEX * SAMPLEY; ++i)
 	{
-		if (PtInRect(&_sample[i].rc, _ptMouse))
+		if (PtInRect(&_sample[i].rc, _cameraPtMouse))
 		{
 			_tempTile.fX = _sample[i].fX;
 			_tempTile.fY = _sample[i].fY;
-			break;
+			return;
 		}
 	}
 
@@ -224,7 +212,7 @@ void mapTool::createTile()
 
 void mapTool::save()
 {
-	if (PtInRect(&_saveBt, _ptMouse))
+	if (PtInRect(&_saveBt, _cameraPtMouse))
 	{
 		HANDLE file;
 		DWORD write;
@@ -232,12 +220,12 @@ void mapTool::save()
 		file = CreateFile("stage1.map", GENERIC_WRITE, NULL, NULL,
 			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
+		WriteFile(file, _isoTile, sizeof(isoTile) * TILEX * TILEY, &write, NULL);
 
 		CloseHandle(file);
 	}
 
-	if (PtInRect(&_saveBt2, _ptMouse))
+	if (PtInRect(&_saveBt2, _cameraPtMouse))
 	{
 		HANDLE file;
 		DWORD write;
@@ -245,12 +233,12 @@ void mapTool::save()
 		file = CreateFile("stage2.map", GENERIC_WRITE, NULL, NULL,
 			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
+		WriteFile(file, _isoTile, sizeof(isoTile) * TILEX * TILEY, &write, NULL);
 
 		CloseHandle(file);
 	}
 
-	if (PtInRect(&_saveBt3, _ptMouse))
+	if (PtInRect(&_saveBt3, _cameraPtMouse))
 	{
 		HANDLE file;
 		DWORD write;
@@ -258,7 +246,7 @@ void mapTool::save()
 		file = CreateFile("stage3.map", GENERIC_WRITE, NULL, NULL,
 			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &write, NULL);
+		WriteFile(file, _isoTile, sizeof(isoTile) * TILEX * TILEY, &write, NULL);
 
 		CloseHandle(file);
 	}
@@ -266,7 +254,7 @@ void mapTool::save()
 
 void mapTool::load()
 {
-	if (PtInRect(&_loadBt, _ptMouse))
+	if (PtInRect(&_loadBt, _cameraPtMouse))
 	{
 		HANDLE file;
 		DWORD read;
@@ -274,12 +262,12 @@ void mapTool::load()
 		file = CreateFile("stage1.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
+		ReadFile(file, _isoTile, sizeof(isoTile) * TILEX * TILEY, &read, NULL);
 
 		CloseHandle(file);
 	}
 
-	if (PtInRect(&_loadBt2, _ptMouse))
+	if (PtInRect(&_loadBt2, _cameraPtMouse))
 	{
 		HANDLE file;
 		DWORD read;
@@ -287,12 +275,12 @@ void mapTool::load()
 		file = CreateFile("stage2.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
+		ReadFile(file, _isoTile, sizeof(isoTile) * TILEX * TILEY, &read, NULL);
 
 		CloseHandle(file);
 	}
 
-	if (PtInRect(&_loadBt3, _ptMouse))
+	if (PtInRect(&_loadBt3, _cameraPtMouse))
 	{
 		HANDLE file;
 		DWORD read;
@@ -300,7 +288,7 @@ void mapTool::load()
 		file = CreateFile("stage3.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX * TILEY, &read, NULL);
+		ReadFile(file, _isoTile, sizeof(isoTile) * TILEX * TILEY, &read, NULL);
 
 		CloseHandle(file);
 	}
@@ -315,7 +303,7 @@ void mapTool::tempSave()
 	file = CreateFile("temp.map", GENERIC_WRITE, NULL, NULL,
 		CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-	WriteFile(file, _isoTile, sizeof(tagIsoTile) * TILEX*TILEY, &write, NULL);
+	WriteFile(file, _isoTile, sizeof(isoTile) * TILEX*TILEY, &write, NULL);
 
 	CloseHandle(file);
 }
@@ -329,7 +317,7 @@ void mapTool::tempLoad()
 		file = CreateFile("temp.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX*TILEY, &read, NULL);
+		ReadFile(file, _isoTile, sizeof(isoTile) * TILEX*TILEY, &read, NULL);
 
 		CloseHandle(file);
 }
@@ -343,19 +331,63 @@ void mapTool::fill(int x, int y)
 	}
 }
 
+void mapTool::cameraControl()
+{
+	_cameraPtMouse.x = _ptMouse.x + CAMX;
+	_cameraPtMouse.y = _ptMouse.y + CAMY;
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+	{
+		CAMERAMANAGER->setCameraX(CAMX - 5);
+		if (CAMX < 0) CAMERAMANAGER->setCameraX(0);
+		sampleTileMove();
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	{
+		CAMERAMANAGER->setCameraX(CAMX + 5);
+		if (CAMX > MAPSIZEX-WINSIZEX) CAMERAMANAGER->setCameraX(MAPSIZEX - WINSIZEX);
+		sampleTileMove();
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_UP))
+	{
+		CAMERAMANAGER->setCameraY(CAMY - 5);
+		if (CAMY < 0) CAMERAMANAGER->setCameraY(0);
+		sampleTileMove();
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+	{
+		CAMERAMANAGER->setCameraY(CAMY + 5);
+		if (CAMY > MAPSIZEY - WINSIZEY) CAMERAMANAGER->setCameraY(MAPSIZEY - WINSIZEY);
+		sampleTileMove();
+	}
+}
+
+void mapTool::sampleTileMove()
+{
+	for (int i = 0; i < SAMPLEY; ++i)
+	{
+		for (int j = 0; j < SAMPLEX; ++j)
+		{
+			_sample[i * SAMPLEX + j].rc = RectMake((WINSIZEX+CAMX - 256) + (j*TILESIZEX), CAMY + (i*TILESIZEY), TILESIZEX, TILESIZEY);
+		}
+	}
+}
+
 void mapTool::update()
 {
-	_pickingPt = picking(_ptMouse.x, _ptMouse.y);
+	_pickingPt = picking(_cameraPtMouse.x, _cameraPtMouse.y);
+	cameraControl();
+
+	imageInit();
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		if (PtInRect(&_undo, _ptMouse)) tempLoad();
+		if (PtInRect(&_undo, _cameraPtMouse)) tempLoad();
 		tempSave();
 		createTile();
 		save();
 		load();
 		moveUnMove();
-		if (PtInRect(&_fill, _ptMouse)) fill(_tempTile.fX, _tempTile.fY);
+		if (PtInRect(&_fill, _cameraPtMouse)) fill(_tempTile.fX, _tempTile.fY);
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
@@ -371,7 +403,9 @@ void mapTool::render()
 {
 	//아이소타일
 	for (int i = 0; i < TILEX * TILEY; ++i)
-	{
+	{ // 화면 밖의 맵은 그리지 않도록 함. 렉 방지용. 메인씬에도 이거 쓰고 시연떄도 이거 줄여서 보여줘도 될듯
+		if (_isoTile[i].centerX < CAMX - 32 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
+			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 16) continue;
 		if (_isoTile[i].inRect) IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
 		else IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
 	}
@@ -393,34 +427,34 @@ void mapTool::render()
 	//아래는 편의상 만든 숫자보이게하는거
 	char str[256];
 	sprintf_s(str, "TempTile X : %d , Y : %d", _tempTile.fX, _tempTile.fY);
-	TextOut(getMemDC(), 0, 70, str, strlen(str));
+	TextOut(getMemDC(), CAMX, CAMY+70, str, strlen(str));
 
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{
 		sprintf_s(str, "%d, %d", _isoTile[i].nX, _isoTile[i].nY);
-		if (KEYMANAGER->isToggleKey(VK_F1)) TextOut(getMemDC(), _isoTile[i].drawX + (TILEX + 5), _isoTile[i].drawY + (TILEY / 2), str, strlen(str));
+		if (KEYMANAGER->isToggleKey(VK_F1)) TextOut(getMemDC(), CAMX+ _isoTile[i].drawX + TILEX, CAMY+_isoTile[i].drawY + (TILEY / 2), str, strlen(str));
 	}
 
-	sprintf_s(str, "ptMouse X : %d , Y : %d", _pickingPt.x, _pickingPt.y);
-	TextOut(getMemDC(), 150, 70, str, strlen(str));
+	sprintf_s(str, "ptMouse X : %d , Y : %d", CAMX + _cameraPtMouse.x, CAMY + _cameraPtMouse.y);
+	TextOut(getMemDC(), CAMX+ 150, CAMY+ 70, str, strlen(str));
 }
 
 inline POINT mapTool::picking(long x, long y)
 { // 이게 피킹
 	int xx; int yy;
-	if (2 * y < (x - 682))	return { -1,0 }; // y=1/2x보다 위에있는지 (맵밖 벗어남)
-	if (2 * y < -(x - 682))	return { -1,0 }; // y=-1/2x보다 위에있는지 (맵밖 벗어남)
+	if (2 * y < (x - 960))	return { -1,0 }; // y=1/2x보다 위에있는지 (맵밖 벗어남)
+	if (2 * y < -(x - 960))	return { -1,0 }; // y=-1/2x보다 위에있는지 (맵밖 벗어남)
 	//-1이면 예외처리됨(키매니저 L버튼 참고)
 
 	// 왜 y=1/2x가 아니라 2y=x로 썼냐면 나눗셈연산이 느리기때문에 이렇게 쓴거임.
-	// 320은 TILEWIDTH * TILENUMX / 2 (=맵전체 가로크기의 절반값)와 같은데 부하를 줄이기 위해 계산하고 넣은것임
+	// 320은 TILEWIDTH * TILEX / 2 (=맵전체 가로크기의 절반값)와 같은데 부하를 줄이기 위해 계산하고 넣은것임
 
 	 // 64는 타일 높이(TILEHEIGHT)에 양변 2곱한값이며 이만큼씩 이격된(밑으로간) 직선이라 보면 됨
-	xx = (2 * y + (x - 682)) / 64; // y절편을 이용한 방식으로 바꾸었음
-	if (xx > 19) return { -1,0 }; // 맵밖 벗어난거면 예외처리
+	xx = (2 * y + (x - 960)) / 64; // y절편을 이용한 방식으로 바꾸었음
+	if (xx > 29) return { -1,0 }; // 맵밖 벗어난거면 예외처리
 
-	yy = (2 * y - (x - 682)) / 64; // 기울기만 음수고 나머진 상동
-	if (yy > 19) return { -1,0 };
+	yy = (2 * y - (x - 960)) / 64; // 기울기만 음수고 나머진 상동
+	if (yy > 29) return { -1,0 };
 
 	return { xx , yy };
 }

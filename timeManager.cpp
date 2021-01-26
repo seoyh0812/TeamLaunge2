@@ -34,7 +34,7 @@ void timeManager::update(float lock)
 	}
 }
 
-void timeManager::render(HDC hdc)
+void timeManager::render(HDC hdc, int x, int y)
 {
 	char str[256];
 	string frameRate;
@@ -43,18 +43,18 @@ void timeManager::render(HDC hdc)
 #ifdef _DEBUG
 	{
 		wsprintf(str, "framePerSec(FPS) : %d", _timer->getFrameRate());
-		TextOut(hdc, 0, 0, str, strlen(str));
+		TextOut(hdc, x, y, str, strlen(str));
 
 		sprintf_s(str, "worldTime : %f", _timer->getWorldTime());
-		TextOut(hdc, 0, 20, str, strlen(str));
+		TextOut(hdc, x, y+20, str, strlen(str));
 
 		sprintf_s(str, "elapsedTime : %f", _timer->getElapsedTime());
-		TextOut(hdc, 0, 40, str, strlen(str));
+		TextOut(hdc, x, y+40, str, strlen(str));
 	}
 	#else
 	{
 		wsprintf(str, "framePerSec(FPS) : %d", _timer->getFrameRate());
-		TextOut(hdc, 0, 0, str, strlen(str));
+		TextOut(hdc, x, y, str, strlen(str));
 	}
 #endif
 

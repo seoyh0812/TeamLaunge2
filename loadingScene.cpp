@@ -18,6 +18,8 @@ loadingScene::~loadingScene()
 
 HRESULT loadingScene::init()
 {
+	CAMERAMANAGER->setCameraX(0);
+	CAMERAMANAGER->setCameraY(0);
 	_loadingBar = new progressBar;
 	_loadingBar->init(0, WINSIZEY / 2 - 50, WINSIZEX, 50);
 	_loadingBar->setGauge(0, 0);
@@ -114,12 +116,12 @@ void loadingScene::imgLoaded()
 {
 	_soundLoaded = false;
 	++_currentCount;
-	Sleep(100);
+	Sleep(20);
 }
 
 void loadingScene::soundLoaded()
 {
 	_soundLoaded = true;
 	++_currentCount;
-	Sleep(100);
+	Sleep(20);
 }

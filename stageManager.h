@@ -1,6 +1,6 @@
 #pragma once
 #include "gameNode.h"
-#include "mapTool.h"
+#include "tile.h"
 
 enum STAGE
 {
@@ -17,7 +17,7 @@ enum STAGEMOVE
 class stageManager : public gameNode
 {
 private:
-	tagIsoTile _isoTile[TILEX*TILEY];
+	isoTile _isoTile[TILEX*TILEY];
 	STAGE _stage;
 	STAGEMOVE			_sMove[TILEX * TILEY];					//맵툴에서 가져온 속성이 무브인지 언무브인지 담아둘 곳
 
@@ -31,7 +31,7 @@ public:
 	virtual void render();	//그리기 전용
 
 	void setStage(STAGE stage);
-	tagIsoTile* getIsoTile() { return _isoTile; }
+	isoTile* getIsoTile() { return _isoTile; }
 	STAGEMOVE* getStageMove() { return _sMove; }
 };
 

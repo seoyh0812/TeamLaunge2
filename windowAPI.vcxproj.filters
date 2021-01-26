@@ -204,6 +204,12 @@
     <ClInclude Include="stageManager.h">
       <Filter>playGround\mainScene\stage</Filter>
     </ClInclude>
+    <ClInclude Include="tile.h">
+      <Filter>playGround\mapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraManager.h">
+      <Filter>2DGameFramework\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -364,6 +370,9 @@
     </ClCompile>
     <ClCompile Include="unit+commonUpdate.cpp">
       <Filter>playGround\mainScene\unit\unitInteraction</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraManager.cpp">
+      <Filter>2DGameFramework\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,8 @@ titleScene::~titleScene()
 
 HRESULT titleScene::init()
 {
+	CAMERAMANAGER->setCameraX(0);
+	CAMERAMANAGER->setCameraY(0);
 	return S_OK;
 }
 

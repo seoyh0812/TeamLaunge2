@@ -1,44 +1,9 @@
 #pragma once
 #include "gameNode.h"
-
-//타일 사이즈
-#define TILESIZEX 64
-#define TILESIZEY 32
-
-//타일 갯수
-#define TILEX 20
-#define TILEY 20
-
-//맵 사이즈
-#define MAPSIZEX TILESIZEX * TILEX
-#define MAPSIZEY TILESIZEY * TILEY
-
-//타일셋(샘플타일) 범위
-#define SAMPLEX 4
-#define SAMPLEY 5
+#include "tile.h"
 
 //멀까 이건
 #define ISO_UNMOVE UNMOVE
-
-enum moveUnMove
-{
-	MOVE, UNMOVE
-};
-
-//그려지는 iso타일
-struct tagIsoTile
-{
-	float drawX;
-	float drawY;
-	float centerX;
-	float centerY;
-	int nX;
-	int nY;
-	int fX;
-	int fY;
-	bool inRect;
-	moveUnMove MUM;
-};
 
 struct tagTilePoint
 {
@@ -64,7 +29,7 @@ struct tagSample
 class mapTool : public gameNode
 {
 private:
-	tagIsoTile		_isoTile[TILEX * TILEY];
+	isoTile		_isoTile[TILEX * TILEY];
 	tagTilePoint	_tilePoint;
 	tagSample		_sample[SAMPLEX * SAMPLEY];
 	tagTempTile		_tempTile;
@@ -85,6 +50,8 @@ private:
 
 	POINT			_pickingPt;
 
+	POINT			_cameraPtMouse; // 걍피티마우스말고 카메라위치 보정한 피티마우스
+
 	bool			_moveUnMove;
 	bool			_tempSaved;
 
@@ -97,7 +64,7 @@ public:
 	void update();
 	void render();
 
-	void createIsoMap(float x, float y, int tileX, int tileY);		//왼쪽에 베이스타일 깔아주는 함수
+	void createIsoMap(int tileX, int tileY);		//왼쪽에 베이스타일 깔아주는 함수
 	void createSampleTiles();										//샘플타일 깔아주는 함수
 	void ptInSample();												//샘플타일 안에 마우스가 들어갔을때
 	void createTile();												//타일을 새롭게 업데이트 해주는 함수
@@ -111,6 +78,9 @@ public:
 	void tempLoad();												//뒤로가기의 상황(?)을 불러와줌
 
 	void fill(int x, int y);										//전체 타일을 칠해주는 함수
+
+	void cameraControl();
+	void sampleTileMove();
 
 	inline POINT picking(long x, long y); // 피킹하는 함수
 };

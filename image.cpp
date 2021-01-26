@@ -595,3 +595,69 @@ void image::alphaFrameRender(HDC hdc, int destX, int destY, int currentFrameX, i
 			_imageInfo->frameWidth, _imageInfo->frameHeight, _blendFunc);
 	}
 }
+
+
+void image::resizedRender(HDC hdc, int destX, int destY, int sourWidth, int sourHeight)
+{
+	if (_trans)
+	{
+		TransparentBlt( // 찾아보니 요건 투명이랑 크기조정을 같이 해준다고 함
+			hdc,					// 출력할 위치의 핸들
+			destX,					// 출력할 위치XY
+			destY,
+			sourWidth,				// 출력할 너비, 높이
+			sourHeight,
+			_imageInfo->hMemDC,		// 이미지의 핸들
+			0, 0,					//복사해올 좌표 X, Y
+			_imageInfo->width,		//복사할 가로크기
+			_imageInfo->height,		//복사할 세로크기
+			_transColor);
+	}
+	else
+	{
+		StretchBlt( // 요건 크기조정만 가능
+			hdc,					// 출력할 위치의 핸들
+			destX,					// 출력할 위치XY
+			destY,
+			sourWidth,				// 출력할 너비, 높이
+			sourHeight,
+			_imageInfo->hMemDC,		// 이미지의 핸들
+			0, 0,					//복사해올 좌표 X, Y
+			_imageInfo->width,		//복사할 가로크기
+			_imageInfo->height,		//복사할 세로크기
+			SRCCOPY);
+	}
+}
+
+void image::resizedRender(HDC hdc, int destX, int destY, int sourX, int sourY, int sourWidth, int sourHeight
+	, int originalWidth, int originalHeight)
+{
+	if (_trans)
+	{
+		TransparentBlt( // 찾아보니 요건 투명이랑 크기조정을 같이 해준다고 함
+			hdc,					// 출력할 위치의 핸들
+			destX,					// 출력할 위치XY
+			destY,
+			sourWidth,				// 출력할 너비, 높이
+			sourHeight,
+			_imageInfo->hMemDC,		// 이미지의 핸들
+			sourX, sourY,					//복사해올 좌표 X, Y
+			originalWidth,				//복사할 가로크기
+			originalHeight,				//복사할 세로크기
+			_transColor);
+	}
+	else
+	{
+		StretchBlt( // 요건 크기조정만 가능
+			hdc,					// 출력할 위치의 핸들
+			destX,					// 출력할 위치XY
+			destY,
+			sourWidth,				// 출력할 너비, 높이
+			sourHeight,
+			_imageInfo->hMemDC,		// 이미지의 핸들
+			sourX, sourY,					//복사해올 좌표 X, Y
+			originalWidth,		//복사할 가로크기
+			originalHeight,		//복사할 세로크기
+			SRCCOPY);
+	}
+}

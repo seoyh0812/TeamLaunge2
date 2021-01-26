@@ -10,6 +10,7 @@
 class playGround : public gameNode
 {
 private:
+	int _x; int _y;
 	
 public:
 	playGround();

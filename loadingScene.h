@@ -3,7 +3,7 @@
 #include "progressBar.h"
 #include <string>
 
-#define LOADINGMAX 10
+#define LOADINGMAX 30
 
 class progressBar;
 

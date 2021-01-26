@@ -25,6 +25,7 @@
 #include "iniDataManager.h"
 #include "utils.h"
 #include "txtData.h"
+#include "cameraManager.h"
 
 using namespace std;
 using namespace TFIVE_UTIL;
@@ -36,8 +37,10 @@ using namespace TFIVE_UTIL;
 #define WINNAME (LPTSTR)(TEXT("25기 API"))
 #define WINSTARTX 50		//윈도우 시작좌표 X지점
 #define WINSTARTY 0		//윈도우 시작좌표 Y지점
-#define WINSIZEX 1656 		//윈도우 가로크기
-#define WINSIZEY 800		//윈도우 세로크기
+#define WINSIZEX 1200 		//윈도우 가로크기
+#define WINSIZEY 700		//윈도우 세로크기
+#define MAPSIZEX 1920
+#define MAPSIZEY 960
 #define WINSTYLE WS_CAPTION | WS_SYSMENU
 
 #define RND randomFunction::getSingleton()
@@ -50,6 +53,9 @@ using namespace TFIVE_UTIL;
 #define KEYANIMANAGER keyAniManager::getSingleton()
 #define TXTDATA txtData::getSingleton()
 #define INIDATA iniDataManager::getSingleton()
+#define CAMERAMANAGER cameraManager::getSingleton()
+#define CAMX cameraManager::getSingleton()->getCameraX()
+#define CAMY cameraManager::getSingleton()->getCameraY()
 
 
 #define FINDIMG imageManager::getSingleton()->findImage

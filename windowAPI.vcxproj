@@ -23,7 +23,7 @@
     <ProjectGuid>{19D559FB-F5D0-4C3C-9B48-720C72E962E0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>windowAPI</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="animation.h" />
     <ClInclude Include="button.h" />
+    <ClInclude Include="cameraManager.h" />
     <ClInclude Include="civilian.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="effect.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="stageManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="tile.h" />
     <ClInclude Include="timeManager.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="titleScene.h" />
@@ -191,6 +193,7 @@
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="button.cpp" />
+    <ClCompile Include="cameraManager.cpp" />
     <ClCompile Include="civilian.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectManager.cpp" />

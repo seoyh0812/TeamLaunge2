@@ -11,6 +11,8 @@ mainScene::~mainScene()
 
 HRESULT mainScene::init()
 {
+	CAMERAMANAGER->setCameraX(0);
+	CAMERAMANAGER->setCameraY(0);
 	_sm = new stageManager;
 	_sm->init();
 	_um = new unitManager;

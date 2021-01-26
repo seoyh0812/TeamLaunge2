@@ -11,7 +11,6 @@ stageManager::~stageManager()
 
 HRESULT stageManager::init()
 {
-	IMAGEMANAGER->addFrameImage("mapTiles", "image/maptool/iso256X160.bmp", 0, 0, 256, 160, 4, 5, true, RGB(255, 0, 255));
 	_stage = STAGE1;
 	setStage(_stage);
 	return S_OK;
@@ -58,7 +57,7 @@ void stageManager::setStage(STAGE stage)
 	case STAGE1:
 		file = CreateFile("stage1.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX*TILEY, &read, NULL);
+		ReadFile(file, _isoTile, sizeof(isoTile) * TILEX*TILEY, &read, NULL);
 		memset(_sMove, 0, sizeof(STAGEMOVE) * TILEX * TILEY);
 		for (int i = 0; i < TILEX * TILEY; ++i)
 		{
@@ -69,7 +68,7 @@ void stageManager::setStage(STAGE stage)
 	case STAGE2:
 		file = CreateFile("stage2.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX*TILEY, &read, NULL);
+		ReadFile(file, _isoTile, sizeof(isoTile) * TILEX*TILEY, &read, NULL);
 		memset(_sMove, 0, sizeof(STAGEMOVE) * TILEX * TILEY);
 		for (int i = 0; i < TILEX * TILEY; ++i)
 		{
@@ -80,7 +79,7 @@ void stageManager::setStage(STAGE stage)
 	case STAGE3:
 		file = CreateFile("stage3.map", GENERIC_READ, NULL, NULL,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-		ReadFile(file, _isoTile, sizeof(tagIsoTile) * TILEX*TILEY, &read, NULL);
+		ReadFile(file, _isoTile, sizeof(isoTile) * TILEX*TILEY, &read, NULL);
 		memset(_sMove, 0, sizeof(STAGEMOVE) * TILEX * TILEY);
 		for (int i = 0; i < TILEX * TILEY; ++i)
 		{
