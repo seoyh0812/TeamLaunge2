@@ -14,6 +14,12 @@ private:
 	skillNEffectManager*	_se;
 	interaction*			_ia;
 
+	RECT					_miniMap;
+	RECT					_camMap;
+
+	float					_camStartX, _camStartY;
+	float					_camEndX, _camEndY;
+
 public:
 	mainScene();
 	~mainScene();
@@ -23,6 +29,10 @@ public:
 	virtual void update();	//연산 전용
 	virtual void render();	//그리기 전용
 
+	void miniMap();
+
 	void uiRender();
+
+	
 };
 

@@ -39,6 +39,16 @@ HRESULT mainScene::init()
 	_se->createPsionic(S_PLAYER, 200, 200);
 
 	_um->setLinkSm(_sm);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
+
+	// 카메라 초기화입니당
+	_camStartX = 0;
+	_camStartY = WINSIZEY - WINSIZEY * 0.2;
+	_camEndX = WINSIZEX * 0.1;
+	_camEndY = WINSIZEY * 0.1;
+
+	_miniMap = RectMake(0, WINSIZEY - WINSIZEY * 0.2, WINSIZEX * 0.2, WINSIZEY * 0.2);
+	_camMap = RectMake(_camStartX, _camStartY, _camEndX, _camEndY);
+
 	return S_OK;
 }
 
@@ -64,6 +74,9 @@ void mainScene::update()
 			_um->getVUnit()[i]->setState(DEAD);
 		}
 	}
+
+	miniMap();
+
 }
 
 void mainScene::render()
@@ -74,5 +87,31 @@ void mainScene::render()
 	_se->render();
 
 	uiRender();
+
+	Rectangle(getMemDC(), _miniMap);
+	Rectangle(getMemDC(), _camMap);
+
 }
 
+void mainScene::miniMap()
+{
+	if (KEYMANAGER->isStayKeyDown(VK_UP) && _camMap.top > _miniMap.top)
+	{
+		OffsetRect(&_camMap, 0, -1);
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN) && _camMap.bottom < _miniMap.bottom)
+	{
+		OffsetRect(&_camMap, 0, 1);
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _camMap.left > _miniMap.left)
+	{
+		OffsetRect(&_camMap, -1, 0);
+	}
+
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _camMap.right < _miniMap.right)
+	{
+		OffsetRect(&_camMap, 1, 0);
+	}
+}
