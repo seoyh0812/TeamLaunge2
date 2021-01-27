@@ -16,13 +16,16 @@ HRESULT templar::init(BELONG belong, float x, float y)
 	_x = x; _y = y;
 	_speed = 2.0f;
 	_maxDelay = 300; // 대충 5초에 한대 치게끔
-	_damage = 0;
-	_maxHP = 70;
+	_afterImageFrame = _afterImageCount = _damage = 0;
+	_maxHP = 40;
 	_attackIndex = 2; // 2번 인덱스가 될때 공격판정
 	_width = 21;
 	_height = 26; // 일단은 대충 설정해놓은거임(이미지크기)
 
 	commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
+
+	_afterImage = _rc;
+
 	return S_OK;
 }
 
@@ -34,7 +37,26 @@ void templar::release()
 void templar::update()
 {
 	commonUpdate();
-	_rangeRc = RectMakeCenter(_x, _y, _width + 100, _height + 100);
+	_rangeRc = RectMakeCenter(_x, _y, _width + 200, _height + 200);
+
+	// 이하는 잔상그리기용
+	if (_state == WALK && (_x < _afterImage.left+5 ||
+		_x > _afterImage.right-5 ||
+		_y < _afterImage.top+5 ||
+		_y > _afterImage.bottom-5))
+	{
+		_afterImagePt.x = _afterImage.left;
+		_afterImagePt.y = _afterImage.top;
+		_afterImage = _rc;
+		_afterImageFrame = _afterImageCount = 0;
+		_afterImageFrameDirection = _frameDirection;
+	}
+	if (_afterImageCount < 6 && _afterImageFrame < 4) ++_afterImageCount;
+	else if (_afterImageCount > 5 && _afterImageFrame < 4)
+	{
+		_afterImageCount = 0;
+		++_afterImageFrame;
+	}
 }
 
 void templar::render()
@@ -42,8 +64,7 @@ void templar::render()
 	switch (_state)
 	{ // 위치 적당히 보정해서 쓸것
 	case WALK:
-		if (_frame == 0) _frame = 1; // 0번프레임이 이상함 ㅡㅡ
-		_image->frameRender(getMemDC(), _rc.left - 4, _rc.top - 6, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left - 4, _rc.top - 6, _frameDirection, 0);
 		break;
 	case ATTACKWAIT: // 첫번쨰 프레임으로 고정
 		if (_frame == 0) _frame = 1; // 0번프레임이 이상함 ㅡㅡ
@@ -56,6 +77,12 @@ void templar::render()
 		_image->frameRender(getMemDC(), _rc.left - 4, _rc.top - 23, _frame, 0);
 		break;
 	}
+
+	if (_afterImageFrame < 4)
+	{
+		FINDIMG("템플러잔상")->frameRender(getMemDC(), _afterImagePt.x - 4, _afterImagePt.y - 6, _afterImageFrameDirection, _afterImageFrame);
+	}
+	
 }
 
 void templar::setState(STATE state)
@@ -110,4 +137,4 @@ void templar::setState(STATE state)
 			break;
 		}
 	}
-} // 템플러잔상구현
+}

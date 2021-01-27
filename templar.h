@@ -4,6 +4,11 @@ class templar :
 	public unit
 {
 private:
+	RECT _afterImage;
+	POINT _afterImagePt;
+	int _afterImageFrame;
+	int _afterImageFrameDirection;
+	int _afterImageCount;
 
 public:
 	templar();

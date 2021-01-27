@@ -8,7 +8,8 @@ void unit::commonInit()
 	_deathDuration = 180; // 죽은다음 시체지속시간. 기본값은 3초인데 유닛에따라 줄일수있음(템플러참고)
 	_target = _tileNum = -1; // 없는 상태면 -1
 	// float
-	_angle = 0.f;
+	if (_belong == PLAYER) setAngle(0.f);
+	else setAngle(PI);
 	// bool
 	_attackReady = _erase = false;
 	_state = ATTACKWAIT; // 이거 안하면 처음에 WALK로 안하니 이미지를 못넣어서 터짐	

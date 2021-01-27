@@ -26,18 +26,18 @@ HRESULT mainScene::init()
 	_ia->smLink(_sm);
 	_ia->seLink(_se);
 
-	_um->createZergling(ENEMY, 300, 300);
-	_um->createZergling(ENEMY, 400, 300);
-	_um->createZergling(ENEMY, 200, 300);
-	_um->createZergling(PLAYER, 210, 270);
-	_um->createZergling(PLAYER, 310, 430);
-	_um->createZergling(PLAYER, 270, 400);
-	_um->createMarine(ENEMY, 200, 300);
-	_um->createMarine(PLAYER, 210, 270);
-	_um->createCivilian(ENEMY, 100, 300);
-	_um->createCivilian(PLAYER, 110, 270);
-	_um->createTemplar(ENEMY, 300, 380);
-	_um->createTemplar(PLAYER, 200, 380);
+	_um->createZergling(ENEMY, 800, 400);
+	_um->createZergling(ENEMY, 900, 400);
+	_um->createZergling(ENEMY, 700, 400);
+	_um->createZergling(PLAYER, 210, 370);
+	_um->createZergling(PLAYER, 310, 530);
+	_um->createZergling(PLAYER, 270, 500);
+	_um->createMarine(ENEMY, 800, 400);
+	_um->createMarine(PLAYER, 110, 370);
+	_um->createCivilian(ENEMY, 700, 400);
+	_um->createCivilian(PLAYER, 110, 370);
+	_um->createTemplar(ENEMY, 800, 480);
+	_um->createTemplar(PLAYER, 200, 480);
 
 	_um->setLinkSm(_sm);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
 
