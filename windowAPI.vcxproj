@@ -23,7 +23,7 @@
     <ProjectGuid>{19D559FB-F5D0-4C3C-9B48-720C72E962E0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>windowAPI</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -221,6 +221,12 @@
     <ClCompile Include="loadingScene.cpp" />
     <ClCompile Include="mainScene+uiRender.cpp" />
     <ClCompile Include="mainScene.cpp" />
+    <ClCompile Include="mapTool+button.cpp" />
+    <ClCompile Include="mapTool+camera.cpp" />
+    <ClCompile Include="mapTool+image.cpp" />
+    <ClCompile Include="mapTool+isoTile.cpp" />
+    <ClCompile Include="mapTool+object.cpp" />
+    <ClCompile Include="mapTool+saveLoad.cpp" />
     <ClCompile Include="mapTool.cpp" />
     <ClCompile Include="marine.cpp" />
     <ClCompile Include="playGround.cpp" />

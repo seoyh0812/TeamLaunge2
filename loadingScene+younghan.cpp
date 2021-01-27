@@ -48,5 +48,7 @@ void loadingScene::younghanInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("icon_zergling", "image/icon/icon_zergling.bmp", 80, 90, false, RGB(255, 0, 255));
 	imgLoaded();
+	IMAGEMANAGER->addImage("delAll", "image/maptool/delall.bmp", 64, 32, false, RGB(255, 0, 255));
+	imgLoaded();
 }
 

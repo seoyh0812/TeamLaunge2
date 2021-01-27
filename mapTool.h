@@ -61,6 +61,8 @@ private:
 	RECT			_menuRc;
 	RECT			_objDel;
 
+	RECT			_delAll;
+
 	RECT			_tree1;
 	RECT			_icZergling;
 	/////////////////////////////////////
@@ -107,6 +109,7 @@ public:
 	void tempLoad();												//뒤로가기의 상황(?)을 불러와줌
 
 	void fill(int x, int y);										//전체 타일을 칠해주는 함수
+	void objDelAll();												//오브젝트 전체를 지워주는 함수
 
 	void cameraControl();
 	void sampleTileMove();
