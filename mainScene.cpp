@@ -38,6 +38,8 @@ HRESULT mainScene::init()
 	_um->createCivilian(PLAYER, 110, 370);
 	_um->createTemplar(ENEMY, 800, 480);
 	_um->createTemplar(PLAYER, 200, 480);
+	_um->createBishop(ENEMY, 800, 400);
+	_um->createBishop(PLAYER, 200, 350);
 
 	_um->setLinkSm(_sm);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
 

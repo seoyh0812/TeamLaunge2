@@ -216,6 +216,9 @@
     <ClInclude Include="templar.h">
       <Filter>playGround\mainScene\unit\subclass</Filter>
     </ClInclude>
+    <ClInclude Include="bishop.h">
+      <Filter>playGround\mainScene\unit\subclass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -406,6 +409,9 @@
     </ClCompile>
     <ClCompile Include="mainScene+yoongho.cpp">
       <Filter>playGround\mainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="bishop.cpp">
+      <Filter>playGround\mainScene\unit\subclass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

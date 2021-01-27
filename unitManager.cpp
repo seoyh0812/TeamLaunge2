@@ -111,3 +111,10 @@ void unitManager::createTemplar(BELONG belong, float x, float y)
 	templ->init(belong, x, y);
 	_vUnit.push_back(templ);
 }
+
+void unitManager::createBishop(BELONG belong, float x, float y)
+{
+	bishop* bi = new bishop;
+	bi->init(belong, x, y);
+	_vUnit.push_back(bi);
+}
