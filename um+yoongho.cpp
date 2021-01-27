@@ -33,8 +33,8 @@ void unitManager::yoonghoUpdate()
 					_vUnit[i]->getTarget() = j;
 					_vUnit[j]->getTarget() = i;
 				}
-				int widthHalf = (temp.right - temp.left)/2 + 1;
-				int heightHalf = (temp.bottom - temp.top)/2 + 1;
+				int widthHalf = (temp.right - temp.left)/2;
+				int heightHalf = (temp.bottom - temp.top)/2;
 				if (widthHalf > heightHalf)
 				{ // 위아래로 부딪힌 경우임
 					if (_vUnit[i]->getY() < _vUnit[j]->getY())
@@ -42,20 +42,20 @@ void unitManager::yoonghoUpdate()
 						_vUnit[i]->getY() -= heightHalf;
 						_vUnit[j]->getY() += heightHalf;
 					} // 서로 반씩 미는걸로 해봄
-					else
+					else if(_vUnit[i]->getY() > _vUnit[j]->getY())
 					{
 						_vUnit[i]->getY() += heightHalf;
 						_vUnit[j]->getY() -= heightHalf;
 					}
 				}
-				else
+				else if (widthHalf < heightHalf)
 				{
 					if (_vUnit[i]->getX() < _vUnit[j]->getX())
 					{
 						_vUnit[i]->getX() -= widthHalf;
 						_vUnit[j]->getX() += widthHalf;
 					}
-					else
+					else if(_vUnit[i]->getX() > _vUnit[j]->getX())
 					{
 						_vUnit[i]->getX() += widthHalf;
 						_vUnit[j]->getX() -= widthHalf;
