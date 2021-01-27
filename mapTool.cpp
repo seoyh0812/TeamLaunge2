@@ -73,6 +73,7 @@ void mapTool::update()
 		if (PtInRect(&_undo, _cameraPtMouse)) tempLoad();
 		tempSave();
 		if (_pickingPt.x >= 0 && _pickingPt.y >= 0) createTile();
+		sampleInTemp();
 		save();
 		load();
 		moveUnMove();

@@ -58,5 +58,7 @@ void loadingScene::younghanInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("tree4", "image/maptool/tree4.bmp", 94, 128, true, RGB(255, 0, 255));
 	imgLoaded();
+	IMAGEMANAGER->addImage("tree5", "image/maptool/tree5.bmp", 76, 83, true, RGB(255, 0, 255));
+	imgLoaded();
 }
 

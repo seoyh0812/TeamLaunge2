@@ -29,7 +29,7 @@ enum menuNum
 
 enum objName
 {
-	NONE, TREE1, TREE2, TREE3, TREE4, ZERGLING = 11
+	NONE, TREE1, TREE2, TREE3, TREE4, TREE5, ZERGLING = 11
 };
 
 //그려지는 iso타일

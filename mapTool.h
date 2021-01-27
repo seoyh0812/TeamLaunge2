@@ -67,6 +67,7 @@ private:
 	RECT			_tree2;
 	RECT			_tree3;
 	RECT			_tree4;
+	RECT			_tree5;
 
 	RECT			_icZergling;
 	/////////////////////////////////////
@@ -106,6 +107,7 @@ public:
 	void createObj();												//타일에 오브젝트 속성을 넣어주는 것
 	void objDel();													//오브젝트 지우개
 	void menuInPt();												//메뉴 안에 마우스가 들어갔을때 타일 안찍히게 막음
+	void sampleInTemp();											//샘플 타일의 값을 템프에 담아주는 함수
 
 	void save();
 	void load();
