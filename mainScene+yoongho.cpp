@@ -4,6 +4,15 @@
 
 void mainScene::yoonghoUpdate()
 {
+	if (_ptMouse.x < 240 && _ptMouse.y > 580 && KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+	{
+		CAMERAMANAGER->setCameraX(8*_ptMouse.x - 600);
+		CAMERAMANAGER->setCameraY(8*_ptMouse.y-4990);
+		if (CAMX < 0) CAMERAMANAGER->setCameraX(0);
+		if (CAMY < 0) CAMERAMANAGER->setCameraY(0);
+		if (CAMX > MAPSIZEX - WINSIZEX) CAMERAMANAGER->setCameraX(MAPSIZEX - WINSIZEX);
+		if (CAMY > MAPSIZEY - WINSIZEY) CAMERAMANAGER->setCameraY(MAPSIZEY - WINSIZEY);
+	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_UP) && CAMY > 0)
 	{
@@ -27,5 +36,5 @@ void mainScene::yoonghoUpdate()
 		if (CAMY > MAPSIZEX - WINSIZEX) CAMERAMANAGER->setCameraX(MAPSIZEX - WINSIZEX);
 	}
 
-	_camMap = RectMake(CAMX + 240*CAMX/MAPSIZEX, 580 + CAMY + 120* CAMY/MAPSIZEY, 240* 5.f / 8.f, 120 * 35.f / 48.f);
+	_camMap = RectMake(CAMX + CAMX/8, 580 + CAMY + CAMY/8, 150, 175.f / 2.f);
 }

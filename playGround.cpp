@@ -41,6 +41,17 @@ void playGround::update()
 {
 	gameNode::update();
 
+	if (KEYMANAGER->isStayKeyDown(VK_ADD) && _x < 300)
+	{
+		_x += 12;
+		_y += 7;
+	}
+	if (KEYMANAGER->isStayKeyDown(VK_SUBTRACT) && _x > 0)
+	{
+		_x -= 12;
+		_y -= 7;
+	}
+
 	SCENEMANAGER->update();
 	
 }
@@ -48,11 +59,12 @@ void playGround::update()
 
 void playGround::render()
 {
-	PatBlt(getMemDC(), 0, 0, CAMX+WINSIZEX, CAMY + WINSIZEY, WHITENESS);
+	PatBlt(getMemDC(), 0, 0, CAMX + WINSIZEX, CAMY + WINSIZEY, WHITENESS);
 	//================ 위에 건들지 마라 ==============================
-	_backGround->render(getMemDC());
+	_backGround->render(getMemDC(), CAMX, CAMY);
 	SCENEMANAGER->render();
 	if (KEYMANAGER->isToggleKey(VK_TAB)) TIMEMANAGER->render(getMemDC(), CAMX, CAMY);
 	//================= 아래도 건들지 마라 ==============================
-	_backBuffer->render(getHDC(), 0, 0, CAMX, CAMY, WINSIZEX, WINSIZEY);
+	if (_x == 0) _backBuffer->render(getHDC(), 0, 0, CAMX, CAMY, WINSIZEX, WINSIZEY);
+	else _backBuffer->resizedRender(getHDC(), 0, 0, CAMX + _x, CAMY + _y, WINSIZEX, WINSIZEY, WINSIZEX - 2 * _x, WINSIZEY - 2 * _y);
 }

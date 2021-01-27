@@ -10,7 +10,7 @@
 class playGround : public gameNode
 {
 private:
-	int _x; int _y;
+	float _x; int _y;
 	image* _backGround;
 	
 public:
