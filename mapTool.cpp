@@ -72,7 +72,7 @@ void mapTool::update()
 	{
 		if (PtInRect(&_undo, _cameraPtMouse)) tempLoad();
 		tempSave();
-		createTile();
+		if (_pickingPt.x >= 0 && _pickingPt.y >= 0) createTile();
 		save();
 		load();
 		moveUnMove();
@@ -81,16 +81,16 @@ void mapTool::update()
 		renderSize();
 		if (_brushOn) leftRightBt();
 		ptInObj();
-		createObj();
+		if (_pickingPt.x >= 0 && _pickingPt.y >= 0) createObj();
 		if (PtInRect(&_objDel, _cameraPtMouse)) objDel();
 		if (PtInRect(&_delAll, _cameraPtMouse)) objDelAll();
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
-		createTile();
+		if (_pickingPt.x >= 0 && _pickingPt.y >= 0) createTile();
 		ptInObj();
-		createObj();
+		if (_pickingPt.x >= 0 && _pickingPt.y >= 0) createObj();
 	}
 	ptInIso();
 	if (KEYMANAGER->isOnceKeyDown(VK_F4)) SCENEMANAGER->changeScene("¸ŞÀÎ¾À");

@@ -34,6 +34,10 @@ void mapTool::imageInit()
 
 	//예는 menuRc안에 있어서 예외처리 필요없음
 	_tree1 = RectMake(CAMX + WINSIZEX - 512, CAMY, 107, 113);
+	_tree2 = RectMake(CAMX + WINSIZEX - 402, CAMY, 89, 115);
+	_tree3 = RectMake(CAMX + WINSIZEX - 312, CAMY, 84, 139);
+	_tree4 = RectMake(CAMX + WINSIZEX - 222, CAMY, 94, 128);
+
 	_icZergling = RectMake(CAMX + WINSIZEX - 512, CAMY, 80, 90);
 }
 
@@ -64,6 +68,21 @@ void mapTool::imageRender()
 				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
 				IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
 			}
+			else if (_isoTile[i].name == TREE2)
+			{
+				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
+				IMAGEMANAGER->findImage("tree2")->render(getMemDC(), _isoTile[i].drawX - 10, _isoTile[i].drawY - 90);
+			}
+			else if (_isoTile[i].name == TREE3)
+			{
+				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
+				IMAGEMANAGER->findImage("tree3")->render(getMemDC(), _isoTile[i].drawX - 12, _isoTile[i].drawY - 118);
+			}
+			else if (_isoTile[i].name == TREE4)
+			{
+				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
+				IMAGEMANAGER->findImage("tree4")->render(getMemDC(), _isoTile[i].drawX - 15, _isoTile[i].drawY - 105);
+			}
 			else if (_isoTile[i].name == ZERGLING)
 			{
 				IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 150);
@@ -80,11 +99,29 @@ void mapTool::imageRender()
 			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
 			IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
 		}
+		else if (_isoTile[i].name == TREE2)
+		{
+			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+			IMAGEMANAGER->findImage("tree2")->render(getMemDC(), _isoTile[i].drawX - 10, _isoTile[i].drawY - 90);
+		}
+		else if (_isoTile[i].name == TREE3)
+		{
+			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+			IMAGEMANAGER->findImage("tree3")->render(getMemDC(), _isoTile[i].drawX - 12, _isoTile[i].drawY - 118);
+		}
+		else if (_isoTile[i].name == TREE4)
+		{
+			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
+			IMAGEMANAGER->findImage("tree4")->render(getMemDC(), _isoTile[i].drawX - 15, _isoTile[i].drawY - 105);
+		}
 		else if (_isoTile[i].name == ZERGLING)
 		{
 			IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
 			IMAGEMANAGER->findImage("저글링이동퍼플")->frameRender(getMemDC(), _isoTile[i].drawX + 10, _isoTile[i].drawY - 5, 5, 0);
 		}
+
+		//언무브 타일 표시
+		if (_isoTile[i].MUM == UNMOVE) IMAGEMANAGER->findImage("un")->render(getMemDC(), _isoTile[i].drawX + 23, _isoTile[i].drawY + 7);
 	}
 
 	if (_brushOn)
@@ -111,6 +148,15 @@ void mapTool::imageRender()
 			_brush = CreateSolidBrush(RGB(255, 255, 255));
 			if (PtInRect(&_tree1, _cameraPtMouse)) FillRect(getMemDC(), &_tree1, _brush);
 			IMAGEMANAGER->findImage("tree")->render(getMemDC(), _tree1.left, _tree1.top);
+
+			if (PtInRect(&_tree2, _cameraPtMouse)) FillRect(getMemDC(), &_tree2, _brush);
+			IMAGEMANAGER->findImage("tree2")->render(getMemDC(), _tree2.left, _tree2.top);
+
+			if (PtInRect(&_tree3, _cameraPtMouse)) FillRect(getMemDC(), &_tree3, _brush);
+			IMAGEMANAGER->findImage("tree3")->render(getMemDC(), _tree3.left, _tree3.top);
+
+			if (PtInRect(&_tree4, _cameraPtMouse)) FillRect(getMemDC(), &_tree4, _brush);
+			IMAGEMANAGER->findImage("tree4")->render(getMemDC(), _tree4.left, _tree4.top);
 		}
 		else if (_menuNum == THREE)
 		{

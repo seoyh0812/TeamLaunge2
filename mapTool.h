@@ -64,6 +64,10 @@ private:
 	RECT			_delAll;
 
 	RECT			_tree1;
+	RECT			_tree2;
+	RECT			_tree3;
+	RECT			_tree4;
+
 	RECT			_icZergling;
 	/////////////////////////////////////
 	POINT			_pickingPt;
