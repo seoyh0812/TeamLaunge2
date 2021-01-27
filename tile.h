@@ -8,10 +8,6 @@
 #define TILEX 30
 #define TILEY 30
 
-//맵 사이즈
-#define MAPSIZEX TILESIZEX * TILEX
-#define MAPSIZEY TILESIZEY * TILEY
-
 //타일셋(샘플타일) 범위
 #define SAMPLEX 8
 #define SAMPLEY 12

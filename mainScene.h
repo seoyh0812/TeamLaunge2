@@ -14,11 +14,7 @@ private:
 	skillNEffectManager*	_se;
 	interaction*			_ia;
 
-	RECT					_miniMap;
 	RECT					_camMap;
-
-	float					_camStartX, _camStartY;
-	float					_camEndX, _camEndY;
 
 public:
 	mainScene();
@@ -31,6 +27,7 @@ public:
 
 	void miniMap();
 
+	void yoonghoUpdate();
 	void uiRender();
 
 	

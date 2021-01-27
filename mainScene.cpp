@@ -49,14 +49,6 @@ HRESULT mainScene::init()
 		}
 	}
 
-	// 카메라 초기화입니당
-	_camStartX = 0;
-	_camStartY = WINSIZEY - WINSIZEY * 0.2;
-	_camEndX = WINSIZEX * 0.1;
-	_camEndY = WINSIZEY * 0.1;
-
-	_miniMap = RectMake(0, WINSIZEY - WINSIZEY * 0.2, WINSIZEX * 0.2, WINSIZEY * 0.2);
-	_camMap = RectMake(_camStartX, _camStartY, _camEndX, _camEndY);
 
 	return S_OK;
 }
@@ -84,8 +76,7 @@ void mainScene::update()
 		}
 	}
 
-	miniMap();
-
+	yoonghoUpdate();
 }
 
 void mainScene::render()
@@ -97,30 +88,4 @@ void mainScene::render()
 
 	uiRender();
 
-	Rectangle(getMemDC(), _miniMap);
-	Rectangle(getMemDC(), _camMap);
-
-}
-
-void mainScene::miniMap()
-{
-	if (KEYMANAGER->isStayKeyDown(VK_UP) && _camMap.top > _miniMap.top)
-	{
-		OffsetRect(&_camMap, 0, -1);
-	}
-
-	if (KEYMANAGER->isStayKeyDown(VK_DOWN) && _camMap.bottom < _miniMap.bottom)
-	{
-		OffsetRect(&_camMap, 0, 1);
-	}
-
-	if (KEYMANAGER->isStayKeyDown(VK_LEFT) && _camMap.left > _miniMap.left)
-	{
-		OffsetRect(&_camMap, -1, 0);
-	}
-
-	if (KEYMANAGER->isStayKeyDown(VK_RIGHT) && _camMap.right < _miniMap.right)
-	{
-		OffsetRect(&_camMap, 1, 0);
-	}
 }

@@ -404,6 +404,9 @@
     <ClCompile Include="mapTool+object.cpp">
       <Filter>playGround\mapTool</Filter>
     </ClCompile>
+    <ClCompile Include="mainScene+yoongho.cpp">
+      <Filter>playGround\mainScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc">
