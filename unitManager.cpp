@@ -127,3 +127,10 @@ void unitManager::createBishop(BELONG belong, float x, float y)
 	bi->init(belong, x, y);
 	_vUnit.push_back(bi);
 }
+
+void unitManager::createGhost(BELONG belong, float x, float y)
+{
+	ghost* gt = new ghost;
+	gt->init(belong, x, y);
+	_vUnit.push_back(gt);
+}
