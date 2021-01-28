@@ -29,6 +29,8 @@ public:
 
 	stageManager*	_sm;
 
+	void reRender();
+
 	void chanhoUpdate();
 	void deokhoUpdate();
 	void hyunjeongUpdate();

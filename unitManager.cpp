@@ -58,6 +58,14 @@ void unitManager::render()
 	}
 }
 
+void unitManager::reRender()
+{ // 투명하게
+	for (int i = _vUnit.size() - 1; i > -1; --i)
+	{
+		_vUnit[i]->reRender();
+	}
+}
+
 void unitManager::deadErase()
 {
 	bool erased = true;
