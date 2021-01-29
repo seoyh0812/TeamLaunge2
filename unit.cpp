@@ -54,7 +54,7 @@ void unit::moveCancel()
 	if (_state == WALK)
 	{
 		_x -= _speed * cosf(_angle);
-		_y -= _speed * sinf(_angle);
+		_y += _speed * sinf(_angle);
 	}
 }
 

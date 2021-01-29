@@ -25,7 +25,7 @@ void unitManager::yoonghoUpdate()
 		// 유닛과유닛 렉트충돌
 		for (int j = 0; j < _vUnit.size(); ++j)
 		{
-			if (_vUnit[j]->getState() == DEAD || i==j) continue;
+			if (_vUnit[i]->getState() != WALK || _vUnit[j]->getState() == DEAD || i==j) continue;
 			if (IntersectRect(&temp, &_vUnit[j]->getRect(), &_vUnit[i]->getRect()))
 			{ // 그냥 렉트간 충돌
 				if (_vUnit[i]->getBelong() != _vUnit[j]->getBelong())
