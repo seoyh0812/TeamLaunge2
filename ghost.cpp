@@ -18,11 +18,13 @@ HRESULT ghost::init(BELONG belong, float x, float y)
 	_x = x; _y = y;
 	_speed = 2.0f;
 	_maxDelay = 120; // 대충 1초에 한대 치게끔
-	_damage = 15;
-	_maxHP = 20;
+	_damage = 18;
+	_maxHP = 45;
 	_attackIndex = 2; // 2번 인덱스가 될때 공격판정
 	_width = 21;
 	_height = 22; // 일단은 대충 설정해놓은거임(이미지크기)
+	_count = 0;
+	_used = false;
 
 	commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
 
@@ -41,11 +43,11 @@ void ghost::update()
 	_rangeRc = RectMakeCenter(_x, _y, _width + 500, _height + 500);
 	// 사거리 맞춰서 여기서 설정
 
-
-	// 이하는 저글링특성이니까 참고안해도 괜찮음
-	if (_HP / _maxHP <= 0.5f && _maxDelay == 60)
-	{ // 피가 50%이하면 공속2배
-		_maxDelay /= 2.f;
+	//현재 체력이 33%이하가 되면 체력의 절반을 회복한다
+	if (_HP < _maxHP / 3 && !_used)
+	{
+		_HP += _maxHP / 2;
+		_used = true;
 	}
 }
 
@@ -97,20 +99,20 @@ void ghost::setState(STATE state)
 		switch (_state)
 		{
 		case WALK:
-			_image = FINDIMG("ghost_move");
+			_image = FINDIMG("ghost_move_blue");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 		case ATTACKWAIT:
-			_image = FINDIMG("ghost_atk");
+			_image = FINDIMG("ghost_atk_blue");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 			// 저글링의경우 대기는 이동에서 y프레임 0으로만 쓸거임
 		case ATTACK:
-			_image = FINDIMG("ghost_atk");
+			_image = FINDIMG("ghost_atk_blue");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 		case DEAD:
-			_image = FINDIMG("ghost_dead");
+			_image = FINDIMG("ghost_dead_blue");
 			_maxFrame = _image->getMaxFrameX();
 			break; // 얘는 x임 가로로 재생하기떄문
 		}
@@ -120,20 +122,20 @@ void ghost::setState(STATE state)
 		switch (_state)
 		{
 		case WALK:
-			_image = FINDIMG("ghost_move");
+			_image = FINDIMG("ghost_move_red");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 		case ATTACKWAIT:
-			_image = FINDIMG("ghost_atk");
+			_image = FINDIMG("ghost_atk_red");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 			// 저글링의경우 대기는 이동에서 y프레임 0으로만 쓸거임
 		case ATTACK:
-			_image = FINDIMG("ghost_atk");
+			_image = FINDIMG("ghost_atk_red");
 			_maxFrame = _image->getMaxFrameY();
 			break;
 		case DEAD:
-			_image = FINDIMG("ghost_dead");
+			_image = FINDIMG("ghost_dead_red");
 			_maxFrame = _image->getMaxFrameX();
 			break;
 		}
