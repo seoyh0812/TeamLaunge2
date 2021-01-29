@@ -117,6 +117,7 @@ public:
 
 	void progressBarRender();
 	virtual void reRender();
+	void moveCancel(); // 이동했을테니 다시 돌려주는 함수(롤백)
 
 	virtual void setState(STATE state) = 0;
 	// 이건 유닛들마다 이미지가 다르므로 각각 만들어 씁시다.
@@ -148,5 +149,6 @@ public:
 	RECT getFocusRect() { return _focusRc; }
 	int& getTileNum() { return _tileNum; }
 	bool& getActive() { return _active; }
+	float getSpeed() { return _speed; }
 };
 
