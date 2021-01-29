@@ -60,7 +60,11 @@ void loadingScene::younghanInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("tree5", "image/maptool/tree5.bmp", 76, 83, true, RGB(255, 0, 255));
 	imgLoaded();
-	IMAGEMANAGER->addFrameImage("ghost_move", "image/unit/ghost/ghost_move.bmp", 320, 324, 8, 9, true, RGB(255, 0, 255));
+	IMAGEMANAGER->addFrameImage("ghost_move", "image/unit/ghost/ghost_move.bmp", 320, 324, 8, 9, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("ghost_atk", "image/unit/ghost/ghost_atk.bmp", 320, 144, 8, 4, true, RGB(255, 255, 0));
+	imgLoaded();
+	IMAGEMANAGER->addFrameImage("ghost_dead", "image/unit/ghost/ghost_dead.bmp", 280, 41, 5, 1, true, RGB(255, 255, 0));
 	imgLoaded();
 }
 
