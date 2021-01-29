@@ -81,6 +81,8 @@ private:
 	bool			_objDelOn;
 	bool			_menuInPt;
 
+	int _currentStage; // 몇 스테이지 작업중인지 (편의상 1,2,3)
+
 	renderSize		_rs;
 	menuNum			_menuNum;
 	objName			_objName;
