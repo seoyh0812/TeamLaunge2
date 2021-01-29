@@ -69,7 +69,15 @@ private:
 	RECT			_tree4;
 	RECT			_tree5;
 
+	/////////////////////////////////////
 	RECT			_icZergling;
+	RECT			_icMarine;
+	RECT			_icCivilian;
+	RECT			_icTemplar;
+	RECT			_icBishop;
+	RECT			_icDiablo;
+	RECT			_icSkeleton;
+	RECT			_icGhost;
 	/////////////////////////////////////
 	POINT			_pickingPt;
 
