@@ -55,7 +55,7 @@ void titleScene::update()
 
 		else if (PtInRect(&_exit, _ptMouse) == true)
 		{
-			// 나가는 함수 찾아서 적을예정
+			PostQuitMessage(0);
 		}
 	}
 }
