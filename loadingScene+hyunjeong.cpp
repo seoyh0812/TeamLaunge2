@@ -31,4 +31,8 @@ void loadingScene::hyunjeonghoInit()
 	imgLoaded();
 	IMAGEMANAGER->addFrameImage("해골병사 죽음", "image/unit/diablo_Bone/Bone_Dead.bmp", 640, 560, 8, 7, true, RGB(255, 0, 255));
 	imgLoaded();
+
+	//################## 디아블로 스킬 이펙트 ###################################################################
+	IMAGEMANAGER->addFrameImage("번개 이펙트", "image/sne/thunderEffect.bmp", 1339, 300, 11, 1, true, RGB(255, 0, 255));
+	imgLoaded();
 }
