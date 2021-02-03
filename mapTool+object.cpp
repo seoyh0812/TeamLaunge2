@@ -9,6 +9,10 @@ void mapTool::ptInObj()
 	else if (PtInRect(&_tree3, _cameraPtMouse) && _menuNum == TWO)	_objName = TREE3;
 	else if (PtInRect(&_tree4, _cameraPtMouse) && _menuNum == TWO)	_objName = TREE4;
 	else if (PtInRect(&_tree5, _cameraPtMouse) && _menuNum == TWO)	_objName = TREE5;
+	else if (PtInRect(&_wall1, _cameraPtMouse) && _menuNum == TWO)	_objName = WALL1;
+	else if (PtInRect(&_wall2, _cameraPtMouse) && _menuNum == TWO)	_objName = WALL2;
+	else if (PtInRect(&_wall3, _cameraPtMouse) && _menuNum == TWO)	_objName = WALL3;
+	else if (PtInRect(&_wall4, _cameraPtMouse) && _menuNum == TWO)	_objName = WALL4;
 	else if (PtInRect(&_playerFlagRc, _cameraPtMouse) && _menuNum == TWO)	_objName = PLAYERFLAG;
 	else if (PtInRect(&_enemyFlagRc, _cameraPtMouse) && _menuNum == TWO)	_objName = ENEMYFLAG;
 	else if (PtInRect(&_icZergling, _cameraPtMouse) && _menuNum == THREE)	_objName = ZERGLING;
@@ -66,6 +70,34 @@ void mapTool::createObj()
 			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE5;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+		else if (_objName == WALL1 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = WALL1;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+		else if (_objName == WALL2 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = WALL2;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+		else if (_objName == WALL3 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = WALL3;
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
+			InvalidateRect(_hWnd, NULL, false);
+		}
+		else if (_objName == WALL4 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
+		{
+			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = WALL4;
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
 			InvalidateRect(_hWnd, NULL, false);
 		}
