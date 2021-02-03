@@ -49,6 +49,8 @@ HRESULT mainScene::init()
 	//_um->createGhost(PLAYER, 250, 400);
 	//_um->createGhost(ENEMY, 1250, 650);
 
+	_um->createDiablo(ENEMY, 1250, 650);
+
 	return S_OK;
 }
 
