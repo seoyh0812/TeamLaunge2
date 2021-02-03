@@ -49,20 +49,6 @@ HRESULT mainScene::init()
 	//_um->createGhost(ENEMY, 1250, 650);
 
 	 _um->createDiablo(ENEMY, 400, 400);
-	/*for (int i = 0; i < _um->getVUnit().size(); i++) // 디아블로 소환실험 1번 (유닛메니저에 2번이 있습니다)
-	{
-		if (!_um->getVUnit()[i]->getID() == 6) continue;
-		if (_um->getVUnit()[i]->getID() == 6 &&
-			_um->getVUnit()[i]->getState() == ATTACK &&
-			_um->getVUnit()[i]->getState() != WALK &&
-			_um->getVUnit()[i]->getState() != ATTACKWAIT &&
-			_um->getVUnit()[i]->getState() != DEAD )
-		{
-			_um->createskeleton(ENEMY, _um->getVUnit()[i]->getX() + RND->getFromIntTo(10, 50), _um->getVUnit()[i]->getY() + RND->getFromIntTo(10, 50));
-			_um->createskeleton(ENEMY, _um->getVUnit()[i]->getX() + RND->getFromIntTo(10, 50), _um->getVUnit()[i]->getY() + RND->getFromIntTo(10, 50));
-		}
-	}*/
-
 
 	return S_OK;
 }
