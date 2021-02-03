@@ -126,7 +126,6 @@ private:
 	vector<tagMAStarTile*>::iterator _viOpenList;
 	vector<tagMAStarTile*>			_vCloseList;
 	vector<tagMAStarTile*>::iterator _viCloseList;
-	vector<int> _path;
 	int _startTile;		//시작타일의 번호
 	int _endTile;			//도착타일
 	int _currentTile;		//현재타일
@@ -148,6 +147,7 @@ public:
 public:
 	mapTool();
 	~mapTool();
+	vector<int> _path;
 
 	HRESULT init();
 	void release();
