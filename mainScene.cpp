@@ -11,6 +11,7 @@ mainScene::~mainScene()
 
 HRESULT mainScene::init()
 {
+	_backGround = IMAGEMANAGER->addImage("정글", "image/stage/jungle.bmp", 1920, 960, false, RGB(0, 0, 0));
 	CAMERAMANAGER->setCameraX(0);
 	CAMERAMANAGER->setCameraY((MAPSIZEY-WINSIZEY)/2);
 	_sm = new stageManager;
@@ -79,6 +80,7 @@ void mainScene::update()
 
 void mainScene::render()
 {// 서순이 왜 이런지 주석을 달았읍니다
+	_backGround->render(getMemDC());
 	_sm->render();			// 맵그려주구요
 	_ia->render();			// 이건 사실 안 그릴듯?
 	_um->render();			// 유닛그려줍니다
