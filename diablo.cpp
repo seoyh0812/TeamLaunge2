@@ -30,7 +30,6 @@ HRESULT diablo::init(BELONG belong, float x, float y)
 
 	//_isAttack = false;
 	//_isAttackCount = 0;
-
 	commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
 
 	return S_OK;
@@ -96,8 +95,10 @@ void diablo::setState(STATE state)
 		case ATTACK:
 			_image = FINDIMG("디아블로 소환");
 			_maxFrame = _image->getMaxFrameY();
+			PLAYSND("디아블로공격");
 			break;
 		case DEAD:
+			PLAYSND("디아블로사망");
 			_damage = 0; // 어차피 안쓸테니 죽었을때 카운트로 재활용한다(..)
 			_image = FINDIMG("디아블로 죽음");
 			_maxFrame = _image->getMaxFrameX();
