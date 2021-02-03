@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "interaction.h"
+#include "stageManager.h"
 
-vector<int> interaction::aStarPath(int fromTileNum, int toTileNum)
+vector<int> stageManager::aStarPath(int fromTileNum, int toTileNum)
 {
 	_path.clear();
 	_vTotalList.clear();
@@ -29,7 +29,7 @@ vector<int> interaction::aStarPath(int fromTileNum, int toTileNum)
 
 // #############################################################
 
-vector<tagAStarTile*> interaction::addOpenList(int currentTile)
+vector<tagAStarTile*> stageManager::addOpenList(int currentTile)
 {
 	int startX = currentTile % 30 - 1;
 	int startY = currentTile / 30 - 1;
@@ -49,28 +49,28 @@ vector<tagAStarTile*> interaction::addOpenList(int currentTile)
 			
 			//예외처리!
 			if (!aStarTile->isOpen) continue;
-			if (_sm->getIsoTile()[checkIndex].MUM == UNMOVE) continue;
+			if (_isoTile[checkIndex].MUM == UNMOVE) continue;
 			if (checkIndex == _startTile) continue;
 
 			// ##################월담 방지#############################
 			moveUnMove nodeTop;
 			if (startY < 0)				nodeTop = UNMOVE;
-			else nodeTop = _sm->getIsoTile()[(startY * 30) + startX + 1].MUM;
+			else nodeTop = _isoTile[(startY * 30) + startX + 1].MUM;
 			// 위막혀있으면 왼쪽위와 오른쪽 위를 못가게함 i==0위 i==2아래 j==0왼 j==2오른
 			if (i == 0 && nodeTop == UNMOVE)	continue;
 			moveUnMove nodeBottom;
 			if (startY + 2 >= 30)	nodeBottom = UNMOVE;
-			else nodeBottom = _sm->getIsoTile()[(startY * 30) + startX + 61].MUM;
+			else nodeBottom = _isoTile[(startY * 30) + startX + 61].MUM;
 			// 아래막혀있으면 왼쪽아래와 오른쪽 아래를 못가게함
 			if (i == 2 && nodeBottom == UNMOVE)	continue;
 			moveUnMove nodeLeft;
 			if (startX < 0)				nodeLeft = UNMOVE;
-			else nodeLeft = _sm->getIsoTile()[(startY * 30) + startX + 30].MUM;
+			else nodeLeft = _isoTile[(startY * 30) + startX + 30].MUM;
 			// 왼쪽막혀있으면 왼쪽위와 왼쪽아래를 못가게함
 			if (j == 0 && nodeLeft == UNMOVE)	continue;
 			moveUnMove nodeRight;
 			if (startX + 2 >= 30)	nodeRight = UNMOVE;
-			else nodeRight = _sm->getIsoTile()[(startY * 30) + startX + 32].MUM;
+			else nodeRight = _isoTile[(startY * 30) + startX + 32].MUM;
 			// 오른쪽막혀있으면 오른쪽위와 오른쪽 아래로 못가게함
 			if (j == 2 && nodeRight == UNMOVE)	continue;
 
@@ -96,7 +96,7 @@ vector<tagAStarTile*> interaction::addOpenList(int currentTile)
 	return _vOpenList;
 }
 
-void interaction::pathFinder(int currentTile)
+void stageManager::pathFinder(int currentTile)
 {
 	//경로비용을 매우 쉽게 하기 위해서 임의의 경로비용을 둠
 	int tempTotalCost = 5000;
