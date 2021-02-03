@@ -34,31 +34,36 @@ void mapTool::createObj()
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = NONE;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == TREE1 && !_objDelOn)
+		else if (_objName == TREE1 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE1;
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == TREE2 && !_objDelOn)
+		else if (_objName == TREE2 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE2;
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == TREE3 && !_objDelOn)
+		else if (_objName == TREE3 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE3;
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == TREE4 && !_objDelOn)
+		else if (_objName == TREE4 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG 
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE4;
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == TREE5 && !_objDelOn)
+		else if (_objName == TREE5 && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TREE5;
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM = UNMOVE;
@@ -78,27 +83,32 @@ void mapTool::createObj()
 			_enemyTile = _pickingPt.y * TILEX + _pickingPt.x;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == ZERGLING && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE)
+		else if (_objName == ZERGLING && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE 
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = ZERGLING;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == MARINE && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE)
+		else if (_objName == MARINE && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = MARINE;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == CIVILIAN && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE)
+		else if (_objName == CIVILIAN && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = CIVILIAN;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == TEMPLAR && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE)
+		else if (_objName == TEMPLAR && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = TEMPLAR;
 			InvalidateRect(_hWnd, NULL, false);
 		}
-		else if (_objName == BISHOP && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE)
+		else if (_objName == BISHOP && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = BISHOP;
 			InvalidateRect(_hWnd, NULL, false);
@@ -114,7 +124,8 @@ void mapTool::createObj()
 		//	_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = SKELETON;
 		//	InvalidateRect(_hWnd, NULL, false);
 		//}
-		else if (_objName == GHOST && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE)
+		else if (_objName == GHOST && !_objDelOn && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE
+			&& _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != PLAYERFLAG && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != ENEMYFLAG)
 		{
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = GHOST;
 			InvalidateRect(_hWnd, NULL, false);

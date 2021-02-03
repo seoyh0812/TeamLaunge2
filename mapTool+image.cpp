@@ -139,6 +139,9 @@ void mapTool::imageRender()
 			if (PtInRect(&_tree4, _cameraPtMouse)) FillRect(getMemDC(), &_tree4, _brush);
 			IMAGEMANAGER->findImage("tree4")->render(getMemDC(), _tree4.left, _tree4.top);
 
+			if (PtInRect(&_tree5, _cameraPtMouse)) FillRect(getMemDC(), &_tree5, _brush);
+			IMAGEMANAGER->findImage("tree5")->render(getMemDC(), _tree5.left, _tree5.top);
+
 			if (PtInRect(&_playerFlagRc , _cameraPtMouse)) FillRect(getMemDC(), &_playerFlagRc, _brush);
 			IMAGEMANAGER->findImage("플레이어깃발")->render(getMemDC(), _playerFlagRc.left, _playerFlagRc.top);
 
