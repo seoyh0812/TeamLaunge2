@@ -108,6 +108,10 @@ void stageManager::uiRender()
 	IMAGEMANAGER->findImage("ui_start")->render(getMemDC(), _startBt.left, _startBt.top);
 	IMAGEMANAGER->findImage("ui_home")->render(getMemDC(), _homeBt.left, _homeBt.top);
 	IMAGEMANAGER->findImage("ui_retry")->render(getMemDC(), _retryBt.left, _retryBt.top);
+	//스테이지 표시
+	if(_stage == STAGE1)	IMAGEMANAGER->findImage("ui_stage1")->render(getMemDC(), CAMX, CAMY);
+	else if (_stage == STAGE2)	IMAGEMANAGER->findImage("ui_stage2")->render(getMemDC(), CAMX, CAMY);
+	else if (_stage == STAGE3)	IMAGEMANAGER->findImage("ui_BossStage")->render(getMemDC(), CAMX, CAMY);
 
 	if(_onOff) IMAGEMANAGER->findImage("ui_on")->render(getMemDC(), _onBt.left, _onBt.top);
 	else IMAGEMANAGER->findImage("ui_off")->render(getMemDC(), _offBt.left, _offBt.top);
