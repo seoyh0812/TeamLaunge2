@@ -1,8 +1,20 @@
 #pragma once
 #include "gameNode.h"
+
+enum RESULT
+{
+	VICTORY,
+	DEFEAT
+};
+
 class endingScene : public gameNode
 {
 private:
+
+	bool _isGameOver;
+	RECT _mainSelectRc;
+	RECT _exitSelectRc;
+	RESULT _result;
 
 public:
 	endingScene();
