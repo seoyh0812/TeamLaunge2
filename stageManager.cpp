@@ -11,7 +11,7 @@ stageManager::~stageManager()
 
 HRESULT stageManager::init()
 {
-	_battlePhase = false;
+	_battlePhase = _isVictory = _isDefeat = false;
 	_menuInPt = false;
 	_onOff = true;
 	_pickUnit = P_NONE;
@@ -31,6 +31,7 @@ void stageManager::update()
 	uiRect();
 	ptInIso();
 	ptInMenu();
+	stageChange();
 
 	if (_alpha > 0) --_alpha;
 
@@ -51,22 +52,6 @@ void stageManager::update()
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
 		//if (_pickUnit != P_NONE && _onOff) createUnit();
-	}
-
-	if (KEYMANAGER->isOnceKeyDown(VK_F1))
-	{
-		_stage = STAGE1;
-		setStage(_stage);
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_F2))
-	{
-		_stage = STAGE2;
-		setStage(_stage);
-	}
-	if (KEYMANAGER->isOnceKeyDown(VK_F3))
-	{
-		_stage = STAGE3;
-		setStage(_stage);
 	}
 }
 
@@ -320,8 +305,8 @@ void stageManager::createUnit()
 			_gold = _tempGold;
 			PLAYSND("골드부족");
 		}
-		else // 생성 되었으니 경로할당함
-		{
+		else if (_pickUnit != P_NONE)
+		{ // 생성 되었으니 경로할당함
 			_isoTile[_pickingPt.y * TILEX + _pickingPt.x].name = PLAYEROCCUPIED; // NONE으로 검사했으니 통일해도 될듯
 			_um->getVUnit()[_um->getVUnit().size() - 1]->getTileNum() = _pickingPt.y * TILEX + _pickingPt.x;
 			_um->getVUnit()[_um->getVUnit().size() - 1]->setVPath(aStarPath(_pickingPt.y*TILEX + _pickingPt.x,
@@ -347,11 +332,11 @@ inline POINT stageManager::picking(long x, long y)
 
 void stageManager::setStage(STAGE stage)
 { // 적 유닛 생성도 요기서하기로 함
-	
+	_stage = stage;
 	HANDLE file;
 	DWORD read;
 
-	switch (stage)
+	switch (_stage)
 	{
 	case STAGE1:
 		file = CreateFile("stage1.map", GENERIC_READ, NULL, NULL,
@@ -375,11 +360,20 @@ void stageManager::setStage(STAGE stage)
 	_um->getVUnit().clear();
 	_gold = _tempGold = _isoTile[0].gold;
 	_battlePhase = false;
+	_onOff = true;
 
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{ // 서순 지켜야하므로 따로 뺌
-		if (_isoTile[i].name == PLAYERFLAG) _playerTile = i;
-		else if (_isoTile[i].name == ENEMYFLAG) _enemyTile = i;
+		if (_isoTile[i].name == PLAYERFLAG)
+		{
+			_playerTile = i;
+			_um->createFlag(PLAYER, _isoTile[i].centerX, _isoTile[i].centerY);
+		}
+		else if (_isoTile[i].name == ENEMYFLAG)
+		{
+			_enemyTile = i;
+			_um->createFlag(ENEMY, _isoTile[i].centerX, _isoTile[i].centerY);
+		}
 	}
 
 	for (int i = 0; i < TILEX * TILEY; ++i)
@@ -423,4 +417,42 @@ void stageManager::setStage(STAGE stage)
 			_um->getVUnit()[_um->getVUnit().size() - 1]->setVPath(aStarPath(i, _playerTile));
 		}
 	}
+}
+
+void stageManager::stageChange()
+{
+	if (!_battlePhase) return;
+	bool _playerFlagOn = false;
+	bool _enemyFlagOn = false;
+	for (int i = 0; i < _um->getVUnit().size(); ++i)
+	{ 
+		if (_um->getVUnit()[i]->getID() == 20 &&
+			_um->getVUnit()[i]->getBelong() == PLAYER)
+		{// 우리깃발이 있으면
+			_playerFlagOn = true;
+		}
+		if (_um->getVUnit()[i]->getID() == 20 &&
+			_um->getVUnit()[i]->getBelong() == ENEMY)
+		{// 상대깃발이 있으면
+			_enemyFlagOn = true;
+		}
+	}
+	if (!_playerFlagOn) // 우리 깃발 터졌다고..
+	{ // 디피트 온으로 바꿀 예정
+		switch (_stage)
+		{
+		case STAGE1: setStage(STAGE1);	break;
+		case STAGE2: setStage(STAGE2);	break;
+		case STAGE3: setStage(STAGE3);	break;
+		}
+	}
+	if (!_enemyFlagOn) // 상대 깃발 터뜨림
+	{ // 빅토리 온으로 바꿀 예정
+		switch (_stage)
+		{
+		case STAGE1: setStage(STAGE2);	break;
+		case STAGE2: setStage(STAGE3);	break;
+		case STAGE3: SCENEMANAGER->changeScene("엔딩씬"); break;
+		}
+	}	
 }
