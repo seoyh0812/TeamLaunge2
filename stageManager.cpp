@@ -91,7 +91,11 @@ void stageManager::objectRender()
 		else if (_isoTile[i].name == WALL1)    IMAGEMANAGER->findImage("wall1")->render(getMemDC(), _isoTile[i].drawX + 8, _isoTile[i].drawY - 18);
 		else if (_isoTile[i].name == WALL2)    IMAGEMANAGER->findImage("wall2")->render(getMemDC(), _isoTile[i].drawX + 24, _isoTile[i].drawY - 18);
 		else if (_isoTile[i].name == WALL3)    IMAGEMANAGER->findImage("wall1")->render(getMemDC(), _isoTile[i].drawX + 32, _isoTile[i].drawY - 28);
-		else if (_isoTile[i].name == WALL4)    IMAGEMANAGER->findImage("wall2")->render(getMemDC(), _isoTile[i].drawX + 4, _isoTile[i].drawY - 28); 
+		else if (_isoTile[i].name == WALL4)    IMAGEMANAGER->findImage("wall2")->render(getMemDC(), _isoTile[i].drawX + 4, _isoTile[i].drawY - 28);
+		else if (_isoTile[i].name == LAVA_OBJ1)	IMAGEMANAGER->findImage("lava_obj1")->render(getMemDC(), _isoTile[i].drawX + 4, _isoTile[i].drawY - 72);
+		else if (_isoTile[i].name == LAVA_OBJ3)	IMAGEMANAGER->findImage("lava_obj3")->render(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY - 25);
+		else if (_isoTile[i].name == LAVA_OBJ2_L)	IMAGEMANAGER->findImage("lava_obj2_l")->render(getMemDC(), _isoTile[i].drawX + 4, _isoTile[i].drawY - 60);
+		else if (_isoTile[i].name == LAVA_OBJ2_R)	IMAGEMANAGER->findImage("lava_obj2_r")->render(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY - 60);
 		else if (_isoTile[i].name == PLAYERFLAG)IMAGEMANAGER->findImage("플레이어깃발")->render(getMemDC(), _isoTile[i].centerX - 32, _isoTile[i].centerY - 118);
 		else if (_isoTile[i].name == ENEMYFLAG)	IMAGEMANAGER->findImage("에너미깃발")->render(getMemDC(), _isoTile[i].centerX - 32, _isoTile[i].centerY - 118);
 
@@ -408,8 +412,18 @@ void stageManager::setStage(STAGE stage)
 			_um->getVUnit()[_um->getVUnit().size() - 1]->getTileNum() = i;
 			_um->getVUnit()[_um->getVUnit().size() - 1]->setVPath(aStarPath(i, _playerTile));
 		}
-		//if (_isoTile[i].name == DIABLO)
-		//if (_isoTile[i].name == SKELETON)
+		else if (_isoTile[i].name == DIABLO)
+		{
+			_um->createDiablo(ENEMY, _isoTile[i].centerX, _isoTile[i].centerY);
+			_um->getVUnit()[_um->getVUnit().size() - 1]->getTileNum() = i;
+			_um->getVUnit()[_um->getVUnit().size() - 1]->setVPath(aStarPath(i, _playerTile));
+		}
+		else if (_isoTile[i].name == SKELETON)
+		{
+			_um->createSkeleton(ENEMY, _isoTile[i].centerX, _isoTile[i].centerY);
+			_um->getVUnit()[_um->getVUnit().size() - 1]->getTileNum() = i;
+			_um->getVUnit()[_um->getVUnit().size() - 1]->setVPath(aStarPath(i, _playerTile));
+		}
 		else if (_isoTile[i].name == GHOST)
 		{
 			_um->createGhost(ENEMY, _isoTile[i].centerX, _isoTile[i].centerY);
