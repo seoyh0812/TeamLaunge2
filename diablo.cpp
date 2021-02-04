@@ -43,8 +43,8 @@ void diablo::update()
 {
 	commonUpdate();
 	_summonRc = RectMakeCenter(_x + 40, _y + 90, 180, 180);
-	_rangeRc = RectMakeCenter(_x, _y, _width + 500, _height + 500);
-	_focusRc = RectMakeCenter(_x, _y, _width + 500, _height + 500);
+	_rangeRc = RectMakeCenter(_x, _y, _width + 600, _height + 600);
+	_focusRc = RectMakeCenter(_x, _y, _width + 200, _height + 200);
 }
 
 void diablo::render()
@@ -54,17 +54,17 @@ void diablo::render()
 	case WALK:
 		//Rectangle(getMemDC(), _summonRc);
 		//Rectangle(getMemDC(), _rangeRc);
-		_image->frameRender(getMemDC(), _rc.left - 65, _rc.top - 41, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left, _rc.top , _frameDirection, _frame);
 		break;
 	case ATTACKWAIT: // 첫번쨰 프레임으로 고정
 		//Rectangle(getMemDC(), _summonRc);
 		//Rectangle(getMemDC(), _rangeRc);
-		_image->frameRender(getMemDC(), _rc.left - 90, _rc.top - 72, _frameDirection, 0);
+		_image->frameRender(getMemDC(), _rc.left, _rc.top , _frameDirection, 5);
 		break;
 	case ATTACK:
 		//Rectangle(getMemDC(), _summonRc);
 		//Rectangle(getMemDC(), _rangeRc);
-		_image->frameRender(getMemDC(), _rc.left - 90, _rc.top - 72, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left - 30, _rc.top - 30, _frameDirection, _frame);
 		break;
 	case DEAD: // 프레임인덱스 다르게 도니까 주의
 		//Rectangle(getMemDC(), _summonRc);

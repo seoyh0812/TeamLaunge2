@@ -62,7 +62,7 @@ void skeleton::render()
 		break;
 	case DEAD: // ÇÁ·¹ÀÓÀÎµ¦½º ´Ù¸£°Ô µµ´Ï±î ÁÖÀÇ
 		//Rectangle(getMemDC(), _rangeRc);
-		_image->frameRender(getMemDC(), _rc.left - 18, _rc.top - 8, _frame, 0);
+		_image->frameRender(getMemDC(), _rc.left - 18, _rc.top - 8, _frameDirection, _frame);
 		break;
 	}
 
@@ -111,7 +111,7 @@ void skeleton::setState(STATE state)
 		case DEAD:
 			PLAYSND("½ºÄÌ·¹Åæ»ç¸Á");
 			_image = FINDIMG("ÇØ°ñº´»ç Á×À½");
-			_maxFrame = _image->getMaxFrameX();
+			_maxFrame = _image->getMaxFrameY();
 			break;
 		}
 	}

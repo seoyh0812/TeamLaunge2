@@ -47,9 +47,9 @@ HRESULT mainScene::init()
 	_um->createBishop(ENEMY, 1200, 600);
 	_um->createBishop(PLAYER, 200, 350);
 	_um->createGhost(PLAYER, 250, 400);
-	_um->createGhost(ENEMY, 1250, 650);
+	_um->createGhost(ENEMY, 1250, 650);*/
 
-	_um->createDiablo(ENEMY, 550, 550);*/
+	// _um->createDiablo(ENEMY, 650, 450);
 
 	return S_OK;
 }
