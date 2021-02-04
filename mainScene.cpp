@@ -26,7 +26,7 @@ HRESULT mainScene::init()
 	_ia->umLink(_um);
 	_ia->smLink(_sm);
 	_ia->seLink(_se);
-
+	_sm->seLink(_se);								//스테이지 이동과함께 지우려고
 	_sm->umLink(_um);								//유닛 매니저와 스테이지 매니저를 링크로 연결해줌
 	_sm->setStage(STAGE1);
 

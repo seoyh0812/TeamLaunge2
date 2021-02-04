@@ -257,7 +257,7 @@ void stageManager::createUnit()
 		&& !_menuInPt && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name == NONE)
 	{
 		if (getDistance(_isoTile[_playerTile].centerX, _isoTile[_playerTile].centerY,
-			_cameraPtMouse.x, _cameraPtMouse.y) > 400)
+			_cameraPtMouse.x, _cameraPtMouse.y) > 400 || _pickingPt.x < 0)
 		{
 			PLAYSND("배치실패");
 			return;
@@ -369,6 +369,7 @@ void stageManager::setStage(STAGE stage)
 		break;
 	}
 	_um->getVUnit().clear();
+	_se->getVSne().clear();
 	_gold = _tempGold = _isoTile[0].gold;
 	_battlePhase = false;
 	_onOff = true;
@@ -386,6 +387,12 @@ void stageManager::setStage(STAGE stage)
 			_um->createFlag(ENEMY, _isoTile[i].centerX, _isoTile[i].centerY);
 		}
 	}
+	// 화면이동
+	CAMERAMANAGER->setCameraX(_isoTile[_playerTile].centerX - 600);
+	if (CAMX < 0) CAMERAMANAGER->setCameraX(0);
+	CAMERAMANAGER->setCameraY(_isoTile[_playerTile].centerY - 350);
+	if (CAMY < 0) CAMERAMANAGER->setCameraY(0);
+
 
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{
