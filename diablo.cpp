@@ -69,7 +69,7 @@ void diablo::render()
 	case DEAD: // 프레임인덱스 다르게 도니까 주의
 		//Rectangle(getMemDC(), _summonRc);
 		//Rectangle(getMemDC(), _rangeRc);
-		//_image->frameRender(getMemDC(), _rc.left - 18, _rc.top - 8,  _frame , 0);
+		_image->frameRender(getMemDC(), _rc.left - 18, _rc.top - 8,  _frame , 0);
 		break;
 	}
 }
@@ -101,8 +101,8 @@ void diablo::setState(STATE state)
 		case DEAD:
 			PLAYSND("디아블로사망");
 			_damage = 0; // 어차피 안쓸테니 죽었을때 카운트로 재활용한다(..)
-			//_image = FINDIMG("디아블로 죽음"); 이미지 추가하면 주석해제할것
-			//_maxFrame = _image->getMaxFrameX();
+			_image = FINDIMG("디아블로 죽음");
+			_maxFrame = _image->getMaxFrameX();
 			break; // 얘는 x임 가로로 재생하기떄문
 		}
 	}
