@@ -141,6 +141,10 @@ void stageManager::uiRender()
 			FINDIMG("가이드타일")->alphaRender(getMemDC(), _isoTile[_path[i]].drawX, _isoTile[_path[i]].drawY, _alpha);
 		}
 	}
+	if (!_battlePhase)
+	{		
+		FINDIMG("배치가능")->alphaRender(getMemDC(), _isoTile[_playerTile].centerX - 400, _isoTile[_playerTile].centerY - 400, 30);
+	}
 }
 
 void stageManager::uiRect()
@@ -248,6 +252,12 @@ void stageManager::createUnit()
 {
 	if (_battlePhase) return;
 	//언무브 타일에는 안깔립니당
+	if (getDistance(_isoTile[_playerTile].centerX, _isoTile[_playerTile].centerY,
+		_cameraPtMouse.x, _cameraPtMouse.y) > 400)
+	{
+		PLAYSND("배치실패");
+		return;
+	}
 	if (_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE 
 		&& !_menuInPt && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name == NONE)
 	{
