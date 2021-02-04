@@ -196,15 +196,7 @@ void stageManager::clearBt()
 {
 	if (PtInRect(&_clearBt, _cameraPtMouse) && !_battlePhase)
 	{
-		for (int i = 0; i < _um->getVUnit().size(); ++i)
-		{
-			if(_um->getVUnit()[i]->getBelong() == PLAYER)	_um->getVUnit()[i]->getErase() = true;
-		}
-		_gold = _isoTile[0].gold;
-	}
-	for (int i = 0; i < 900; ++i)
-	{
-		if (_isoTile[i].name == PLAYEROCCUPIED) _isoTile[i].name = NONE;
+		setStage(_stage);
 	}
 }
 
