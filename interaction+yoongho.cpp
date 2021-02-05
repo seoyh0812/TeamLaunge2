@@ -157,11 +157,11 @@ void interaction::yoonghoUpdate()
             {   // ºê·¹½º
                 if (_um->getVUnit()[i]->getBelong() == PLAYER)
                 {
-                    _se->createNEffect(S_PLAYER, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
+                    _se->createfire(S_PLAYER, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
                 }
                 if (_um->getVUnit()[i]->getBelong() == ENEMY)
                 {
-                    _se->createNEffect(S_ENEMY, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
+                    _se->createfire(S_ENEMY, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
                 }
             }
             else if (_um->getVUnit()[i]->getID() == 10)
