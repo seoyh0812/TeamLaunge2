@@ -157,13 +157,6 @@ void mapTool::update()
 		InvalidateRect(_hWnd, NULL, false);
 	}
 
-	// _isoTile[1].gold에 배경을 지정해서 저장(골드처럼 저장 잘됨. sm에서 읽으면 됨)
-	// 임시적으로 변경할수 있게 해놨음. 나중에 누르면 _isoTile[1].gold만 바꾸게 하면 잘 됨
-	if (KEYMANAGER->isOnceKeyDown('Q'))
-	{
-		_isoTile[1].gold += 1;
-		if (_isoTile[1].gold > 6) _isoTile[1].gold = 0;
-	}
 
 	numberInput();
 }
