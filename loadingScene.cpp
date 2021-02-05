@@ -66,7 +66,9 @@ void loadingScene::render()
 	{
 		strcpy_s(cstr, SOUNDMANAGER->getLatestAdded().c_str());
 	}
-	TextOut(getMemDC(), 0, WINSIZEY -50, cstr, strlen(cstr));
+	TextOut(getMemDC(), 0, WINSIZEY -70, cstr, strlen(cstr));
+	sprintf_s(cstr, "진행상황 : %d/%d", _currentCount, LOADINGMAX);
+	TextOut(getMemDC(), 0, WINSIZEY - 50, cstr, strlen(cstr));
 }
 
 
@@ -84,9 +86,10 @@ DWORD CALLBACK threadFunction(LPVOID lpParameter)
 	loadingHelper->younghanInit();
 
 
+	//Sleep(1000);
+
 	// 로딩 완료시
 	loadingHelper->_loadingEnd = true;
-
 	return 0;
 }
 

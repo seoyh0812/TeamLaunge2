@@ -144,7 +144,7 @@ void stageManager::objectRender()
 	for (int i = 0; i < TILEX * TILEY; ++i)
 	{
 		if (_isoTile[i].centerX < CAMX - 32 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
-			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 16) continue;
+			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 120) continue;
 
 		else if (_isoTile[i].name == TREE1)	IMAGEMANAGER->findImage("tree")->render(getMemDC(), _isoTile[i].drawX - 32, _isoTile[i].drawY - 90);
 		else if (_isoTile[i].name == TREE2)	IMAGEMANAGER->findImage("tree2")->render(getMemDC(), _isoTile[i].drawX - 10, _isoTile[i].drawY - 90);
@@ -265,6 +265,7 @@ void stageManager::startBt()
 		_battlePhase = true;
 		_um->setActive();
 		_onOff = false;
+		_alpha = 0;
 	}
 }
 
@@ -332,11 +333,12 @@ void stageManager::createUnit()
 	if (_battlePhase || _isVictory || _isDefeat) return;
 	//언무브 타일에는 안깔립니당
 	
-	if (_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE 
-		&& !_menuInPt && _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name == NONE)
+	if (!_menuInPt)
 	{
 		if (getDistance(_isoTile[_playerTile].centerX, _isoTile[_playerTile].centerY,
-			_cameraPtMouse.x, _cameraPtMouse.y) > 400 || _pickingPt.x < 0)
+			_cameraPtMouse.x, _cameraPtMouse.y) > 400 || _pickingPt.x < 0
+			|| _isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM == UNMOVE
+			|| _isoTile[_pickingPt.y * TILEX + _pickingPt.x].name != NONE)
 		{
 			PLAYSND("배치실패");
 			return;

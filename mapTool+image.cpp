@@ -91,8 +91,14 @@ void mapTool::imageRender()
 		else
 
 		if (_isoTile[i].centerX < CAMX - 32 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
-			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 16) continue;
+			_isoTile[i].centerY < CAMY - 16 || _isoTile[i].centerY > CAMY + WINSIZEY + 120) continue;
 		
+		if (KEYMANAGER->isToggleKey(VK_F2))
+		{ // 시연용키임. 이게 켜져 있으면 좀 더 안에도 안그려서 맵밖 안그려주는거 보여주는 기능임(부하줄이려고 이렇게 했습니다~)이렇게
+			if (_isoTile[i].centerX < CAMX + 150 || _isoTile[i].centerX > CAMX + WINSIZEX + 32 ||
+				_isoTile[i].centerY < CAMY + 150 || _isoTile[i].centerY > CAMY + WINSIZEY + 120) continue;
+		}
+
 		//아이소 타일 그려줌
 		if (_isoTile[i].inRect)	IMAGEMANAGER->findImage("mapTiles")->alphaFrameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY, 100);
 		else IMAGEMANAGER->findImage("mapTiles")->frameRender(getMemDC(), _isoTile[i].drawX, _isoTile[i].drawY, _isoTile[i].fX, _isoTile[i].fY);
