@@ -32,7 +32,7 @@ void interaction::yoonghoUpdate()
 				RECT temp;
 				if (IntersectRect(&temp, &_um->getVUnit()[j]->getRect(), &_se->getVSne()[i]->getRect()))
 				{
-					_um->getVUnit()[j]->getHP() += 0.1f;					
+					_um->getVUnit()[j]->getHP() += 0.05f;					
 				}
 			}
 		}
@@ -95,11 +95,11 @@ void interaction::yoonghoUpdate()
 			{ // ºñ¼óÀÌ¸é ÈúÀåÆÇ »ý¼º
 				if (_um->getVUnit()[i]->getBelong() == PLAYER)
 				{ 
-					_se->createHeal(S_PLAYER, _um->getVUnit()[i]->getX(), _um->getVUnit()[i]->getY());
+					_se->createHeal(S_ENEMY, _um->getVUnit()[i]->getX(), _um->getVUnit()[i]->getY());
 				}
 				if (_um->getVUnit()[i]->getBelong() == ENEMY)
 				{
-					_se->createHeal(S_ENEMY, _um->getVUnit()[i]->getX(), _um->getVUnit()[i]->getY());
+					_se->createHeal(S_PLAYER, _um->getVUnit()[i]->getX(), _um->getVUnit()[i]->getY());
 				}
 			}
 			else if (_um->getVUnit()[i]->getID() == 6)

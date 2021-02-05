@@ -183,6 +183,20 @@ void unitManager::createSkeleton(BELONG belong, float x, float y)
 	_vUnit.push_back(sk);
 }
 
+void unitManager::createDragon(BELONG belong, float x, float y)
+{
+    dragon* dr = new dragon;
+    dr->init(belong, x, y);
+    _vUnit.push_back(dr);
+}
+
+void unitManager::createNaruto(BELONG belong, float x, float y)
+{
+    naruto* na = new naruto;
+    na->init(belong, x, y);
+    _vUnit.push_back(na);
+}
+
 void unitManager::createFlag(BELONG belong, float x, float y)
 {
 	flagUnit* fl = new flagUnit;
