@@ -60,9 +60,6 @@ void mapTool::createIsoMap(int tileX, int tileY)
 			_isoTile[i * tileX + j].centerX = TILESIZEX * (TILEX + (j - i))/2;
 			_isoTile[i * tileX + j].centerY = TILESIZEY * (i + j + 1) / 2;
 
-			_isoTile[i * tileX + j].pt.x = TILESIZEX * (TILEX + (j - i)) / 2;
-			_isoTile[i * tileX + j].pt.y = TILESIZEY * (i + j + 1) / 2;
-
 			_isoTile[i * tileX + j].drawX = _isoTile[i * tileX + j].centerX - TILESIZEX / 2;
 			_isoTile[i * tileX + j].drawY = _isoTile[i * tileX + j].centerY - TILESIZEY / 2;
 		}
