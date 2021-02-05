@@ -357,7 +357,7 @@ void stageManager::createUnit()
 		if (_pickUnit == P_ZERGLING )
 		{
 			_gold -= 100; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createZergling(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX - 2, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 5);
 			}
@@ -365,7 +365,7 @@ void stageManager::createUnit()
 		else if (_pickUnit == P_MARINE)
 		{
 			_gold -= 150; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createMarine(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX - 2, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 5);
 			}
@@ -373,7 +373,7 @@ void stageManager::createUnit()
 		else if (_pickUnit == P_CIVILIAN)
 		{
 			_gold -= 70; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createCivilian(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX - 2, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 5);
 			}
@@ -381,7 +381,7 @@ void stageManager::createUnit()
 		else if (_pickUnit == P_TEMPLAR)
 		{
 			_gold -= 200; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createTemplar(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX - 2, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 9);
 			}
@@ -389,7 +389,7 @@ void stageManager::createUnit()
 		else if (_pickUnit == P_BISHOP)
 		{
 			_gold -= 200; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createBishop(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX + 5, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 5);
 			}
@@ -397,7 +397,7 @@ void stageManager::createUnit()
 		else if (_pickUnit == P_GHOST)
 		{
 			_gold -= 150; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createGhost(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX - 2, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 2);
 			}
@@ -405,7 +405,7 @@ void stageManager::createUnit()
 		else if (_pickUnit == P_DRAGON)
 		{
 			_gold -= 250; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createDragon(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX - 2, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 2);
 			}
@@ -413,7 +413,7 @@ void stageManager::createUnit()
 		else if (_pickUnit == P_NARUTO)
 		{
 			_gold -= 800; //РЏДж АЁАн
-			if (_gold > 0)
+			if (_gold >= 0)
 			{
 				_um->createNaruto(PLAYER, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerX - 2, _isoTile[_pickingPt.y * TILEX + _pickingPt.x].centerY - 2);
 			}

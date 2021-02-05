@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "loadingScene.h"
+#define ADDS SOUNDMANAGER->addSound
 
 void loadingScene::younghanInit()
 {
@@ -142,5 +143,8 @@ void loadingScene::younghanInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("ui_BossStage", "image/ui/ui_bossstage.bmp", 80, 30, false, RGB(255, 0, 255));
 	imgLoaded();
+	//»ç¿îµå///////////
+	ADDS("tower1_atk", "sound/tower1_atk.wav", false, false);
+	soundLoaded();
 }
 
