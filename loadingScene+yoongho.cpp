@@ -99,4 +99,6 @@ void loadingScene::yoonghoInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("롤승리", "image/ui/lolwin.bmp", 1200, 700, false, RGB(0, 0, 0));
 	imgLoaded();
+	IMAGEMANAGER->addImage("스코어", "image/ui/score.bmp", 150, 32, false, RGB(0, 0, 0));
+	imgLoaded();
 }

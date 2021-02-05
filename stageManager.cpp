@@ -15,7 +15,7 @@ HRESULT stageManager::init()
 	_menuInPt = false;
 	_onOff = true;
 	_pickUnit = P_NONE;
-	_alpha = 0;
+	_alpha = _score = 0;
 	return S_OK;
 }
 
@@ -152,6 +152,14 @@ void stageManager::uiRender()
 	if(_stage == STAGE1)	IMAGEMANAGER->findImage("ui_stage1")->render(getMemDC(), CAMX, CAMY);
 	else if (_stage == STAGE2)	IMAGEMANAGER->findImage("ui_stage2")->render(getMemDC(), CAMX, CAMY);
 	else if (_stage == STAGE3)	IMAGEMANAGER->findImage("ui_BossStage")->render(getMemDC(), CAMX, CAMY);
+
+	//스코어
+	FINDIMG("스코어")->render(getMemDC(), CAMX,CAMY+30);
+	if (_score > 9999) FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 72, CAMY + 36, _score / 10000 % 10, 0);
+	if (_score > 999) FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 87, CAMY + 36, _score / 1000 % 10, 0);
+	if (_score > 99) FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 102, CAMY + 36, _score / 100 % 10, 0);
+	if (_score > 9) FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 117, CAMY + 36, _score / 10 % 10, 0);
+	FINDIMG("숫자")->frameRender(getMemDC(), CAMX+ 132, CAMY + 36, _score % 10, 0);
 
 	if (_alpha > 0)
 	{
@@ -540,9 +548,9 @@ void stageManager::stageChange()
 		}
 		switch (_stage)
 		{
-		case STAGE1: _isVictory = true; _stage = STAGE2;	break;
-		case STAGE2: _isVictory = true; _stage = STAGE3;	break;
-		case STAGE3: SCENEMANAGER->changeScene("엔딩씬"); break;
+		case STAGE1: _isVictory = true; _score += _gold; _stage = STAGE2;	break;
+		case STAGE2: _isVictory = true; _score += _gold; _stage = STAGE3;	break;
+		case STAGE3: _score += _gold; CAMERAMANAGER->setCameraX(_score); SCENEMANAGER->changeScene("엔딩씬"); break;
 		}
 	}	
 }

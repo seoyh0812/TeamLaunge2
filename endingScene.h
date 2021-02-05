@@ -15,6 +15,7 @@ private:
 	RECT _mainSelectRc;
 	RECT _exitSelectRc;
 	RESULT _result;
+	int _score;
 
 public:
 	endingScene();

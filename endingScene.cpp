@@ -11,6 +11,7 @@ endingScene::~endingScene()
 
 HRESULT endingScene::init()
 {
+	_score = CAMX;
 	CAMERAMANAGER->setCameraX(0);
 	CAMERAMANAGER->setCameraY(0);
 	//_mainSelectRc = RectMakeCenter(승리/패배이미지 메인선택렉트);
@@ -79,6 +80,13 @@ void endingScene::update()
 void endingScene::render()
 {
 	FINDIMG("롤승리")->render(getMemDC());
+
+	// 최종스코어 보여주는거
+	if (_score > 9999) FINDIMG("숫자")->frameRender(getMemDC(), 600 - 30, WINSIZEY/2, _score / 10000 % 10, 0);
+	if (_score > 999) FINDIMG("숫자")->frameRender(getMemDC(), 600 - 15, WINSIZEY / 2, _score / 1000 % 10, 0);
+	if (_score > 99) FINDIMG("숫자")->frameRender(getMemDC(), 600, WINSIZEY / 2, _score / 100 % 10, 0);
+	if (_score > 9) FINDIMG("숫자")->frameRender(getMemDC(), 600 + 15, WINSIZEY / 2, _score / 10 % 10, 0);
+	FINDIMG("숫자")->frameRender(getMemDC(), 600 + 30, WINSIZEY / 2, _score % 10, 0);
 	//switch (_result)
 	//{
 	//	// ---- victory ----
