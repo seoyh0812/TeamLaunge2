@@ -79,6 +79,18 @@ void stageManager::update()
 	{
 		//if (_pickUnit != P_NONE && _onOff) createUnit();
 	}
+	if (KEYMANAGER->isOnceKeyDown(VK_F1))
+	{
+		for (int i = 0; i < _um->getVUnit().size(); ++i)
+		{
+			if (_um->getVUnit()[i]->getID() == 20 && _um->getVUnit()[i]->getBelong() == ENEMY)
+			{
+				_um->getVUnit()[i]->getHP() = 0;
+				break;
+			}
+		}
+	}
+
 }
 
 void stageManager::render()
