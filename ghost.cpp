@@ -68,8 +68,6 @@ void ghost::render()
 		_image->frameRender(getMemDC(), _rc.left - 18, _rc.top - 8, _frame, 0);
 		break;
 	}
-
-	if (KEYMANAGER->isToggleKey(VK_F1)) Rectangle(getMemDC(), _rc);
 }
 
 void ghost::reRender()
