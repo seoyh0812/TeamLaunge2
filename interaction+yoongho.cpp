@@ -136,6 +136,10 @@ void interaction::yoonghoUpdate()
 					_se->createThunder(S_ENEMY, _um->getVUnit()[tg]->getX() - rand() % 200, _um->getVUnit()[tg]->getY() + rand() % 200 - 100);
 				}
 			}
+			else if (_um->getVUnit()[i]->getID() == 8)
+			{ // 고스트 펑
+				_se->createGhostffect(S_PLAYER, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
+			}
             else if (_um->getVUnit()[i]->getID() == 9)
             {   // 브레스
                 if (_um->getVUnit()[i]->getBelong() == PLAYER)

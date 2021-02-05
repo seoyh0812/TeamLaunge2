@@ -77,3 +77,10 @@ void skillNEffectManager::createNEffect(S_BELONG belong, float x, float y)
     nEffect->init(belong, x, y);
     _vSne.push_back(nEffect);
 }
+
+void skillNEffectManager::createGhostffect(S_BELONG belong, float x, float y)
+{
+	ghostEffect* ge = new ghostEffect;
+	ge->init(belong, x, y);
+	_vSne.push_back(ge);
+}

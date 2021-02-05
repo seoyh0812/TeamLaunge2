@@ -101,4 +101,6 @@ void loadingScene::yoonghoInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("스코어", "image/ui/score.bmp", 150, 32, false, RGB(0, 0, 0));
 	imgLoaded();
+	IMAGEMANAGER->addFrameImage("고스트펑", "image/sne/ghosteffect.bmp", 350, 33, 10, 1, true, RGB(255, 0, 255));
+	imgLoaded();
 }
