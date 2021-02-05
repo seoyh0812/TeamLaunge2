@@ -49,6 +49,19 @@ void interaction::yoonghoUpdate()
 				}
 			}
 		}
+        else if (_se->getVSne()[i]->getID() == 4)
+        { // 나선환 닿으면 데미지
+            for (int j = 0; j < _um->getVUnit().size(); ++j)
+            {
+                if (_um->getVUnit()[j]->getState() == DEAD) continue;
+                if (_um->getVUnit()[j]->getBelong() == _se->getVSne()[i]->getBelong()) continue;
+                RECT temp;
+                if (IntersectRect(&temp, &_um->getVUnit()[j]->getRect(), &_se->getVSne()[i]->getRect()))
+                {
+                    _um->getVUnit()[j]->getHP() -= 0.25f;
+                }
+            }
+        }
 	}
 
 	for (int i = 0; i < _um->getVUnit().size(); ++i)
@@ -123,6 +136,24 @@ void interaction::yoonghoUpdate()
 					_se->createThunder(S_ENEMY, _um->getVUnit()[tg]->getX() - rand() % 200, _um->getVUnit()[tg]->getY() + rand() % 200 - 100);
 				}
 			}
+            else if (_um->getVUnit()[i]->getID() == 9)
+            {   // 브레스
+                if (_um->getVUnit()[i]->getBelong() == PLAYER)
+                {
+                    _se->createNEffect(S_PLAYER, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
+                }
+                if (_um->getVUnit()[i]->getBelong() == ENEMY)
+                {
+                    _se->createNEffect(S_ENEMY, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
+                }
+            }
+            else if (_um->getVUnit()[i]->getID() == 10)
+            {   // 나선환
+                if (_um->getVUnit()[i]->getBelong() == PLAYER)
+                {
+                    _se->createNEffect(S_PLAYER, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY());
+                }
+            }
 
 			_um->getVUnit()[i]->getAttackReady() = false;
 			if (_um->getVUnit()[i]->getID() != 5) // 힐장판이 아니면 데미지

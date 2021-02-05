@@ -1,14 +1,6 @@
 #include "stdafx.h"
 #include "bishop.h"
 
-bishop::bishop()
-{
-}
-
-bishop::~bishop()
-{
-}
-
 HRESULT bishop::init(BELONG belong, float x, float y)
 {
 	_belong = belong;

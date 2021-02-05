@@ -63,3 +63,17 @@ void skillNEffectManager::createThunder(S_BELONG belong, float x, float y)
 	thd->init(belong, x, y);
 	_vSne.push_back(thd);
 }
+
+void skillNEffectManager::createfire(S_BELONG belong, float x, float y)
+{
+    fire* flame = new fire;
+    flame->init(belong, x, y);
+    _vSne.push_back(flame);
+}
+
+void skillNEffectManager::createNEffect(S_BELONG belong, float x, float y)
+{
+    narutoEffect* nEffect = new narutoEffect;
+    nEffect->init(belong, x, y);
+    _vSne.push_back(nEffect);
+}
