@@ -68,7 +68,7 @@ void loadingScene::deokhoInit()
 	ADDS("시작", "sound/Start.wav", false, false);
 	soundLoaded();
 
-	ADDS("보스브금", "sound/SkeletonDie.wav", true, true);
+	ADDS("보스브금", "sound/BossBGM.wav", true, true);
 	soundLoaded();
 	ADDS("타이틀씬브금", "sound/TitleScene.wav", true, true);
 	soundLoaded();

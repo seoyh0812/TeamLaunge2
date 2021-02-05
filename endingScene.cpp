@@ -11,6 +11,8 @@ endingScene::~endingScene()
 
 HRESULT endingScene::init()
 {
+	SOUNDMANAGER->stop("보스브금");
+	if(!SOUNDMANAGER->isPlaySound("클리어"))PLAYSND("클리어");
 	_score = CAMX;
 	CAMERAMANAGER->setCameraX(0);
 	CAMERAMANAGER->setCameraY(0);

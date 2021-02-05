@@ -16,6 +16,7 @@ HRESULT stageManager::init()
 	_onOff = true;
 	_pickUnit = P_NONE;
 	_alpha = _score = 0;
+	if(!SOUNDMANAGER->isPlaySound("메인씬브금"))PLAYSND("메인씬브금");
 	return S_OK;
 }
 
@@ -43,6 +44,16 @@ void stageManager::update()
 			{
 				_isVictory = false;
 				setStage(_stage);
+				if (_stage != STAGE3)
+				{
+					SOUNDMANAGER->stop("타이틀씬브금");
+					if (!SOUNDMANAGER->isPlaySound("메인씬브금")) PLAYSND("메인씬브금");
+				}
+				else
+				{
+					SOUNDMANAGER->stop("메인씬브금");
+					if (!SOUNDMANAGER->isPlaySound("보스브금"))PLAYSND("보스브금");
+				}
 				return;
 			}
 			if (_ptMouse.x > 662 && _ptMouse.x < 736 && _ptMouse.y > 402 && _ptMouse.y < 453)
@@ -235,6 +246,8 @@ void stageManager::homeBt()
 {
 	if (PtInRect(&_homeBt, _cameraPtMouse))
 	{
+		SOUNDMANAGER->stop("메인씬브금");
+		PLAYSND("타이틀씬브금");
 		SCENEMANAGER->changeScene("타이틀씬");
 	}
 }
@@ -535,6 +548,7 @@ void stageManager::stageChange()
 	}
 	if (!_playerFlagOn) // 우리 깃발 터졌다고..
 	{ // 디피트 온으로 바꿀 예정
+		PLAYSND("패배");
 		for (int i = 0; i < _um->getVUnit().size(); ++i)
 		{
 			if (_um->getVUnit()[i]->getID() != 20)
@@ -551,6 +565,7 @@ void stageManager::stageChange()
 	}
 	if (!_enemyFlagOn) // 상대 깃발 터뜨림
 	{ // 빅토리 온으로 바꿀 예정
+		PLAYSND("승리");
 		for (int i = 0; i < _um->getVUnit().size(); ++i)
 		{
 			if (_um->getVUnit()[i]->getID() != 20)
