@@ -97,7 +97,7 @@ void loadingScene::yoonghoInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("硅版", "image/backGround.bmp", MAPSIZEX, MAPSIZEY, false, RGB(0, 0, 0));
 	imgLoaded();
-	IMAGEMANAGER->addImage("费铰府", "image/ui/lolwin.bmp", 1200, 700, false, RGB(0, 0, 0));
+	IMAGEMANAGER->addImage("费铰府", "image/ui/lastVictory.bmp", 1200, 700, false, RGB(0, 0, 0));
 	imgLoaded();
 	IMAGEMANAGER->addImage("胶内绢", "image/ui/score.bmp", 150, 32, false, RGB(0, 0, 0));
 	imgLoaded();

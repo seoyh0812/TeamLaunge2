@@ -11,9 +11,11 @@ class endingScene : public gameNode
 {
 private:
 
-	bool _isGameOver;
 	RECT _mainSelectRc;
 	RECT _exitSelectRc;
+	RECT _mainRc;
+	RECT	_exitRc;
+	RECT	_retryRc;
 	RESULT _result;
 	int _score;
 
