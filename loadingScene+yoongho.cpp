@@ -97,4 +97,6 @@ void loadingScene::yoonghoInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("¹è°æ", "image/backGround.bmp", MAPSIZEX, MAPSIZEY, false, RGB(0, 0, 0));
 	imgLoaded();
+	IMAGEMANAGER->addImage("·Ñ½Â¸®", "image/ui/lolwin.bmp", 1200, 700, false, RGB(0, 0, 0));
+	imgLoaded();
 }

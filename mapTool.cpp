@@ -176,7 +176,7 @@ void mapTool::render()
 		if (KEYMANAGER->isToggleKey(VK_F1)) TextOut(getMemDC(), CAMX+ _isoTile[i].drawX + TILEX, CAMY+_isoTile[i].drawY + (TILEY / 2), str, strlen(str));
 	}
 
-	sprintf_s(str, "ptMouse X : %d , Y : %d", CAMX + _cameraPtMouse.x, CAMY + _cameraPtMouse.y);
+	sprintf_s(str, "ptMouse X : %d , Y : %d", _cameraPtMouse.x, _cameraPtMouse.y);
 	TextOut(getMemDC(), CAMX+ 150, CAMY+ 70, str, strlen(str));
 
 	//일단 구현은 됬는데 드래그 표시를 어떻게해야하나... 고민중

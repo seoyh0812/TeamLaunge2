@@ -24,12 +24,16 @@ void endingScene::release()
 
 void endingScene::update()
 {
+	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
+	{
+		PostQuitMessage(0);
+	}
 	//====승리 / 패배 시 선택하기 ==================================================================================
-	if (_isGameOver) /* && 승리 조건 - 이 뭔지 물어보거나 깃발체력으로 하거나 할 예정*/
+	/*if (_isGameOver)  && 승리 조건 - 이 뭔지 물어보거나 깃발체력으로 하거나 할 예정
 	{
 		_result == VICTORY;
 	}
-	else if (_isGameOver)/* && 패배 조건 - 이 뭔지 물어보거나 깃발체력으로 하거나 할 예정*/
+	else if (_isGameOver)/* && 패배 조건 - 이 뭔지 물어보거나 깃발체력으로 하거나 할 예정
 	{
 		_result == DEFEAT;
 	}
@@ -69,11 +73,12 @@ void endingScene::update()
 			}
 		}
 		break;
-	}
+	}*/
 }
 
 void endingScene::render()
 {
+	FINDIMG("롤승리")->render(getMemDC());
 	//switch (_result)
 	//{
 	//	// ---- victory ----

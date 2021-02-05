@@ -37,7 +37,33 @@ void stageManager::update()
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		if (_menuInPt)
+		if (_isVictory)
+		{
+			if (_ptMouse.x > 434 && _ptMouse.x < 589 && _ptMouse.y > 402 && _ptMouse.y < 447)
+			{
+				_isVictory = false;
+				setStage(_stage);
+				return;
+			}
+			if (_ptMouse.x > 662 && _ptMouse.x < 736 && _ptMouse.y > 402 && _ptMouse.y < 453)
+			{
+				PostQuitMessage(0);
+			}
+		}
+		if (_isDefeat)
+		{
+			if (_ptMouse.x > 434 && _ptMouse.x < 589 && _ptMouse.y > 402 && _ptMouse.y < 447)
+			{
+				_isDefeat = false;
+				setStage(_stage);
+				return;
+			}
+			if (_ptMouse.x > 662 && _ptMouse.x < 736 && _ptMouse.y > 402 && _ptMouse.y < 453)
+			{
+				PostQuitMessage(0);
+			}
+		}
+		if (_menuInPt && !_isVictory && !_isDefeat)
 		{
 			homeBt();
 			onOffBt();
@@ -127,6 +153,14 @@ void stageManager::uiRender()
 	else if (_stage == STAGE2)	IMAGEMANAGER->findImage("ui_stage2")->render(getMemDC(), CAMX, CAMY);
 	else if (_stage == STAGE3)	IMAGEMANAGER->findImage("ui_BossStage")->render(getMemDC(), CAMX, CAMY);
 
+	if (_alpha > 0)
+	{
+		for (int i = 0; i < _path.size(); ++i)
+		{
+			FINDIMG("가이드타일")->alphaRender(getMemDC(), _isoTile[_path[i]].drawX, _isoTile[_path[i]].drawY, _alpha);
+		}
+	}
+
 	if(_onOff) IMAGEMANAGER->findImage("ui_on")->render(getMemDC(), _onBt.left, _onBt.top);
 	else IMAGEMANAGER->findImage("ui_off")->render(getMemDC(), _offBt.left, _offBt.top);
 
@@ -148,12 +182,14 @@ void stageManager::uiRender()
 		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + WINSIZEX - 755, CAMY + WINSIZEY - 126, _gold % 10, 0);
 	}
 	
-	if (_alpha > 0)
+
+	if (_isVictory)
 	{
-		for (int i = 0; i < _path.size(); ++i)
-		{
-			FINDIMG("가이드타일")->alphaRender(getMemDC(), _isoTile[_path[i]].drawX, _isoTile[_path[i]].drawY, _alpha);
-		}
+		FINDIMG("승리")->render(getMemDC(), CAMX + 400, CAMY + 200);
+	}
+	else if (_isDefeat)
+	{
+		FINDIMG("패배")->render(getMemDC(), CAMX + 400, CAMY + 200);
 	}
 }
 
@@ -260,7 +296,7 @@ void stageManager::ptInMenu()
 
 void stageManager::createUnit()
 {
-	if (_battlePhase) return;
+	if (_battlePhase || _isVictory || _isDefeat) return;
 	//언무브 타일에는 안깔립니당
 	
 	if (_isoTile[_pickingPt.y * TILEX + _pickingPt.x].MUM != UNMOVE 
@@ -461,7 +497,7 @@ void stageManager::setStage(STAGE stage)
 
 void stageManager::stageChange()
 {
-	if (!_battlePhase) return;
+	if (!_battlePhase || _isVictory || _isDefeat) return;
 	bool _playerFlagOn = false;
 	bool _enemyFlagOn = false;
 	for (int i = 0; i < _um->getVUnit().size(); ++i)
@@ -479,19 +515,33 @@ void stageManager::stageChange()
 	}
 	if (!_playerFlagOn) // 우리 깃발 터졌다고..
 	{ // 디피트 온으로 바꿀 예정
+		for (int i = 0; i < _um->getVUnit().size(); ++i)
+		{
+			if (_um->getVUnit()[i]->getID() != 20)
+			{
+				_um->getVUnit()[i]->getActive() = false;
+			}
+		}
 		switch (_stage)
 		{
-		case STAGE1: setStage(STAGE1);	break;
-		case STAGE2: setStage(STAGE2);	break;
-		case STAGE3: setStage(STAGE3);	break;
+		case STAGE1: _isDefeat = true; _stage = STAGE1; break;
+		case STAGE2: _isDefeat = true; _stage = STAGE2;	break;
+		case STAGE3: _isDefeat = true; _stage = STAGE3;	break;
 		}
 	}
 	if (!_enemyFlagOn) // 상대 깃발 터뜨림
 	{ // 빅토리 온으로 바꿀 예정
+		for (int i = 0; i < _um->getVUnit().size(); ++i)
+		{
+			if (_um->getVUnit()[i]->getID() != 20)
+			{
+				_um->getVUnit()[i]->getActive() = false;
+			}
+		}
 		switch (_stage)
 		{
-		case STAGE1: setStage(STAGE2);	break;
-		case STAGE2: setStage(STAGE3);	break;
+		case STAGE1: _isVictory = true; _stage = STAGE2;	break;
+		case STAGE2: _isVictory = true; _stage = STAGE3;	break;
 		case STAGE3: SCENEMANAGER->changeScene("엔딩씬"); break;
 		}
 	}	

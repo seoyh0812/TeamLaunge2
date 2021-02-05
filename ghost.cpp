@@ -44,11 +44,11 @@ void ghost::update()
 	// 사거리 맞춰서 여기서 설정
 
 	//현재 체력이 33%이하가 되면 체력의 절반을 회복한다
-	if (_HP < _maxHP / 3 && !_used)
+	/*if (_HP < _maxHP / 3 && !_used)
 	{
 		_HP += _maxHP / 2;
 		_used = true;
-	}
+	}*/
 }
 
 void ghost::render()
