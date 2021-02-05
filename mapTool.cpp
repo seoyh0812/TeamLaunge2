@@ -180,7 +180,7 @@ void mapTool::render()
 	TextOut(getMemDC(), CAMX+ 150, CAMY+ 70, str, strlen(str));
 
 	//일단 구현은 됬는데 드래그 표시를 어떻게해야하나... 고민중
-	if(_push) Rectangle(getMemDC(), _dragRc);
+	if(_push && _dragMode) Rectangle(getMemDC(), _dragRc);
 }
 
 
