@@ -252,6 +252,9 @@
     <ClInclude Include="tower1.h">
       <Filter>playGround\mainScene\unit\subclass</Filter>
     </ClInclude>
+    <ClInclude Include="ghostEffect.h">
+      <Filter>playGround\mainScene\skillNEffect\subclass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -481,6 +484,9 @@
     </ClCompile>
     <ClCompile Include="tower1.cpp">
       <Filter>playGround\mainScene\unit\subclass</Filter>
+    </ClCompile>
+    <ClCompile Include="ghostEffect.cpp">
+      <Filter>playGround\mainScene\skillNEffect\subclass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
