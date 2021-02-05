@@ -51,7 +51,7 @@ void endingScene::render()
 	Rectangle(getMemDC(), _retryRc);
 */
 	// 최종스코어 보여주는거
-	FINDIMG("스코어")->render(getMemDC(),WINSIZEX / 2 - 100 , WINSIZEY / 2 - 5);
+	FINDIMG("스코어")->render(getMemDC(),WINSIZEX / 2 - 100 , WINSIZEY / 2 - 7);
 	if (_score > 9999) FINDIMG("숫자")->frameRender(getMemDC(), WINSIZEX / 2 - 30, WINSIZEY / 2, _score / 10000 % 10, 0);
 	if (_score > 999) FINDIMG("숫자")->frameRender(getMemDC(), WINSIZEX / 2 - 15, WINSIZEY / 2, _score / 1000 % 10, 0);
 	if (_score > 99) FINDIMG("숫자")->frameRender(getMemDC(), WINSIZEX / 2 , WINSIZEY / 2, _score / 100 % 10, 0);
