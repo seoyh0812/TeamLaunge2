@@ -7,12 +7,12 @@ HRESULT naruto::init(BELONG belong, float x, float y)
     _ID = 10;
     _x = x; _y = y;
     _speed = 2.0f;
-    _maxDelay = 240; // 대충 4초에 한번 스킬시전
+    _maxDelay = 114; // 대충 2초에 한번 스킬시전
     _damage = 0;
     _maxHP = 40;
     _attackIndex = 2; // 2번 인덱스가 될때 스킬판정
     _width = 12;
-    _height = 114; // 일단은 대충 설정해놓은거임(이미지크기)
+    _height = 20; // 일단은 대충 설정해놓은거임(이미지크기)
     commonInit(); // 앞에변수 참조해서 만드는 변수도 있으므로 뒤에다 만들어야함
     return S_OK;
 }

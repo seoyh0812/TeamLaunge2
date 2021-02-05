@@ -49,7 +49,20 @@ void interaction::yoonghoUpdate()
 				}
 			}
 		}
-        else if (_se->getVSne()[i]->getID() == 4)
+		else if (_se->getVSne()[i]->getID() == 4)
+		{ // 불 닿으면 데미지
+			for (int j = 0; j < _um->getVUnit().size(); ++j)
+			{
+				if (_um->getVUnit()[j]->getState() == DEAD) continue;
+				if (_um->getVUnit()[j]->getBelong() == _se->getVSne()[i]->getBelong()) continue;
+				RECT temp;
+				if (IntersectRect(&temp, &_um->getVUnit()[j]->getRect(), &_se->getVSne()[i]->getRect()))
+				{
+					_um->getVUnit()[j]->getHP() -= 0.125f;
+				}
+			}
+		}
+		else if (_se->getVSne()[i]->getID() == 5)
         { // 나선환 닿으면 데미지
             for (int j = 0; j < _um->getVUnit().size(); ++j)
             {
