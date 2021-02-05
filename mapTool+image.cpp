@@ -61,6 +61,8 @@ void mapTool::imageInit()
 	_icDiablo = RectMake(CAMX + WINSIZEX - 112, CAMY, 80, 90);
 	_icSkeleton = RectMake(CAMX + WINSIZEX - 512, CAMY + 90, 80, 90);
 	_icGhost = RectMake(CAMX + WINSIZEX - 432, CAMY + 90, 80, 90);
+	_icDragon = RectMake(CAMX + WINSIZEX - 352, CAMY + 90, 80, 90);
+	_icTower1= RectMake(CAMX + WINSIZEX - 272, CAMY + 90, 80, 90);
 }
 
 void mapTool::imageRender()
@@ -127,7 +129,9 @@ void mapTool::imageRender()
 		else if (_isoTile[i].name == BISHOP)	IMAGEMANAGER->findImage("·¹µåºñ¼ó´ë±â")->frameRender(getMemDC(), _isoTile[i].drawX + 25, _isoTile[i].drawY - 2, 4, 0);
 		else if (_isoTile[i].name == DIABLO) IMAGEMANAGER->findImage("µð¾Æºí·Î °È±â")->frameRender(getMemDC(), _isoTile[i].drawX - 70, _isoTile[i].drawY - 145, 4, 2);
 		else if (_isoTile[i].name == SKELETON) IMAGEMANAGER->findImage("ÇØ°ñº´»ç °È±â")->frameRender(getMemDC(), _isoTile[i].drawX - 2, _isoTile[i].drawY - 14, 4, 2);
-		else if (_isoTile[i].name == GHOST)	IMAGEMANAGER->findImage("ghost_move_red")->frameRender(getMemDC(), _isoTile[i].drawX + 7, _isoTile[i].drawY - 10, 4, 0);
+		else if (_isoTile[i].name == GHOST)		IMAGEMANAGER->findImage("ghost_move_red")->frameRender(getMemDC(), _isoTile[i].drawX + 7, _isoTile[i].drawY - 10, 4, 0);
+		else if (_isoTile[i].name == DRAGON)	IMAGEMANAGER->findImage("·¹µåµå·¡°ï´ë±â")->frameRender(getMemDC(), _isoTile[i].drawX + 10, _isoTile[i].drawY - 10, 4, 0);
+		else if (_isoTile[i].name == TOWER1)	IMAGEMANAGER->findImage("tower1_idle_red")->frameRender(getMemDC(), _isoTile[i].drawX + 4, _isoTile[i].drawY - 10, 0, 0);
 
 		//¾ð¹«ºê Å¸ÀÏ Ç¥½Ã
 		if (_isoTile[i].MUM == UNMOVE) IMAGEMANAGER->findImage("un")->render(getMemDC(), _isoTile[i].drawX + 23, _isoTile[i].drawY + 7);
@@ -216,6 +220,8 @@ void mapTool::imageRender()
 			IMAGEMANAGER->findImage("icon_diablo")->render(getMemDC(), _icDiablo.left, _icDiablo.top);
 			IMAGEMANAGER->findImage("icon_skeleton")->render(getMemDC(), _icSkeleton.left, _icSkeleton.top);
 			IMAGEMANAGER->findImage("icon_ghost")->render(getMemDC(), _icGhost.left, _icGhost.top);
+			IMAGEMANAGER->findImage("icon_dragon")->render(getMemDC(), _icDragon.left, _icDragon.top);
+			IMAGEMANAGER->findImage("icon_tower1")->render(getMemDC(), _icTower1.left, _icTower1.top);
 
 			FINDIMG("Á¤±Û½æ")->render(getMemDC(), CAMX + 689, CAMY + 340);
 			FINDIMG("½ÎÆã½æ")->render(getMemDC(), CAMX + 689+85, CAMY + 340);

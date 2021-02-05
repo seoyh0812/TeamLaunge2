@@ -115,6 +115,12 @@ void loadingScene::younghanInit()
 	imgLoaded();
 	IMAGEMANAGER->addImage("icon_skeleton", "image/icon/icon_skeleton.bmp", 80, 90, false, RGB(255, 0, 255));
 	imgLoaded();
+	IMAGEMANAGER->addImage("icon_dragon", "image/icon/icon_Dragon.bmp", 80, 90, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("icon_naruto", "image/icon/icon_Naruto.bmp", 80, 90, false, RGB(255, 0, 255));
+	imgLoaded();
+	IMAGEMANAGER->addImage("icon_tower1", "image/icon/icon_tower1.bmp", 80, 90, false, RGB(255, 0, 255));
+	imgLoaded();
 	//////////////////////UI///////////////////////
 	IMAGEMANAGER->addImage("ui_menu", "image/ui/ui_menu.bmp", 900, 132, true, RGB(255, 0, 255));
 	imgLoaded();
