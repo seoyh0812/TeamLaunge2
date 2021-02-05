@@ -32,7 +32,7 @@ void interaction::yoonghoUpdate()
 				RECT temp;
 				if (IntersectRect(&temp, &_um->getVUnit()[j]->getRect(), &_se->getVSne()[i]->getRect()))
 				{
-					_um->getVUnit()[j]->getHP() += 0.05f;					
+					_um->getVUnit()[j]->getHP() += 0.065f;					
 				}
 			}
 		}
