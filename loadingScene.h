@@ -19,6 +19,8 @@ public:
 	loadingScene();
 	~loadingScene();
 
+	bool _loadingSkip;
+
 	int _currentCount;
 	bool _loadingEnd;
 	bool _soundLoaded; // 사운드를 로딩했는지?
