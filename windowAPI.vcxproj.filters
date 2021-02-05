@@ -249,6 +249,9 @@
     <ClInclude Include="narutoEffect.h">
       <Filter>playGround\mainScene\skillNEffect\subclass</Filter>
     </ClInclude>
+    <ClInclude Include="tower1.h">
+      <Filter>playGround\mainScene\unit\subclass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -475,6 +478,9 @@
     </ClCompile>
     <ClCompile Include="narutoEffect.cpp">
       <Filter>playGround\mainScene\skillNEffect\subclass</Filter>
+    </ClCompile>
+    <ClCompile Include="tower1.cpp">
+      <Filter>playGround\mainScene\unit\subclass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -203,3 +203,10 @@ void unitManager::createFlag(BELONG belong, float x, float y)
 	fl->init(belong, x, y);
 	_vUnit.push_back(fl);
 }
+
+void unitManager::createTower1(BELONG belong, float x, float y)
+{
+	tower1* tw1 = new tower1;
+	tw1->init(belong, x, y);
+	_vUnit.push_back(tw1);
+}

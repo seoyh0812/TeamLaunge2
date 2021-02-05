@@ -11,6 +11,7 @@
 #include "dragon.h"
 #include "naruto.h"
 #include "flagUnit.h"
+#include "tower1.h"
 #include <vector>
 
 class unitManager : public gameNode
@@ -57,5 +58,6 @@ public:
     void createDragon(BELONG belong, float x, float y);
     void createNaruto(BELONG belong, float x, float y);
 	void createFlag(BELONG belong, float x, float y);
+	void createTower1(BELONG belong, float x, float y);
 };
 
