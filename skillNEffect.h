@@ -28,6 +28,7 @@ protected:
 	int _frameCount;
 	int _duration; // 지속시간
 	bool _erase;
+	bool _isOnce; // 한번만 지속되는지
 
 	image* _image;
 

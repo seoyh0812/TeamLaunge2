@@ -105,6 +105,7 @@ void skeleton::setState(STATE state)
 			break;
 			// 저글링의경우 대기는 이동에서 y프레임 0으로만 쓸거임
 		case ATTACK:
+			PLAYSND("해골병사사망");
 			_image = FINDIMG("해골병사 공격");
 			_maxFrame = _image->getMaxFrameY();
 			break;

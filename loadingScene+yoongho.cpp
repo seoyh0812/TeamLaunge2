@@ -10,7 +10,10 @@ void loadingScene::yoonghoInit()
 	soundLoaded();
 	SOUNDMANAGER->addSound("배치실패", "sound/tadErr03.wav", false, false);
 	soundLoaded();
-	
+	SOUNDMANAGER->addSound("번개", "sound/thunder.wav", false, false);
+	soundLoaded();
+	SOUNDMANAGER->addSound("스켈레톤사망", "sound/burrowdn.wav", false, false);
+	soundLoaded();	
 
 	IMAGEMANAGER->addFrameImage("저글링이동블루", "image/unit/zergling/zerglingwalkblue.bmp", 320, 273, 8, 7, true, RGB(255, 0, 255));
 	imgLoaded();

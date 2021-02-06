@@ -9,9 +9,9 @@ HRESULT ghostEffect::init(S_BELONG belong, float x, float y)
 	_rc = RectMakeCenter(_x, _y, 35, 33);
 	_image = FINDIMG("고스트펑");
 	_maxFrame = _image->getMaxFrameX();
-	_duration = 60;
-
 	commonInit();
+	_isOnce = true;
+	_duration = 0; // isOnce면 이거랑 상관없이 끝나면 지우도록 하였음
 
 	return S_OK;
 }

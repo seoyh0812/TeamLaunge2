@@ -28,7 +28,7 @@ void skillNEffect::render()
 
 void skillNEffect::commonInit()
 {
-	_frame = _frameCount = _erase = 0;
+	_frame = _frameCount = _erase = _isOnce = 0;
 }
 
 void skillNEffect::commonUpdate()
@@ -40,12 +40,19 @@ void skillNEffect::commonUpdate()
 		++_frame;
 		if (_frame > _maxFrame)
 		{
-			_frame = 0;
+			if (_isOnce)
+			{
+				_erase = true;
+			}
+			else
+			{
+				_frame = 0;
+			}			
 		}
 	}
 	
 	if (_duration > 0) --_duration;
-	else
+	else if (!_isOnce && _duration <= 0)
 	{
 		_erase = true;
 	}

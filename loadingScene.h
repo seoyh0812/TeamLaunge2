@@ -3,7 +3,7 @@
 #include "progressBar.h"
 #include <string>
 
-#define LOADINGMAX 194
+#define LOADINGMAX 195
 #define ADDF IMAGEMANAGER->addFrameImage
 #define MGT RGB(255,0,255)
 

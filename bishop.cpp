@@ -35,13 +35,13 @@ void bishop::render()
 	switch (_state)
 	{ // 위치 적당히 보정해서 쓸것
 	case WALK:
-		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, _frame);
+		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, _frame);
 		break;
 	case ATTACKWAIT: // 첫번쨰 프레임으로 고정
-		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, 0);
+		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, 0);
 		break;
 	case ATTACK:
-		_image->frameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection / 2, 0);
+		_image->frameRender(getMemDC(), _rc.left, _rc.top, _frameDirection / 2, 0);
 		break;
 	case DEAD: // 프레임인덱스 다르게 도니까 주의
 		_image->frameRender(getMemDC(), _rc.left - 24, _rc.top - 4, _frame / 2, 0);
@@ -54,13 +54,13 @@ void bishop::reRender()
 	switch (_state)
 	{ // 위치 적당히 보정해서 쓸것
 	case WALK:
-		_image->alphaFrameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, _frame,150);
+		_image->alphaFrameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, _frame,150);
 		break;
 	case ATTACKWAIT: // 첫번쨰 프레임으로 고정
-		_image->alphaFrameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection, 0, 150);
+		_image->alphaFrameRender(getMemDC(), _rc.left, _rc.top, _frameDirection, 0, 150);
 		break;
 	case ATTACK:
-		_image->alphaFrameRender(getMemDC(), _rc.left - 5, _rc.top, _frameDirection / 2, 0, 150);
+		_image->alphaFrameRender(getMemDC(), _rc.left, _rc.top, _frameDirection / 2, 0, 150);
 		break;
 	}
 }

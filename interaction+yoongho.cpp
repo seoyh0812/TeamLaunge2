@@ -141,6 +141,7 @@ void interaction::yoonghoUpdate()
 			{ // 디아블로페이즈2면 번개생성
 				if (_um->getVUnit()[i]->getBelong() == ENEMY)
 				{
+					PLAYSND("번개");
 					_um->getVUnit()[i]->getID() = 6; // 해골소환페이즈로
 					_se->createThunder(S_ENEMY, _um->getVUnit()[tg]->getX(), _um->getVUnit()[tg]->getY() - 100);
 					_se->createThunder(S_ENEMY, _um->getVUnit()[tg]->getX() + rand() % 200 , _um->getVUnit()[tg]->getY() + rand() % 200 - 100);
