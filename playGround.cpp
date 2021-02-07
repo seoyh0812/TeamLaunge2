@@ -14,8 +14,12 @@ HRESULT playGround::init()
 {
 	gameNode::init(true);
 
-	_x = _y = _seeMinimap = 0;
+	ShowCursor(false);
+	IMAGEMANAGER->addFrameImage("커서", "image/ui/cursor.bmp",100,21, 5, 1, true, RGB(255, 0, 255));
 
+	_x = _y = _seeMinimap = _cursorCount = _cursorIndex = 0;
+	
+		
 	_ms = new mainScene;
 
 	SCENEMANAGER->addScene("로딩씬", new loadingScene);
@@ -40,6 +44,14 @@ void playGround::release()
 void playGround::update()
 {
 	gameNode::update();
+
+	if (_cursorCount < 6) ++_cursorCount;
+	else
+	{
+		_cursorCount = 0;
+		++_cursorIndex;
+		if (_cursorIndex > 4) _cursorIndex = 0;
+	}
 
 	if (SCENEMANAGER->getMinimapScene() && !_seeMinimap)
 	{
@@ -82,6 +94,7 @@ void playGround::render()
 		if (KEYMANAGER->isToggleKey(VK_TAB)) TIMEMANAGER->render(getMemDC(), CAMX, CAMY);
 		uiRender();
 		if (SCENEMANAGER->getAlpha() > 0) FINDIMG("씬체인지")->alphaRender(getMemDC(), CAMX, CAMY, SCENEMANAGER->getAlpha());
+		FINDIMG("커서")->frameRender(getMemDC(), CAMX + _ptMouse.x, CAMY + _ptMouse.y,_cursorIndex,0);
 		_backBuffer->render(getHDC(), 0, 0, CAMX, CAMY, WINSIZEX, WINSIZEY);
 	}
 	else
@@ -90,6 +103,7 @@ void playGround::render()
 		if (KEYMANAGER->isToggleKey(VK_TAB)) TIMEMANAGER->render(getMemDC(), CAMX,CAMY);
 		uiRender();
 		if (SCENEMANAGER->getAlpha() > 0) FINDIMG("씬체인지")->alphaRender(getMemDC(), CAMX, CAMY, SCENEMANAGER->getAlpha());
+		FINDIMG("커서")->frameRender(getMemDC(), CAMX + _ptMouse.x, CAMY + _ptMouse.y, _cursorIndex, 0);
 		_backBuffer->render(getHDC(), 0, 0, CAMX, CAMY, WINSIZEX, WINSIZEY);
 	}
 }

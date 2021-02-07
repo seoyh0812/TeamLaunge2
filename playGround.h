@@ -16,6 +16,9 @@ private:
 
 	mainScene* _ms;
 	RECT	_camMap;
+
+	int _cursorCount;
+	int _cursorIndex;
 	
 public:
 	playGround();

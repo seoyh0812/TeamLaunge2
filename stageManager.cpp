@@ -202,13 +202,36 @@ void stageManager::uiRender()
 	{
 		IMAGEMANAGER->findImage("ui_menu")->render(getMemDC(), CAMX + WINSIZEX - 930, CAMY + WINSIZEY - 132);
 		IMAGEMANAGER->findImage("icon_zergling")->render(getMemDC(), _zerglingBt.left, _zerglingBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 310, CAMY + 605, 1, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 325, CAMY + 605, 0, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 340, CAMY + 605, 0, 0);
 		IMAGEMANAGER->findImage("icon_marine")->render(getMemDC(), _marineBt.left, _marineBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 390, CAMY + 605, 1, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 405, CAMY + 605, 5, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 420, CAMY + 605, 0, 0);
 		IMAGEMANAGER->findImage("icon_civilian")->render(getMemDC(), _civilianBt.left, _civilianBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 485, CAMY + 605, 7, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 500, CAMY + 605, 0, 0);
 		IMAGEMANAGER->findImage("icon_templar")->render(getMemDC(), _templarBt.left, _templarBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 550, CAMY + 605, 2, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 565, CAMY + 605, 0, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 580, CAMY + 605, 0, 0);
 		IMAGEMANAGER->findImage("icon_bishop")->render(getMemDC(), _bishopBt.left, _bishopBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 630, CAMY + 605, 2, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 645, CAMY + 605, 0, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 660, CAMY + 605, 0, 0);
 		IMAGEMANAGER->findImage("icon_ghost")->render(getMemDC(), _ghostBt.left, _ghostBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 710, CAMY + 605, 1, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 725, CAMY + 605, 5, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 740, CAMY + 605, 0, 0);
 		IMAGEMANAGER->findImage("icon_dragon")->render(getMemDC(), _dragonBt.left, _dragonBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 790, CAMY + 605, 2, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 805, CAMY + 605, 5, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 820, CAMY + 605, 0, 0);
 		IMAGEMANAGER->findImage("icon_naruto")->render(getMemDC(), _narutoBt.left, _narutoBt.top);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 870, CAMY + 605, 8, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 885, CAMY + 605, 0, 0);
+		FINDIMG("숫자")->frameRender(getMemDC(), CAMX + 900, CAMY + 605, 0, 0);
 		//소지금
 		FINDIMG("달러")->render(getMemDC(), CAMX + WINSIZEX - 825, CAMY + WINSIZEY - 128);
 		if (_gold > 999) FINDIMG("숫자")->frameRender(getMemDC(), CAMX + WINSIZEX - 800, CAMY + WINSIZEY - 126, _gold / 1000%10, 0);
