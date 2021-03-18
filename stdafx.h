@@ -34,7 +34,7 @@ using namespace TFIVE_UTIL;
 // ## 디파인 문 ## 20.11.12 ##
 //==================================
 
-#define WINNAME (LPTSTR)(TEXT("25기 API"))
+#define WINNAME (LPTSTR)(TEXT("칠흑의 라운지 - Battle Simulator of Darkness");
 #define WINSTARTX 50		//윈도우 시작좌표 X지점
 #define WINSTARTY 0		//윈도우 시작좌표 Y지점
 #define WINSIZEX 1200 		//윈도우 가로크기
